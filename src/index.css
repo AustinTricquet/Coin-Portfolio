@@ -11,3 +11,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+    /* Global Styles */
+    :root {
+      --nav-primary-color: #6F63DD;
+      --nav-text-color:#fff;
+      --nav-a-hov-color:rgb(230, 230, 230);
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
