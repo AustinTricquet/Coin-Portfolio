@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components';
-import PortfolioList from './PortfolioList';
 
 const Div = styled.div`
     text-align: center;
@@ -12,14 +11,14 @@ const Div = styled.div`
     width: 50%;
 `;
 
-const Portfolio = (props) => {
+const Taxes = () => {
     return (
-        <>
-        <h1>Portfolio</h1>
-        <PortfolioList coinData={props.coinData}/>
-        </>
-
+        <Div>
+            <h1>Taxes</h1>
+            <h2>Pay the tax man! Bye bye gains!</h2>
+        </Div>
     )
 }
 
-export default Portfolio;
+export default Taxes
+
