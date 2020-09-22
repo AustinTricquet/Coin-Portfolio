@@ -6,13 +6,12 @@ const Nav = styled.nav`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2rem 4rem;
     z-index: 1;
     width: 100%;
     opacity: 0.9;
-    margin-bottom: 3rem;
     background: var(--nav-primary-color);
     color: var(--nav-text-color);
+    height: 7vh;
 
     a {
         color: var(--nav-text-color);
@@ -42,6 +41,7 @@ const Nav = styled.nav`
     
     button {
         padding: 0.5rem 1rem;
+        margin-right: 1rem;
     }
 
     button a {

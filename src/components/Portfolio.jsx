@@ -3,21 +3,14 @@ import styled from 'styled-components';
 import PortfolioList from './PortfolioList';
 
 const Div = styled.div`
-    text-align: center;
-    background-color: var(--nav-primary-color);
-    border-radius: 1rem;
-    color: var(--nav-text-color);
-    padding: 3rem 0.5rem;
-    margin: auto;
-    width: 50%;
+    max-height: 93vh;
 `;
 
 const Portfolio = (props) => {
     return (
-        <>
-        <h1>Portfolio</h1>
+        <Div>
         <PortfolioList coinData={props.coinData}/>
-        </>
+        </Div>
 
     )
 }

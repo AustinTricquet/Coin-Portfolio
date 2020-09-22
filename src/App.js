@@ -67,6 +67,20 @@ export default function App() {
       valueUSD: 200,
       amount: 50
     },
+    {
+      name: 'Cosmos',
+      ticker: 'ATOM',
+      price: 5,
+      valueUSD: 200,
+      amount: 50
+    },
+    {
+      name: 'Cosmos',
+      ticker: 'ATOM',
+      price: 5,
+      valueUSD: 200,
+      amount: 50
+    },
   ]);
 
   return (

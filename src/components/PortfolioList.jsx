@@ -3,8 +3,9 @@ import PortfolioCoin from './PortfolioCoin'
 import styled from 'styled-components';
 
 const Div = styled.div`
-    height: 50vh;
-    width: 150vh;
+    height: 93vh;
+    min-width: 30vh;
+    width: 25%;
     overflow: auto;
 `;
 
