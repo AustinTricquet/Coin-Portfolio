@@ -1,5 +1,12 @@
 import React from 'react'
 import styled from 'styled-components';
+import { compose } from "redux";
+import { connect } from "react-redux";
+import { signout } from "../store/actions/auth";
+import {Link} from 'react-router-dom';
+import Login from "./Login";
+import { Route } from 'react-router-dom';
+import requireAuth from "./hoc/requireAuth";
 
 const Div = styled.div`
     text-align: center;
@@ -11,14 +18,32 @@ const Div = styled.div`
     width: 50%;
 `;
 
-const Home = () => {
+const Home = ({ signin, signout, auth }) => {
     return (
         <Div>
             <h1>Welcome to Coin Portfolio</h1>
             <h2>Track all your crypto trades!</h2>
+            <p>{!auth.isEmpty ? "You are Authenticated" : "You are not Authenticated"}</p>
+            <Link to='/login'>Login</Link>
         </Div>
     );
 }
 
-
-export default Home;
+function mapStateToProps(state) {
+    return {
+      auth: state.firebaseReducer.auth
+    };
+  }
+  
+  function mapDispatchToProps(dispatch) {
+    return {
+      signout: () => dispatch(signout("/"))
+    };
+  }
+  
+  export default compose(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    ),
+  )(Home);
