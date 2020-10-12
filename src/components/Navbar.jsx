@@ -50,29 +50,22 @@ const Nav = styled.nav`
     }
 `;
 
-const Navbar = ({title}) => {
+const Navbar = (props) => {
     
     return (
         <Nav className="navbar  bg-primary">
             <h1>
-                <Link to='/'>{title}</Link>
+                <Link to='/'>Coin Portfolio</Link>
             </h1>
             <ul>
-                <li>
-                <Link to='/portfolio'>Portfolio</Link>
-                </li>
-                <li>
-                <Link to='/watch-list'>Watch List</Link>
-                </li>
-                <li>
-                <Link to='/trades'>Trades</Link>
-                </li>
-                <li>
-                <Link to='/taxes'>Taxes</Link>
-                </li>
+            {
+                props.menuOptions.map( ({key, route }) => 
+                    <Link key={key} to={route}>{key}</Link> 
+                    )
+            }
             </ul>
             <button>
-                <Link to='/'>Login</Link>
+                <Link to={props.buttonRoute}>{props.buttonName}</Link>
             </button>
         </Nav>
     )

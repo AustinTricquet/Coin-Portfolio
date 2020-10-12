@@ -2,7 +2,6 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Main from "./Main"
 import Login from "./Login"
-import Home from "./Home"
 import Portfolio from "./Portfolio";
 
 import styled from 'styled-components';
@@ -11,6 +10,7 @@ import Navbar from './Navbar';
 import WatchList from './WatchList';
 import Trades from './Trades';
 import Taxes from './Taxes';
+import About from './About';
 
 
 const Div = styled.div`
@@ -91,12 +91,7 @@ function App() {
 
   return (
       <Div>
-        <Navbar></Navbar>
-        <Switch>
-          <Route exact path="/" component={Main} />
-          <Route exact path="/login" component={Login} />
-          
-        </Switch>
+        <Main></Main>
       </Div>
   );
 }

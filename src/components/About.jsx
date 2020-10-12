@@ -21,10 +21,9 @@ const Div = styled.div`
 const About = ({ signin, signout, auth }) => {
     return (
         <Div>
-            <h1>Welcome to Coin Portfolio</h1>
-            <h2>Track all your crypto trades!</h2>
+            <h1>About page</h1>
+            <h2>This app is to help track your cryptos.</h2>
             <p>{!auth.isEmpty ? "You are Authenticated" : "You are not Authenticated"}</p>
-            <Link to='/login'>Login</Link>
         </Div>
     );
 }

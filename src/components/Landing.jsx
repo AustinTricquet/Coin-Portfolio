@@ -3,10 +3,12 @@ import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { signout } from "../store/actions/auth";
-import {Link} from 'react-router-dom';
 import Login from "./Login";
-import { Route } from 'react-router-dom';
-import requireAuth from "./hoc/requireAuth";
+import Home from "./Home";
+import { Switch, Route } from 'react-router-dom';
+import About from "./About";
+import Navbar from './Navbar';
+import Contact from './Contact';
 
 const Div = styled.div`
     text-align: center;
@@ -18,14 +20,36 @@ const Div = styled.div`
     width: 50%;
 `;
 
-const Landing = ({ signin, signout, auth, history}) => {
+const Landing = () => {
     return (
+      <>
+        <Navbar 
+          buttonRoute="/login" 
+          buttonName="Login"
+          menuOptions={[
+            {
+              key: 'Home',
+              route: '/',
+            },
+            {
+              key: 'About',
+              route: '/about',
+            },
+            {
+              key: 'Contact',
+              route: '/contact'
+            }
+          ]}>
+        </Navbar>
         <Div>
-            <h1>Welcome to Coin Portfolio</h1>
-            <h2>Track all your crypto trades!</h2>
-            <p>{!auth.isEmpty ? "You are Authenticated" : "You are not Authenticated"}</p>
-            <button onClick={() => history.push('/login') } >Log in</button>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/about" component={About} />
+            <Route path="/login" component={Login} />
+            <Route path="/contact" component={Contact} />
+          </Switch>
         </Div>
+      </>
     );
 }
 

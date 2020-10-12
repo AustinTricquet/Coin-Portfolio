@@ -18,11 +18,11 @@ const Div = styled.div`
     width: 50%;
 `;
 
-const Home = ({ signin, signout, auth, history}) => {
+const Contact = ({ signin, signout, auth }) => {
     return (
         <Div>
-            <h1>Home Page</h1>
-            <h2>Welcome, check out this awesome app!!</h2>
+            <h1>Contact page</h1>
+            <h2>You can reach out to me here.</h2>
             <p>{!auth.isEmpty ? "You are Authenticated" : "You are not Authenticated"}</p>
         </Div>
     );
@@ -45,4 +45,4 @@ function mapStateToProps(state) {
       mapStateToProps,
       mapDispatchToProps
     ),
-  )(Home);
+  )(Contact);
