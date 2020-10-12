@@ -2,11 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { signout } from "../store/actions/auth";
-import {Link} from 'react-router-dom';
-import Login from "./Login";
-import { Route } from 'react-router-dom';
-import requireAuth from "./hoc/requireAuth";
+
 
 const Div = styled.div`
     text-align: center;
@@ -18,7 +14,7 @@ const Div = styled.div`
     width: 50%;
 `;
 
-const About = ({ signin, signout, auth }) => {
+const About = ({ auth }) => {
     return (
         <Div>
             <h1>About page</h1>
@@ -34,15 +30,8 @@ function mapStateToProps(state) {
     };
   }
   
-  function mapDispatchToProps(dispatch) {
-    return {
-      signout: () => dispatch(signout("/"))
-    };
-  }
-  
   export default compose(
     connect(
-      mapStateToProps,
-      mapDispatchToProps
+      mapStateToProps
     ),
   )(About);

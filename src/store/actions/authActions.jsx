@@ -9,7 +9,7 @@ import {
     RESET_SUCCESS,
     RESET_ERROR
   } from "./actionTypes";
-  import { beginApiCall, apiCallError } from "./apiStatus";
+  import { beginApiCall, apiCallError } from "./apiStatusActions";
   import firebase from "../../services/firebase";
   
   // Signing up with Firebase

@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { signout } from "../store/actions/auth";
+import { signout } from "../store/actions/authActions";
 import {Link} from 'react-router-dom';
 import Login from "./Login";
 import { Route } from 'react-router-dom';
