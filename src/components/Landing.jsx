@@ -11,13 +11,7 @@ import Navbar from './Navbar';
 import Contact from './Contact';
 
 const Div = styled.div`
-    text-align: center;
-    background-color: var(--nav-primary-color);
-    border-radius: 1rem;
-    color: var(--nav-text-color);
-    padding: 3rem 0.5rem;
-    margin: auto;
-    width: 50%;
+
 `;
 
 const Landing = () => {

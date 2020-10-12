@@ -14,17 +14,44 @@ const Div = styled.div`
     border-radius: 1rem;
     color: var(--nav-text-color);
     padding: 3rem 0.5rem;
-    margin: auto;
-    width: 50%;
+    margin: 2em auto;
+    width: 80%;
 `;
 
 const Home = ({ signin, signout, auth, history}) => {
     return (
+        <>
         <Div>
-            <h1>Home Page</h1>
-            <h2>Welcome, check out this awesome app!!</h2>
+            <h1>Coin Portfolio</h1>
+            <div>
+              <h3>Review your Portfolio</h3>
+              <h3>Scout the Markets</h3>
+              <h3>Track your Trades and Taxes</h3>
+            </div>
+            
             <p>{!auth.isEmpty ? "You are Authenticated" : "You are not Authenticated"}</p>
         </Div>
+        <Div>
+          <h1>Portfolio</h1>
+          <h3>See all your wallets in one place!</h3>
+          <h3>Track your portfolio value over time!</h3>
+        </Div>
+        <Div>
+          <h1>Markets</h1>
+          <h3>Create Watch Lists and study the markets</h3>
+          <h3>Discover deep insights from live news coverage and tools to analyze your prospective coins</h3>
+        </Div>
+        <Div>
+          <h1>Trades</h1>
+          <h3>See all our trades in one place</h3>
+          <h3>Filter by wallet, date, coins and more!</h3>
+        </Div>
+        <Div>
+          <h1>Taxes</h1>
+          <h3>Take the headache out of Crypto Taxes</h3>
+          <h3>Choose what accounting method and print out your report to file on your taxes! (U.S. Only)</h3>
+        </Div>
+        </>
     );
 }
 
