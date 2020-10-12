@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { signout } from "../store/actions/auth";
+import {Link} from 'react-router-dom';
 import Login from "./Login";
-import Landing from "./Landing";
-import { Switch, Route } from 'react-router-dom';
-import About from "./About";
+import { Route } from 'react-router-dom';
+import requireAuth from "./hoc/requireAuth";
 
 const Div = styled.div`
     text-align: center;
@@ -18,15 +18,14 @@ const Div = styled.div`
     width: 50%;
 `;
 
-const Home = () => {
+const About = ({ signin, signout, auth }) => {
     return (
-      <Div>
-        <Switch>
-          <Route exact path="/" component={Landing} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/about" component={About} />
-        </Switch>
-      </Div>
+        <Div>
+            <h1>Welcome to Coin Portfolio</h1>
+            <h2>Track all your crypto trades!</h2>
+            <p>{!auth.isEmpty ? "You are Authenticated" : "You are not Authenticated"}</p>
+            <Link to='/login'>Login</Link>
+        </Div>
     );
 }
 
@@ -47,4 +46,4 @@ function mapStateToProps(state) {
       mapStateToProps,
       mapDispatchToProps
     ),
-  )(Home);
+  )(About);

@@ -6,16 +6,12 @@ import Home from "./Home"
 import Portfolio from "./Portfolio";
 
 import styled from 'styled-components';
-
-/*
-import Signup from './Signup';
 import Navbar from './Navbar';
-import Home from './Home';
-import Portfolio from './Portfolio';
+
 import WatchList from './WatchList';
 import Trades from './Trades';
 import Taxes from './Taxes';
-*/
+
 
 const Div = styled.div`
 
@@ -95,22 +91,20 @@ function App() {
 
   return (
       <Div>
+        <Navbar></Navbar>
         <Switch>
-          
           <Route exact path="/" component={Main} />
-          <Route exact path="/Login" component={Login} />
-          <Route exact path="/portfolio" component={Portfolio} />
+          <Route exact path="/login" component={Login} />
           
         </Switch>
       </Div>
   );
 }
 
-/* <Route exact path='/signup' component={Signup} />
-  <Route exact path='/' component={Home} />
-  <Route exact path='/portfolio' render={props => (<Portfolio {...props} coinData={coinData}/>)}/>
-  <Route exact path='/watch-list' component={WatchList} />
-  <Route exact path='/trades' component={Trades} />
-  <Route exact path='/taxes' component={Taxes} />*/
-
 export default App;
+
+/*<Route exact path="/login" component={Login} />
+          <Route exact path="/portfolio" component={Portfolio} />
+          <Route exact path='/watch-list' component={WatchList} />
+          <Route exact path='/trades' component={Trades} />
+          <Route exact path='/taxes' component={Taxes} /> */
