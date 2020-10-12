@@ -1,9 +1,67 @@
 import React, { useState } from "react";
+import styled from 'styled-components';
 import { connect } from "react-redux";
 import { signup, signin, resetPassword } from "../store/actions/authActions";
 import useForm from "../utils/useForm";
 import validate from "../utils/validateLoginForm";
 import Spinner from "./Spinner";
+
+const Div = styled.div`
+
+  text-align: center;
+  background-color: var(--nav-primary-color);
+  border-radius: 1rem;
+  color: var(--nav-text-color);
+  padding: 3rem 0.5rem;
+  margin: 2em auto 2em auto;
+  width: 35vw;
+
+  h1 {
+    text-align: center;
+    margin-bottom: 1em; }
+
+  h2 {
+    text-align: center;
+    color: #29b1cc;
+    margin-bottom: 2em; }
+
+      .auth-message {
+        text-align: center;
+        color: orange; }
+        
+      .login-footer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 1em; }
+`;
+
+const InputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2em;
+
+  label {
+    margin-bottom: 0.8em; }
+
+  input {
+    outline: none;
+    border: 1px solid #dfe2e6;
+    color: #6b6c6f;
+    border-radius: 20px;
+    padding: 1.2em 1.5em; }
+
+  input.input-error {
+    border: 1px solid red; }
+
+  small {
+    font-size: 0.6em;
+    margin: 0.6em 0 0 1.7em;
+    color: red; }
+
+
+`;
+
 
 const Login = ({
   signup,
@@ -40,16 +98,16 @@ const Login = ({
   }
 
   return (
-    <div className="login">
-      <h1>Hi there!</h1>
+    <Div>
+      <h1>Coin Portfolio</h1>
       <p>{!auth.isEmpty ? "You are Authenticated" : "You are not Authenticated"}</p>
       <h2>
-        {reset ? "Reset password" : newUser ? "Create an account" : "Sign in"}
+        {reset ? "Reset password" : newUser ? "Create an account" : "Log In"}
       </h2>
       {authMsg && <p className="auth-message">{authMsg}</p>}
       <form onSubmit={handleSubmit} noValidate>
         {/* Email */}
-        <div className="input-group">
+        <InputGroup>
           <label htmlFor="email">E-mail</label>
           <input
             type="email"
@@ -67,11 +125,11 @@ const Login = ({
           {errors.emailFormatInvalid && (
             <small>{errors.emailFormatInvalid}</small>
           )}
-        </div>
+        </InputGroup>
 
         {/* PASSWORD */}
         {!reset && (
-          <div className="input-group">
+          <InputGroup>
             <label htmlFor="password">Password</label>
             <input
               type="password"
@@ -86,7 +144,7 @@ const Login = ({
             />
             {errors.passIsStrong && <small>{errors.passIsStrong}</small>}
             {errors.passIsEmpty && <small>{errors.passIsEmpty}</small>}
-          </div>
+          </InputGroup>
         )}
 
         {/* BUTTONS */}
@@ -128,7 +186,7 @@ const Login = ({
           {newUser ? "Sign in" : "Create an account"}
         </button>
       </footer>
-    </div>
+    </Div>
   );
 };
 

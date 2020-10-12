@@ -4,7 +4,7 @@ import Portfolio from "./Portfolio";
 import Landing from "./Landing";
 import Loader from "./Loader"; 
 
-const Main = ({ auth }) => {
+const Main = ({ auth, }) => {
     return (
         <div>
             {!auth.isLoaded ? <Loader />: !auth.isEmpty ? <Portfolio /> : <Landing />}

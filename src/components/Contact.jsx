@@ -14,14 +14,14 @@ const Div = styled.div`
     border-radius: 1rem;
     color: var(--nav-text-color);
     padding: 3rem 0.5rem;
-    margin: auto;
-    width: 50%;
+    margin: 2em auto 2em auto;
+    width: 60%;
 `;
 
 const Contact = ({ signin, signout, auth }) => {
     return (
         <Div>
-            <h1>Contact page</h1>
+            <h1>Contact</h1>
             <h2>You can reach out to me here.</h2>
             <p>{!auth.isEmpty ? "You are Authenticated" : "You are not Authenticated"}</p>
         </Div>

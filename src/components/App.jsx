@@ -1,29 +1,115 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
-import Main from "./Main"
-import Login from "./Login"
+
 import Portfolio from "./Portfolio";
+import Loader from './Loader';
+import Login from "./Login";
+import Home from "./Home";
+import About from "./About";
+import Navbar from './Navbar';
+import Contact from './Contact';
+import Footer from './Footer';
 
 import styled from 'styled-components';
-import Navbar from './Navbar';
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { signout } from "../store/actions/authActions";
+import { Switch, Route } from 'react-router-dom';
 
-import WatchList from './WatchList';
-import Trades from './Trades';
-import Taxes from './Taxes';
-import About from './About';
+function App({ auth }) {
+  
+  const Content = styled.div`
+    padding-bottom: 4rem;
+  `;
+  
+  const PageContainer = styled.div`
+    position: relative;
+    min-height: 100vh;
+  `;
+  
+  const Site = ({match}) => {
+    return(
+      <PageContainer>
+        <Navbar 
+          buttonRoute="/login" 
+          buttonName="Login"
+          menuOptions={[
+            {
+              key: 'Home',
+              route: '/',
+            },
+            {
+              key: 'About',
+              route: '/about',
+            },
+            {
+              key: 'Contact',
+              route: '/contact'
+            }
+          ]}>
+        </Navbar>
+        <Content>
+          <Switch>
+            <Route exact path={match.url} component={Home} />
+            <Route exact path={`${match.url}about`} component={About} />
+            <Route exact path={`${match.url}contact`} component={Contact} />
+          </Switch>
+        </Content>
+        <Footer></Footer>
+      </PageContainer>
+    )
+  }
+  
+  const Landing = () => {
+    return (
+      <Switch>
+        <Route exact path="/login" component={Login} />
+        <Route path="/" component={Site} />
+      </Switch>
+    );
+  }
+  
+  return (
+    <div>
+      {!auth.isLoaded ? <Loader />: !auth.isEmpty ? <Portfolio /> : <Landing/>}
+    </div>
+  );
+}
+
+function mapStateToProps(state) {
+  return {
+    auth: state.firebaseReducer.auth
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    signout: () => dispatch(signout("/"))
+  };
+}
+
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+)(App);
 
 
-const Div = styled.div`
+  /*
+  <Route exact path="/login" component={Login} />
+  <Route exact path="/portfolio" component={Portfolio} />
+  <Route exact path='/watch-list' component={WatchList} />
+  <Route exact path='/trades' component={Trades} />
+  <Route exact path='/taxes' component={Taxes} /> 
+  */
 
-`;
+  /*
+  const {handleSignup} = useContext(firebaseAuth)
+  console.log(handleSignup)
+  */
 
-function App() {
-
-  /*const {handleSignup} = useContext(firebaseAuth)
-    console.log(handleSignup)*/
-
-
-  /*const [coinData, setCoinData] = useState([
+  /*
+  const [coinData, setCoinData] = useState([
     {
       name: 'Bitcoin',
       ticker: 'BTC',
@@ -87,19 +173,5 @@ function App() {
       valueUSD: 200,
       amount: 50
     },
-  ]);*/
-
-  return (
-      <Div>
-        <Main></Main>
-      </Div>
-  );
-}
-
-export default App;
-
-/*<Route exact path="/login" component={Login} />
-          <Route exact path="/portfolio" component={Portfolio} />
-          <Route exact path='/watch-list' component={WatchList} />
-          <Route exact path='/trades' component={Trades} />
-          <Route exact path='/taxes' component={Taxes} /> */
+  ]);
+  */

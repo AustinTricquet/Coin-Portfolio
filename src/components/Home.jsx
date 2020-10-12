@@ -3,10 +3,6 @@ import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { signout } from "../store/actions/authActions";
-import {Link} from 'react-router-dom';
-import Login from "./Login";
-import { Route } from 'react-router-dom';
-import requireAuth from "./hoc/requireAuth";
 
 const Div = styled.div`
     text-align: center;
@@ -14,7 +10,7 @@ const Div = styled.div`
     border-radius: 1rem;
     color: var(--nav-text-color);
     padding: 3rem 0.5rem;
-    margin: 2em auto;
+    margin: 2em auto 2em auto;
     width: 80%;
 `;
 
