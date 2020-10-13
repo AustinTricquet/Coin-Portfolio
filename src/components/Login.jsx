@@ -6,23 +6,22 @@ import useForm from "../utils/useForm";
 import validate from "../utils/validateLoginForm";
 import Spinner from "./Spinner";
 
-const Div = styled.div`
-  text-align: center;
+const LoginCard = styled.div`
   background-color: var(--nav-primary-color);
   border-radius: 1rem;
   color: var(--nav-text-color);
-  padding: 3rem 0.5rem;
-  margin: 2em auto 2em auto;
-  width: 35vw;
+  padding: 3em 2em 2em 2em;
+  margin: 3em auto 3em auto;
+  max-width: 40%;
+  min-width: 25em;
 
-  h1 {
+  h1, h2 {
     text-align: center;
     margin-bottom: 1em; }
 
-  h2 {
-    text-align: center;
-    color: #29b1cc;
-    margin-bottom: 2em; }
+  a {
+    text-decoration: none;
+    margin-top: 3em;}
 `;
 
 const AuthMsg = styled.p`
@@ -42,18 +41,14 @@ const InputGroup = styled.div`
   flex-direction: column;
   margin-bottom: 2em;
 
-  label {
-    margin-bottom: 0.8em; }
-
   input {
     outline: none;
     border: 1px solid #dfe2e6;
     color: #6b6c6f;
     border-radius: 20px;
     padding: 1.2em 1.5em; }
-
-  input.input-error {
-    border: 1px solid red; }
+    input.input-error {
+      border: 1px solid red; }
 
   small {
     font-size: 0.6em;
@@ -61,36 +56,55 @@ const InputGroup = styled.div`
     color: red; }
 `;
 
-const Btn = styled.button`
+const BtnLogin = styled.button`
   padding: 1em 3em;
   border-radius: 20px;
   font-weight: bold;
   border: none;
   outline: none;
   border: 2px solid #29b1cc;
+  background-color: #29b1cc;
+  color: #fff;
+
+  :hover {
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(41, 177, 204, 0.3);}
+`;
+
+const BtnSwitch = styled.button`
+  padding: 1em 3em;
+  border-radius: 20px;
+  font-weight: bold;
+  border: none;
+  outline: none;
+  border: 2px solid #29b1cc;
+  background-color: #fff;
+  color: #29b1cc;
 
   :hover {
     cursor: pointer;
     background-color: #29b1cc;
     color: #fff; }
-
-.btn-switch {
-  background-color: #fff;
-  color: #29b1cc; }
-
-.btn-login:hover {
-  box-shadow: 0 10px 20px rgba(41, 177, 204, 0.3); }
 `;
 
 const BtnLink = styled.button`
+  background-color: var(--nav-primary-color);
   color: #29b1cc;
   border: none;
   border-bottom: 2px solid #29b1cc;
   padding: 0;
-  margin-left: 2em; }
+  margin-left: 2em;
+  
   :hover {
     border-bottom: none;
     cursor: pointer; }
+`;
+
+const Label = styled.p`
+  margin-bottom: 0.8em;
+  font-weight: Bold;
+  font-size: 1em;
+  float: start;
 `;
 
 
@@ -130,10 +144,12 @@ const Login = ({
     }
   }
 
+  /*<p>{!auth.isEmpty ? "You are Authenticated" : "You are not Authenticated"}</p>*/
+
   return (
-    <Div>
+    <LoginCard>
       <h1>Coin Portfolio</h1>
-      <p>{!auth.isEmpty ? "You are Authenticated" : "You are not Authenticated"}</p>
+      
       <h2>
         {reset ? "Reset password" : newUser ? "Create an account" : "Log In"}
       </h2>
@@ -141,7 +157,7 @@ const Login = ({
       <form onSubmit={handleSubmit} noValidate>
         {/* Email */}
         <InputGroup>
-          <label htmlFor="email">E-mail</label>
+          <Label htmlFor="email">E-mail</Label>
           <input
             type="email"
             id="email"
@@ -163,7 +179,7 @@ const Login = ({
         {/* PASSWORD */}
         {!reset && (
           <InputGroup>
-            <label htmlFor="password">Password</label>
+            <Label htmlFor="password">Password</Label>
             <input
               type="password"
               id="password"
@@ -182,7 +198,7 @@ const Login = ({
 
         {/* BUTTONS */}
         <div>
-          <Btn type="submit">
+          <BtnLogin type="submit">
             {loading ? (
               <Spinner />
             ) : reset ? (
@@ -192,7 +208,7 @@ const Login = ({
             ) : (
               "Sign in"
             )}
-          </Btn>
+          </BtnLogin>
           {!newUser && !reset && (
             <BtnLink onClick={() => SetReset(true)}>
               Forgot password?
@@ -206,18 +222,18 @@ const Login = ({
         </div>
       </form>
       <Footer>
-        <p>
+        <Label>
           {newUser ? "Already have an account?" : "Don't have an account yet?"}
-        </p>
-        <Btn
+        </Label>
+        <BtnSwitch
           onClick={() => {
             setNewUser(!newUser);
             if (reset) SetReset(false);
           }}>
           {newUser ? "Sign in" : "Create an account"}
-        </Btn>
+        </BtnSwitch>
       </Footer>
-    </Div>
+    </LoginCard>
   );
 };
 
