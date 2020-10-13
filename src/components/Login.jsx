@@ -7,7 +7,6 @@ import validate from "../utils/validateLoginForm";
 import Spinner from "./Spinner";
 
 const Div = styled.div`
-
   text-align: center;
   background-color: var(--nav-primary-color);
   border-radius: 1rem;
@@ -24,16 +23,18 @@ const Div = styled.div`
     text-align: center;
     color: #29b1cc;
     margin-bottom: 2em; }
+`;
 
-      .auth-message {
-        text-align: center;
-        color: orange; }
-        
-      .login-footer {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-top: 1em; }
+const AuthMsg = styled.p`
+  text-align: center;
+  color: yellow;
+`;
+
+const Footer = styled.footer`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1em;
 `;
 
 const InputGroup = styled.div`
@@ -58,9 +59,41 @@ const InputGroup = styled.div`
     font-size: 0.6em;
     margin: 0.6em 0 0 1.7em;
     color: red; }
-
-
 `;
+
+const Btn = styled.button`
+  padding: 1em 3em;
+  border-radius: 20px;
+  font-weight: bold;
+  border: none;
+  outline: none;
+  border: 2px solid #29b1cc;
+
+  :hover {
+    cursor: pointer;
+    background-color: #29b1cc;
+    color: #fff; }
+
+.btn-switch {
+  background-color: #fff;
+  color: #29b1cc; }
+
+.btn-login:hover {
+  box-shadow: 0 10px 20px rgba(41, 177, 204, 0.3); }
+`;
+
+const BtnLink = styled.button`
+  color: #29b1cc;
+  border: none;
+  border-bottom: 2px solid #29b1cc;
+  padding: 0;
+  margin-left: 2em; }
+  :hover {
+    border-bottom: none;
+    cursor: pointer; }
+`;
+
+
 
 
 const Login = ({
@@ -104,7 +137,7 @@ const Login = ({
       <h2>
         {reset ? "Reset password" : newUser ? "Create an account" : "Log In"}
       </h2>
-      {authMsg && <p className="auth-message">{authMsg}</p>}
+      {authMsg && <AuthMsg>{authMsg}</AuthMsg>}
       <form onSubmit={handleSubmit} noValidate>
         {/* Email */}
         <InputGroup>
@@ -149,7 +182,7 @@ const Login = ({
 
         {/* BUTTONS */}
         <div>
-          <button type="submit" className="btn-login">
+          <Btn type="submit">
             {loading ? (
               <Spinner />
             ) : reset ? (
@@ -159,33 +192,31 @@ const Login = ({
             ) : (
               "Sign in"
             )}
-          </button>
+          </Btn>
           {!newUser && !reset && (
-            <button onClick={() => SetReset(true)} className="btn-link">
+            <BtnLink onClick={() => SetReset(true)}>
               Forgot password?
-            </button>
+            </BtnLink>
           )}
           {reset && (
-            <button onClick={() => SetReset(false)} className="btn-link">
+            <BtnLink onClick={() => SetReset(false)}>
               Back to sign in
-            </button>
+            </BtnLink>
           )}
         </div>
       </form>
-      <footer className="login-footer">
+      <Footer>
         <p>
           {newUser ? "Already have an account?" : "Don't have an account yet?"}
         </p>
-        <button
+        <Btn
           onClick={() => {
             setNewUser(!newUser);
             if (reset) SetReset(false);
-          }}
-          className="btn-switch"
-        >
+          }}>
           {newUser ? "Sign in" : "Create an account"}
-        </button>
-      </footer>
+        </Btn>
+      </Footer>
     </Div>
   );
 };
