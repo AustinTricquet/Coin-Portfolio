@@ -8,6 +8,9 @@ import About from "./About";
 import Navbar from './Navbar';
 import Contact from './Contact';
 import Footer from './Footer';
+import WatchList from './WatchList';
+import Trades from './Trades';
+import Taxes from './Taxes';
 
 import styled from 'styled-components';
 import { connect } from "react-redux";
@@ -67,10 +70,50 @@ function App({ auth }) {
       </Switch>
     );
   }
+
+  const App = ({match}) => {
+    return (
+      <PageContainer>
+        <Navbar 
+       
+          signout={signout}
+          buttonRoute="/logout" 
+          buttonName="Logout"
+          menuOptions={[
+            {
+              key: 'Portfolio',
+              route: '/',
+            },
+            {
+              key: 'Watch List',
+              route: '/watch-list',
+            },
+            {
+              key: 'Trades',
+              route: '/trades'
+            },
+            {
+              key: 'Taxes',
+              route: '/taxes'
+            }
+          ]}>
+        </Navbar>
+        <Content>
+          <Switch>
+            <Route exact path="/watch-list" component={WatchList} />
+            <Route exact path="/trades" component={Trades} />
+            <Route exact path="/taxes" component={Taxes} />
+            <Route exact path="/" component={Portfolio} />
+          </Switch>
+        </Content>
+        <Footer></Footer>
+      </PageContainer>
+    )
+  }
   
   return (
     <div>
-      {!auth.isLoaded ? <Loader />: !auth.isEmpty ? <Portfolio /> : <Landing/>}
+      {!auth.isLoaded ? <Loader />: !auth.isEmpty ? <App/> : <Landing/>}
     </div>
   );
 }
@@ -91,7 +134,7 @@ export default compose(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  ),
+  )
 )(App);
 
 

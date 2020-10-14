@@ -1,6 +1,10 @@
 import React from 'react';
 import styled from  'styled-components';
 import {Link} from 'react-router-dom';
+import { compose } from "redux";
+import { connect } from "react-redux";
+import { signout } from "../store/actions/authActions";
+import requireAuth from "./hoc/requireAuth";
 
 const Nav = styled.nav`
     display: flex;
@@ -50,29 +54,51 @@ const Nav = styled.nav`
     }
 `;
 
-const Navbar = (props) => {
+const Navbar = ({history, signout, menuOptions, buttonRoute, buttonName}) => {
     
     return (
         <Nav className="navbar  bg-primary">
             <h1>
                 <Link to='/'>Coin Portfolio</Link>
             </h1>
+            
             <ul>
             {
-                props.menuOptions.map( ({key, route }) => 
+                menuOptions.map( ({key, route }) => 
                     <Link key={key} to={route}>{key}</Link> 
                     )
             }
             </ul>
-            <button>
-                <Link to={props.buttonRoute}>{props.buttonName}</Link>
+
+            {buttonRoute === "/logout" ? 
+            <button onClick={() => signout(() =>
+                history.push("/"))}>
+               {buttonName}
             </button>
+            : 
+            <button>
+                <Link to={buttonRoute}>{buttonName}</Link>
+            </button>
+            }
+
         </Nav>
     )
 }
-
-Navbar.defaultProps={
-    title: 'Coin Portfolio'
-};
-
-export default Navbar
+function mapStateToProps(state) {
+    return {
+      auth: state.firebaseReducer.auth
+    };
+  }
+  
+  function mapDispatchToProps(dispatch) {
+    return {
+      signout: () => dispatch(signout())
+    };
+  }
+  
+  export default compose(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )
+  )(Navbar);
