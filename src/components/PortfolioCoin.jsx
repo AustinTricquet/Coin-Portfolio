@@ -40,20 +40,20 @@ const SubText = styled.h5`
     color: #8993A8;
 `;
 
-const PortfolioCoin = (props) => {
+const PortfolioCoin = ({name, ticker, valueUSD, amount}) => {
     return (
         <Div>
             <Coin>
                 <Img src={logo} alt="React logo" className="App-logo" />
                 <div>
-                    <h3>{props.name}</h3>
-                    <SubText>{props.ticker}</SubText>
+                    <h3>{name}</h3>
+                    <SubText>{ticker}</SubText>
                 </div>
             </Coin>
             <Balance>
                 <div>
-                    <h3>${props.valueUSD}</h3>
-                    <SubText>{props.amount}</SubText>
+                    <h3>${valueUSD}</h3>
+                    <SubText>{amount}</SubText>
                 </div>
             </Balance> 
         </Div>

@@ -11,13 +11,13 @@ const Nav = styled.nav`
     opacity: 0.9;
     background: var(--nav-primary-color);
     color: var(--nav-text-color);
-    height: 4rem;
+    height: 6vh;
     position: absolute;
-    bottom: 0px;
+    bottom: 0vh;
 
     a {
         color: var(--nav-text-color);
-        padding: 1rem;
+        padding: 0rem;
         margin: 0 0.25rem;
         text-decoration: none;
         font-weight: bold;
@@ -44,7 +44,6 @@ const Nav = styled.nav`
         display: flex;
         list-style: none;
     }
-
 `;
 
 const Footer = (props) => {

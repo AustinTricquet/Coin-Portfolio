@@ -5,23 +5,14 @@ import { connect } from "react-redux";
 import { signout } from "../store/actions/authActions";
 import requireAuth from "./hoc/requireAuth";
 import PortfolioList from './PortfolioList';
-import Navbar from "./Navbar";
 
 const Div = styled.div`
-    max-height: 93vh;
+    max-height: 87vh;
 `;
 
 const Portfolio = ({ auth }) => {
   return (
-    <div className="page">
-      <div>
-        <span className="emoji" role="img" aria-label="House With Garden">
-          🏡
-        </span>
-      </div>
-      <h1>Welcome on Home</h1>
-      <p>You have successfully signed in, congrats!</p>
-    </div>
+    <PortfolioList></PortfolioList>
   );
 };
 

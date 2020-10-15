@@ -1,32 +1,52 @@
-import React from 'react'
-import PortfolioCoin from './PortfolioCoin'
+import React from 'react';
+import PortfolioCoin from './PortfolioCoin';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { compose } from "redux";
+import { connect } from "react-redux";
+import { signout } from "../store/actions/authActions";
 
 const Div = styled.div`
-    height: 93vh;
+    height: 87vh;
     min-width: 30vh;
     width: 25%;
     overflow: auto;
 `;
 
-const PortfolioList = (props) => {
+const PortfolioList = ({coinData}) => {
     return (
         <Div>
             {
-                props.coinData.map( ({key, name, ticker, price, amount, valueUSD}) => 
-                    <PortfolioCoin key={key}
-                            handleRefresh={props.handleRefresh}
+                coinData.map( ({name, ticker, price, amount, valueUSD}) => 
+                    <PortfolioCoin key={name}
                             name={name} 
                             ticker={ticker} 
-                            showBalance={props.showBalance}
                             amount={amount}
                             price={price}
                             valueUSD={valueUSD}
-                            tickerid={key}/> 
+                            tickerid={name}/> 
                     )
             }
         </Div>
     )
 }
 
-export default PortfolioList
+function mapStateToProps(state) {
+    return {
+      coinData: state.coinDataReducer.coinData
+    };
+  }
+  
+  function mapDispatchToProps(dispatch) {
+    return {
+      signout: (cb) => dispatch(signout(cb))
+    };
+  }
+
+
+export default compose(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )
+  )(PortfolioList);
