@@ -29,7 +29,7 @@ function App({ auth }) {
     min-height: 100vh;
   `;
   
-  const Site = ({match}) => {
+  const Site = () => {
     return(
       <PageContainer>
         <Navbar 
@@ -52,9 +52,9 @@ function App({ auth }) {
         </Navbar>
         <Content>
           <Switch>
-            <Route exact path={match.url} component={Home} />
-            <Route exact path={`${match.url}about`} component={About} />
-            <Route exact path={`${match.url}contact`} component={Contact} />
+            <Route exact path="/" component={Home} />
+            <Route exact path="/about" component={About} />
+            <Route exact path="/contact" component={Contact} />
           </Switch>
         </Content>
         <Footer></Footer>
@@ -67,16 +67,15 @@ function App({ auth }) {
       <Switch>
         <Route exact path="/login" component={Login} />
         <Route path="/" component={Site} />
+       
       </Switch>
     );
   }
 
-  const App = ({match}) => {
+  const App = () => {
     return (
       <PageContainer>
         <Navbar 
-       
-          signout={signout}
           buttonRoute="/logout" 
           buttonName="Logout"
           menuOptions={[
@@ -103,7 +102,7 @@ function App({ auth }) {
             <Route exact path="/watch-list" component={WatchList} />
             <Route exact path="/trades" component={Trades} />
             <Route exact path="/taxes" component={Taxes} />
-            <Route exact path="/" component={Portfolio} />
+            <Route path="/" component={Portfolio} />
           </Switch>
         </Content>
         <Footer></Footer>
@@ -124,18 +123,7 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    signout: () => dispatch(signout("/"))
-  };
-}
-
-export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
-)(App);
+export default connect(mapStateToProps)(App);
 
 
   /*

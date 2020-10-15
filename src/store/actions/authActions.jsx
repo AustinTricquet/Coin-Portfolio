@@ -95,28 +95,32 @@ import {
   };
   
   // Signing out with Firebase
-  export const signout = (callback) => async dispatch => {
+  export const signout = (cb) => async dispatch => {
     try {
       dispatch(beginApiCall());
       firebase
         .auth()
         .signOut()
         .then(() => {
+          console.log('dispatch is about to be called ');
           dispatch({ type: SIGNOUT_SUCCESS });
-          callback();
+          console.log('dispatch has been called... about to call cb()');
+          cb();
+          console.log("cb has worked!!!");
+          
         })
         .catch(() => {
           dispatch(apiCallError());
           dispatch({
             type: SIGNOUT_ERROR,
-            payload: "Error, we were not able to log you out. Please try again."
+            payload: "Error, we were not able to log you out. Please try again. 1"
           });
         });
     } catch (err) {
       dispatch(apiCallError());
       dispatch({
         type: SIGNOUT_ERROR,
-        payload: "Error, we were not able to log you out. Please try again."
+        payload: "Error, we were not able to log you out. Please try again. 2"
       });
     }
   };

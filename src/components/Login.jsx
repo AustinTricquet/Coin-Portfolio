@@ -107,17 +107,13 @@ const Label = styled.p`
   float: start;
 `;
 
-
-
-
 const Login = ({
   signup,
   signin,
   resetPassword,
   authMsg,
   history,
-  loading,
-  auth
+  loading
 }) => {
   const [newUser, setNewUser] = useState(false);
   const [reset, SetReset] = useState(false);

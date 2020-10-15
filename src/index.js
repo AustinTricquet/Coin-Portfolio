@@ -3,15 +3,15 @@ import ReactDOM from 'react-dom';
 import {BrowserRouter as Router } from 'react-router-dom';
 import './index.css';
 import App from './components/App';
-/*import * as serviceWorker from './serviceWorker';*//////
 
 import { Provider } from "react-redux";
-import { createStore, applyMiddleware, compose } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import reduxThunk from "redux-thunk";
 import reducers from "./store/reducers";
 
 import { ReactReduxFirebaseProvider } from "react-redux-firebase";
 import firebase from "./services/firebase";
+import { createFirestoreInstance } from 'redux-firestore';
 
 
 const store = createStore(
@@ -21,12 +21,12 @@ const store = createStore(
 );
 
 const rrfConfig = {};
-const fbConfig = {};
 
 const rrfProps = {
   firebase,
   config: rrfConfig,
   dispatch: store.dispatch,
+  createFirestoreInstance
 }
 
 ReactDOM.render(

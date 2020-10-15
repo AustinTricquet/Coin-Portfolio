@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from  'styled-components';
-import {Link} from 'react-router-dom';
+import {Link, useHistory, useLocation} from 'react-router-dom';
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { signout } from "../store/actions/authActions";
 import requireAuth from "./hoc/requireAuth";
+import { history } from "react-router-dom"
 
 const Nav = styled.nav`
     display: flex;
@@ -54,7 +55,9 @@ const Nav = styled.nav`
     }
 `;
 
-const Navbar = ({history, signout, menuOptions, buttonRoute, buttonName}) => {
+const Navbar = ({signout, menuOptions, buttonRoute, buttonName}) => {
+
+    const history = useHistory();
     
     return (
         <Nav className="navbar  bg-primary">
@@ -72,7 +75,8 @@ const Navbar = ({history, signout, menuOptions, buttonRoute, buttonName}) => {
 
             {buttonRoute === "/logout" ? 
             <button onClick={() => signout(() =>
-                history.push("/"))}>
+                history.push("/")
+              )}>
                {buttonName}
             </button>
             : 
@@ -84,6 +88,7 @@ const Navbar = ({history, signout, menuOptions, buttonRoute, buttonName}) => {
         </Nav>
     )
 }
+  
 function mapStateToProps(state) {
     return {
       auth: state.firebaseReducer.auth
@@ -92,7 +97,7 @@ function mapStateToProps(state) {
   
   function mapDispatchToProps(dispatch) {
     return {
-      signout: () => dispatch(signout())
+      signout: (cb) => dispatch(signout(cb))
     };
   }
   
@@ -102,3 +107,4 @@ function mapStateToProps(state) {
       mapDispatchToProps
     )
   )(Navbar);
+  

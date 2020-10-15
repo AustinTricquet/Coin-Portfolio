@@ -1,5 +1,10 @@
 import React from 'react'
 import styled from 'styled-components';
+import { compose } from "redux";
+import { connect } from "react-redux";
+import { signout } from "../store/actions/authActions";
+import requireAuth from "./hoc/requireAuth";
+import PortfolioList from './PortfolioList';
 
 const Div = styled.div`
     text-align: center;
@@ -11,14 +16,16 @@ const Div = styled.div`
     width: 50%;
 `;
 
-const WatchList = () => {
+const WatchList = ({auth}) => {
     return (
         <Div>
             <h1>Watch List</h1>
             <h2>Money Money Money</h2>
+            <p>{!auth.isEmpty ? "You are Authenticated" : "You are not Authenticated"}</p>
         </Div>
     )
 }
 
-export default WatchList
-
+  
+  
+export default requireAuth(WatchList);
