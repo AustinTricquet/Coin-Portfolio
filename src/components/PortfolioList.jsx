@@ -70,15 +70,16 @@ const PortfolioList = ({coinData}) => {
                 </Balance> 
             </Header>
             {
-                coinData.map( ({name, ticker, price, amount, valueUSD}) => 
-                    <PortfolioCoin key={name}
+                coinData.map( ({key, name, symbol, balance, price}) => 
+                    <PortfolioCoin key={key}
                             name={name} 
-                            ticker={ticker} 
-                            amount={amount}
+                            ticker={symbol} 
+                            amount={balance}
                             price={price}
-                            valueUSD={valueUSD}
+                            valueUSD={price}
                             tickerid={name}/> 
                     )
+                   
             }
         </Div>
     )

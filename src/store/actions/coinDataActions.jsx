@@ -1,13 +1,5 @@
 import {
-    SIGNUP_SUCCESS,
     SIGNUP_ERROR,
-    SIGNIN_SUCCESS,
-    SIGNIN_ERROR,
-    EMAIL_NOT_VERIFIED,
-    SIGNOUT_SUCCESS,
-    SIGNOUT_ERROR,
-    RESET_SUCCESS,
-    RESET_ERROR,
     FETCH_COIN_DATA_SUCCESS
   } from "./actionTypes";
   import { beginApiCall, apiCallError } from "./apiStatusActions";
@@ -15,12 +7,13 @@ import {
   import axios from 'axios';
   
   // Signing up with Firebase
-  export const fetchCoinData = () => async dispatch => {
+  export const fetchCoinData = (msg) => async dispatch => {
+    console.log('BEFORE TRY', msg)
     try {
         console.log('BEGIN FETCH')
         dispatch(beginApiCall());
-        const COIN_COUNT = 10;
-        const formatPrice = price => parseFloat(Number(price).toFixed(4));
+        const COIN_COUNT = 8;
+        const formatPrice = price => parseFloat(Number(price).toFixed(2));
         console.log("coin count set and format... preparing for API call to coinpaprika...")
         const response = await axios.get('https://api.coinpaprika.com/v1/coins')
         const coinIds = response.data.slice(0, COIN_COUNT).map( coin => coin.id);
@@ -37,6 +30,7 @@ import {
             price: formatPrice(coin.quotes.USD.price),
           }
         })
+        console.log(coinPriceData)
         dispatch({
             type: FETCH_COIN_DATA_SUCCESS,
             payload: coinPriceData

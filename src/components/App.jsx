@@ -19,7 +19,7 @@ import { signout } from "../store/actions/authActions";
 import { Switch, Route } from 'react-router-dom';
 import { fetchCoinData } from "../store/actions/coinDataActions";
 
-function App({ auth, coinData }) {
+function App({ auth, coinData, fetchCoinData }) {
   
   const Content = styled.div`
     padding-bottom: 4em;
@@ -30,11 +30,16 @@ function App({ auth, coinData }) {
     min-height: 100vh;
   `;
 
-  useEffect(function() {
+  useEffect(function () {
+   
     if (coinData.length === 0 ) {
       console.log('about to fire fetchcoindata()')
-      fetchCoinData()
-      console.log('finished with fetchCoinData.')
+      async function f() {
+      let promise = fetchCoinData();
+      let result = await promise;
+      console.log("DONE!", result)
+      }
+      f()
     }
   })
   
