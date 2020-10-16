@@ -12,7 +12,8 @@ const Div = styled.div`
 
 const Portfolio = ({ auth }) => {
   return (
-    <PortfolioList></PortfolioList>
+    <>
+    </>
   );
 };
 

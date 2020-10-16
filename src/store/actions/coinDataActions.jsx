@@ -7,148 +7,48 @@ import {
     SIGNOUT_SUCCESS,
     SIGNOUT_ERROR,
     RESET_SUCCESS,
-    RESET_ERROR
+    RESET_ERROR,
+    FETCH_COIN_DATA_SUCCESS
   } from "./actionTypes";
   import { beginApiCall, apiCallError } from "./apiStatusActions";
   import firebase from "../../services/firebase";
+  import axios from 'axios';
   
   // Signing up with Firebase
-  export const addCoin = (name) => async dispatch => {
+  export const fetchCoinData = () => async dispatch => {
     try {
-      dispatch(beginApiCall());
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then(dataBeforeEmail => {
-          firebase.auth().onAuthStateChanged(function(user) {
-            user.sendEmailVerification();
-          });
+        console.log('BEGIN FETCH')
+        dispatch(beginApiCall());
+        const COIN_COUNT = 10;
+        const formatPrice = price => parseFloat(Number(price).toFixed(4));
+        console.log("coin count set and format... preparing for API call to coinpaprika...")
+        const response = await axios.get('https://api.coinpaprika.com/v1/coins')
+        const coinIds = response.data.slice(0, COIN_COUNT).map( coin => coin.id);
+        const tickerUrl = 'https://api.coinpaprika.com/v1/tickers/';
+        const promises = coinIds.map(id => axios.get(tickerUrl + id));
+        const coinData = await Promise.all(promises);
+        const coinPriceData = coinData.map(function(response) {
+          const coin = response.data;
+          return {
+            key: coin.id,
+            name: coin.name,
+            ticker: coin.symbol,
+            balance: 0,
+            price: formatPrice(coin.quotes.USD.price),
+          }
         })
-        .then(dataAfterEmail => {
-          firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-              // Sign up successful
-              dispatch({
-                type: SIGNUP_SUCCESS,
-                payload:
-                  "Your account was successfully created! Now you need to verify your e-mail address, please go check your inbox."
-              });
-            } else {
-              // Signup failed
-              dispatch({
-                type: SIGNUP_ERROR,
-                payload:
-                  "Something went wrong, we couldn't create your account. Please try again."
-              });
-            }
-          });
+        dispatch({
+            type: FETCH_COIN_DATA_SUCCESS,
+            payload: coinPriceData
         })
-        .catch(() => {
-          dispatch(apiCallError());
-          dispatch({
-            type: SIGNUP_ERROR,
-            payload:
-              "Something went wrong, we couldn't create your account. Please try again."
-          });
-        });
+       
     } catch (err) {
       dispatch(apiCallError());
       dispatch({
         type: SIGNUP_ERROR,
         payload:
-          "Something went wrong, we couldn't create your account. Please try again."
+          "Something went wrong using the API coin paprika"
       });
     }
   };
   
-  // Signing in with Firebase
-  export const signin = (email, password, callback) => async dispatch => {
-    try {
-      dispatch(beginApiCall());
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then(data => {
-          if (data.user.emailVerified) {
-            console.log("IF", data.user.emailVerified);
-            dispatch({ type: SIGNIN_SUCCESS });
-            callback();
-          } else {
-            console.log("ELSE", data.user.emailVerified);
-            dispatch({
-              type: EMAIL_NOT_VERIFIED,
-              payload: "You haven't verified your e-mail address."
-            });
-          }
-        })
-        .catch(() => {
-          dispatch(apiCallError());
-          dispatch({
-            type: SIGNIN_ERROR,
-            payload: "Invalid login credentials"
-          });
-        });
-    } catch (err) {
-      dispatch(apiCallError());
-      dispatch({ type: SIGNIN_ERROR, payload: "Invalid login credentials" });
-    }
-  };
-  
-  // Signing out with Firebase
-  export const signout = (cb) => async dispatch => {
-    try {
-      dispatch(beginApiCall());
-      firebase
-        .auth()
-        .signOut()
-        .then(() => {
-          console.log('dispatch is about to be called ');
-          dispatch({ type: SIGNOUT_SUCCESS });
-          console.log('dispatch has been called... about to call cb()');
-          cb();
-          console.log("cb has worked!!!");
-          
-        })
-        .catch(() => {
-          dispatch(apiCallError());
-          dispatch({
-            type: SIGNOUT_ERROR,
-            payload: "Error, we were not able to log you out. Please try again. 1"
-          });
-        });
-    } catch (err) {
-      dispatch(apiCallError());
-      dispatch({
-        type: SIGNOUT_ERROR,
-        payload: "Error, we were not able to log you out. Please try again. 2"
-      });
-    }
-  };
-  
-  // Reset password with Firebase
-  export const resetPassword = email => async dispatch => {
-    try {
-      dispatch(beginApiCall());
-      firebase
-        .auth()
-        .sendPasswordResetEmail(email)
-        .then(() =>
-          dispatch({
-            type: RESET_SUCCESS,
-            payload:
-              "Check your inbox. We've sent you a secured reset link by e-mail."
-          })
-        )
-        .catch(() => {
-          dispatch(apiCallError());
-          dispatch({
-            type: RESET_ERROR,
-            payload:
-              "Oops, something went wrong we couldn't send you the e-mail. Try again and if the error persists, contact admin."
-          });
-        });
-    } catch (err) {
-      dispatch(apiCallError());
-      dispatch({ type: RESET_ERROR, payload: err });
-    }
-  };

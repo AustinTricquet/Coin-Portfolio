@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { signout } from "../store/actions/authActions";
+import { fetchCoinData } from "../store/actions/coinDataActions";
 
 const Div = styled.div`
     height: 87vh;
@@ -13,9 +14,61 @@ const Div = styled.div`
     overflow: auto;
 `;
 
+const Header = styled.div`
+    border-bottom: 1px solid #3A4A5E;
+    border-top: 1px solid #3A4A5E;
+    display: flex;
+    justify-content: space-between;
+    padding: 1.5rem 0rem;
+    background-color: #28394F;
+`;
+
+const Coin = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #F0F1F3;
+`;
+
+const Img = styled.img`
+    height: 2.5rem;
+    width: 2.5rem;
+    pointer-events: none;
+    background-color: white;
+    border-radius: 100%;
+    margin: 0rem 1rem;
+`;
+
+const Balance = styled.div`
+    color: #F0F1F3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0rem 1rem;
+    text-align: right;
+`;
+
+const SubText = styled.h5`
+    color: #8993A8;
+`;
+
 const PortfolioList = ({coinData}) => {
     return (
         <Div>
+            <Header>
+                <Coin>
+                    <div>
+                        <h3>Header</h3>
+                        <SubText>SubHeading</SubText>
+                    </div>
+                </Coin>
+                <Balance>
+                    <div>
+                        <h3>Test</h3>
+                        <SubText>Test subtext</SubText>
+                    </div>
+                </Balance> 
+            </Header>
             {
                 coinData.map( ({name, ticker, price, amount, valueUSD}) => 
                     <PortfolioCoin key={name}
@@ -39,7 +92,7 @@ function mapStateToProps(state) {
   
   function mapDispatchToProps(dispatch) {
     return {
-      signout: (cb) => dispatch(signout(cb))
+      fetchCoinData: () => dispatch(fetchCoinData())
     };
   }
 

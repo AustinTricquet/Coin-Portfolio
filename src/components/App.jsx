@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import Portfolio from "./Portfolio";
 import Loader from './Loader';
@@ -17,8 +17,9 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { signout } from "../store/actions/authActions";
 import { Switch, Route } from 'react-router-dom';
+import { fetchCoinData } from "../store/actions/coinDataActions";
 
-function App({ auth }) {
+function App({ auth, coinData }) {
   
   const Content = styled.div`
     padding-bottom: 4em;
@@ -28,6 +29,14 @@ function App({ auth }) {
     position: relative;
     min-height: 100vh;
   `;
+
+  useEffect(function() {
+    if (coinData.length === 0 ) {
+      console.log('about to fire fetchcoindata()')
+      fetchCoinData()
+      console.log('finished with fetchCoinData.')
+    }
+  })
   
   const Site = () => {
     return(
@@ -73,6 +82,9 @@ function App({ auth }) {
   }
 
   const App = () => {
+
+    
+
     return (
       <PageContainer>
         <Navbar 
@@ -117,11 +129,25 @@ function App({ auth }) {
 
 function mapStateToProps(state) {
   return {
-    auth: state.firebaseReducer.auth
+    auth: state.firebaseReducer.auth,
+    coinData: state.coinDataReducer.coinData
   };
 }
 
-export default connect(mapStateToProps)(App);
+function mapDispatchToProps(dispatch) {
+  return {
+    fetchCoinData: () => dispatch(fetchCoinData())
+  };
+}
+
+
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)(App);
+
 
 
   /*
