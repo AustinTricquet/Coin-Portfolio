@@ -73,11 +73,10 @@ const PortfolioList = ({coinData}) => {
                 coinData.map( ({key, name, symbol, balance, price}) => 
                     <PortfolioCoin key={key}
                             name={name} 
-                            ticker={symbol} 
+                            symbol={symbol} 
                             amount={balance}
                             price={price}
-                            valueUSD={price}
-                            tickerid={name}/> 
+                            valueUSD={price}/> 
                     )
                    
             }

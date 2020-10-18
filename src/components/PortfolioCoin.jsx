@@ -40,14 +40,14 @@ const SubText = styled.h5`
     color: #8993A8;
 `;
 
-const PortfolioCoin = ({name, ticker, valueUSD, amount}) => {
+const PortfolioCoin = ({name, symbol, valueUSD, amount}) => {
     return (
         <Div>
             <Coin>
                 <Img src={logo} alt="React logo" className="App-logo" />
                 <div>
                     <h3>{name}</h3>
-                    <SubText>{ticker}</SubText>
+                    <SubText>{symbol}</SubText>
                 </div>
             </Coin>
             <Balance>

@@ -30,16 +30,10 @@ function App({ auth, coinData, fetchCoinData }) {
     min-height: 100vh;
   `;
 
-  useEffect(function () {
-   
-    if (coinData.length === 0 ) {
+  useEffect(() => {
+    if (coinData.length === 0 & auth.isEmpty === false) {
       console.log('about to fire fetchcoindata()')
-      async function f() {
-      let promise = fetchCoinData();
-      let result = await promise;
-      console.log("DONE!", result)
-      }
-      f()
+      fetchCoinData().then(response => {console.log("DONE ", response)})
     }
   })
   
