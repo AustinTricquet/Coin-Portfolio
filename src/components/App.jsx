@@ -15,7 +15,6 @@ import Taxes from './Taxes';
 import styled from 'styled-components';
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { signout } from "../store/actions/authActions";
 import { Switch, Route } from 'react-router-dom';
 import { fetchCoinData } from "../store/actions/coinDataActions";
 

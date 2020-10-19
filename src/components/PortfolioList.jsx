@@ -1,10 +1,8 @@
 import React from 'react';
 import PortfolioCoin from './PortfolioCoin';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { signout } from "../store/actions/authActions";
 import { fetchCoinData } from "../store/actions/coinDataActions";
 
 const Div = styled.div`
