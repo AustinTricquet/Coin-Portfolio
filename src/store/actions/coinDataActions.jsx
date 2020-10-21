@@ -12,8 +12,6 @@ import {
         console.log('BEGIN FETCH')
         dispatch(beginApiCall());
         const COIN_COUNT = 10;
-        //Testing search feature
-        const COIN_SEARCH = "Bitcoin"
         const formatPrice = price => parseFloat(Number(price).toFixed(2));
         // HOW TO CALL SEARCH VIA COINPAPRIKA
         //'https://api.coinpaprika.com/v1/search/?q=bit'

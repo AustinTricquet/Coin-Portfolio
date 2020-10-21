@@ -81,8 +81,6 @@ function App({ auth, coinData, fetchCoinData }) {
 
   const App = () => {
 
-    
-
     return (
       <PageContainer>
         <Navbar 
@@ -137,7 +135,6 @@ function mapDispatchToProps(dispatch) {
     fetchCoinData: () => dispatch(fetchCoinData())
   };
 }
-
 
 export default compose(
   connect(

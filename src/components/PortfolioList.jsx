@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { fetchCoinData } from "../store/actions/coinDataActions";
+import { handleInputChange } from '../store/actions/coinSearchActions';
 
 const Div = styled.div`
     height: 87vh;
@@ -50,22 +51,24 @@ const SubText = styled.h5`
     color: #8993A8;
 `;
 
-const PortfolioList = ({coinData}) => {
+
+
+const PortfolioList = ({coinData, handleInputChange, queryValue}) => {
+
+    function handleChange(e) {
+        handleInputChange(e.target.value);
+    }
+
     return (
         <Div>
             <Header>
-                <Coin>
-                    <div>
-                        <h3>Header</h3>
-                        <SubText>SubHeading</SubText>
-                    </div>
-                </Coin>
-                <Balance>
-                    <div>
-                        <h3>Test</h3>
-                        <SubText>Test subtext</SubText>
-                    </div>
-                </Balance> 
+            <form>
+                <input
+                    placeholder="Search for..."
+                    onChange={handleChange}
+                />
+                <p>{queryValue}</p>
+                </form>
             </Header>
             {
                 coinData.map( ({key, name, symbol, balance, price}) => 
@@ -84,13 +87,14 @@ const PortfolioList = ({coinData}) => {
 
 function mapStateToProps(state) {
     return {
-      coinData: state.coinDataReducer.coinData
+      coinData: state.coinDataReducer.coinData,
+      queryValue: state.coinSearchReducer.queryValue
     };
   }
   
   function mapDispatchToProps(dispatch) {
     return {
-      fetchCoinData: () => dispatch(fetchCoinData())
+      handleInputChange: (queryValue) => dispatch(handleInputChange(queryValue))
     };
   }
 
