@@ -31,6 +31,7 @@ import {
             price: formatPrice(coin.quotes.USD.price),
           }
         })
+        console.log('This is the coinData= ',coinPriceData)
         dispatch({
             type: FETCH_COIN_DATA_SUCCESS,
             payload: coinPriceData

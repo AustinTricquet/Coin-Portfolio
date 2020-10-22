@@ -4,7 +4,7 @@ import {
   } from "../actions/actionTypes";
   
   const INITIAL_STATE = {
-    queryValue: "",
+    suggestions: [],
     error: null
     }
   
@@ -12,7 +12,7 @@ import {
     if (
       action.type === UPDATE_SEARCH_SUCCESS
     ) {
-      return { ...state, queryValue: action.payload };
+      return { ...state, suggestions: action.payload };
     } else if (
       action.type === UPDATE_SEARCH_ERROR
     ) {

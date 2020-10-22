@@ -53,7 +53,7 @@ const SubText = styled.h5`
 
 
 
-const PortfolioList = ({coinData, handleInputChange, queryValue}) => {
+const PortfolioList = ({coinData, handleInputChange, suggestions}) => {
 
     function handleChange(e) {
         handleInputChange(e.target.value);
@@ -67,7 +67,18 @@ const PortfolioList = ({coinData, handleInputChange, queryValue}) => {
                     placeholder="Search for..."
                     onChange={handleChange}
                 />
-                <p>{queryValue}</p>
+                {
+                suggestions.map( ({id, name, symbol, balance, price}) => 
+                    <PortfolioCoin key={id}
+                            name={name} 
+                            symbol={symbol} 
+                            amount={balance}
+                            price={price}
+                            valueUSD={price}/> 
+                    )
+                   
+            }
+                
                 </form>
             </Header>
             {
@@ -88,13 +99,13 @@ const PortfolioList = ({coinData, handleInputChange, queryValue}) => {
 function mapStateToProps(state) {
     return {
       coinData: state.coinDataReducer.coinData,
-      queryValue: state.coinSearchReducer.queryValue
+      suggestions: state.coinSearchReducer.suggestions
     };
   }
   
   function mapDispatchToProps(dispatch) {
     return {
-      handleInputChange: (queryValue) => dispatch(handleInputChange(queryValue))
+      handleInputChange: (query) => dispatch(handleInputChange(query))
     };
   }
 
