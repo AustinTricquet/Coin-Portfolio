@@ -9,6 +9,9 @@ const Div = styled.div`
     justify-content: space-between;
     padding: 1.5rem 0rem;
     background-color: #28394F;
+    :hover {
+        background-color: #c9bcbe;
+    }
 `;
 
 const Coin = styled.div`
