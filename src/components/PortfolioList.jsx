@@ -1,5 +1,6 @@
 import React from 'react';
 import PortfolioCoin from './PortfolioCoin';
+import SearchSuggestedCoin from './SearchSuggestedCoin';
 import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
@@ -18,7 +19,7 @@ const Header = styled.div`
     border-top: 1px solid #3A4A5E;
     display: flex;
     justify-content: space-between;
-    padding: 1.5rem 0rem;
+    padding: 0rem;
     background-color: #28394F;
 `;
 
@@ -51,6 +52,28 @@ const SubText = styled.h5`
     color: #8993A8;
 `;
 
+const InputGroup = styled.form`
+    border-bottom: 1px solid #3A4A5E;
+    border-top: 1px solid #3A4A5E;
+    display: flex;
+    justify-content: space-between;
+    padding: 1.5rem 1.5rem;
+    background-color: #28394F;
+
+    input {
+        -webkit-flex: 1;
+      
+        outline: none;
+        border: 1px solid #dfe2e6;
+        color: #6b6c6f;
+        border-radius: 20px;
+        padding: 0.5rem 0.5rem; 
+        
+        }
+        input.input-error {
+        border: 1px solid red; }
+`;
+
 
 
 const PortfolioList = ({coinData, handleInputChange, suggestions}) => {
@@ -61,26 +84,22 @@ const PortfolioList = ({coinData, handleInputChange, suggestions}) => {
 
     return (
         <Div>
-            <Header>
-            <form>
+            <InputGroup>
                 <input
-                    placeholder="Search for..."
+                    placeholder="Search"
                     onChange={handleChange}
                 />
-                {
+            </InputGroup>
+            {
                 suggestions.map( ({id, name, symbol, balance, price}) => 
-                    <PortfolioCoin key={id}
+                    <SearchSuggestedCoin key={id}
                             name={name} 
                             symbol={symbol} 
                             amount={balance}
                             price={price}
                             valueUSD={price}/> 
                     )
-                   
             }
-                
-                </form>
-            </Header>
             {
                 coinData.map( ({key, name, symbol, balance, price}) => 
                     <PortfolioCoin key={key}
