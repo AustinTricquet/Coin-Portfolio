@@ -82,6 +82,10 @@ const PortfolioList = ({coinData, handleInputChange, suggestions}) => {
         handleInputChange(e.target.value);
     }
 
+    function handleClick(e) {
+        console.log("CLICKED ",e)
+    }
+
     return (
         <Div>
             <InputGroup>
@@ -103,6 +107,7 @@ const PortfolioList = ({coinData, handleInputChange, suggestions}) => {
             {
                 coinData.map( ({key, name, symbol, balance, price}) => 
                     <PortfolioCoin key={key}
+                            coinID={key}
                             name={name} 
                             symbol={symbol} 
                             amount={balance}
