@@ -10,6 +10,7 @@ import {
     RESET_ERROR
   } from "./actionTypes";
   import { beginApiCall, apiCallError } from "./apiStatusActions";
+  import { getCoinGeckoKeys } from "./onSigninActions";
   import firebase from "../../services/firebase";
   
   // Signing up with Firebase
@@ -71,8 +72,14 @@ import {
         .then(data => {
           if (data.user.emailVerified) {
             console.log("IF", data.user.emailVerified);
+            
+
             dispatch({ type: SIGNIN_SUCCESS });
+            dispatch(getCoinGeckoKeys());
+            
             callback();
+            
+
           } else {
             console.log("ELSE", data.user.emailVerified);
             dispatch({

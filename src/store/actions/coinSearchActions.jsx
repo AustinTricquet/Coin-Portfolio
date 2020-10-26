@@ -3,14 +3,19 @@ import {
     UPDATE_SEARCH_SUCCESS,
     UPDATE_SEARCH_ERROR
   } from "./actionTypes";
+  import getState from "redux-thunk";
+  import {store} from '../../index';
   
   // Signing up with Firebase
   export const handleInputChange = (inputValue) => async dispatch => {
     try {
       console.log('BEGIN INPUT CHANGE')
       if (inputValue !== "") {
-        const responseGecko = await axios.get('https://api.coingecko.com/api/v3/coins/list')
-        
+        //const responseGecko = await axios.get('https://api.coingecko.com/api/v3/coins/list')
+        console.log('about to set state')
+        const state = store.getState();
+        console.log('state: ',state);
+        const responseGecko = state.onSigninReducer.coinKeys
         console.log("about to set promise")
         const promise1 = axios.get(`https://api.coinpaprika.com/v1/search/?q=${inputValue}&c=currencies&limit=3`)
         console.log("about to await promise")
@@ -53,8 +58,8 @@ import {
           type: UPDATE_SEARCH_SUCCESS,
           payload: coinData
         })
-      }
-      } catch (err) {
+      } 
+    } catch (err) {
       dispatch({
         type: UPDATE_SEARCH_ERROR,
         payload:
