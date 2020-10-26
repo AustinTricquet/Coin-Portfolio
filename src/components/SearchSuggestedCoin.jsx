@@ -43,11 +43,11 @@ const SubText = styled.h5`
     color: #8993A8;
 `;
 
-const SearchSuggestedCoin = ({name, symbol, valueUSD, amount}) => {
+const SearchSuggestedCoin = ({name, symbol, image, price}) => {
     return (
         <Div>
             <Coin>
-                <Img src={logo} alt="React logo" className="App-logo" />
+                <Img src={image} alt="React logo" className="App-logo" />
                 <div>
                     <h3>{name}</h3>
                     <SubText>{symbol}</SubText>
@@ -55,8 +55,7 @@ const SearchSuggestedCoin = ({name, symbol, valueUSD, amount}) => {
             </Coin>
             <Balance>
                 <div>
-                    <h3>${valueUSD}</h3>
-                    <SubText>{amount}</SubText>
+                    <h3>${price}</h3>
                 </div>
             </Balance> 
         </Div>
