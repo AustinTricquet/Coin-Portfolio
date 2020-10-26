@@ -25,13 +25,12 @@ const Img = styled.img`
     height: 2.5rem;
     width: 2.5rem;
     pointer-events: none;
-    background-color: white;
     border-radius: 100%;
     margin: 0rem 1rem;
 `;
 
 const Balance = styled.div`
-    color: #F0F1F3;
+    color: #28394F;
     display: flex;
     justify-content: center;
     align-items: center;

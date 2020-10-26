@@ -40,8 +40,8 @@ import {
           return {
             id: data.id,
             name: data.name,
-            symbol: data.symbol,
-            image: data.image.thumb,
+            symbol: data.symbol.toUpperCase(),
+            image: data.image.small,
             price: data.market_data.current_price.usd
            }});
         console.log('coinDataImages: ', coinData);
