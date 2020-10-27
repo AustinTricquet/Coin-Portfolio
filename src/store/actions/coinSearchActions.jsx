@@ -34,21 +34,13 @@ import {
           if (geckoData === undefined) {
             console.log('Resorting to skipping coin :(')
             return {
-              key: "",
-              name: "",
-              symbol: "",
               newID: "",
-              image: "",
             }
           }
         
           response.newID = geckoData.id
           return {
-            key: response.id,
-            name: response.name,
-            symbol: response.symbol,
             newID: response.newID,
-            image: "",
           }});
 
         console.log('coin paprika data: ', coinDataNewID);
