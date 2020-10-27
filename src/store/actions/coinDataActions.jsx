@@ -16,7 +16,8 @@ import {
         // HOW TO CALL SEARCH VIA COINPAPRIKA
         //'https://api.coinpaprika.com/v1/search/?q=bit'
         const response = await axios.get('https://api.coinpaprika.com/v1/coins')
-        console.log('Coins are: ', response)
+        
+        
         const coinIds = response.data.slice(0, COIN_COUNT).map( coin => coin.id);
         const tickerUrl = 'https://api.coinpaprika.com/v1/tickers/';
         const promises = coinIds.map(id => axios.get(tickerUrl + id));

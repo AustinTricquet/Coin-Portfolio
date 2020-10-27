@@ -14,7 +14,7 @@ import firebase from "./services/firebase";
 import { createFirestoreInstance } from 'redux-firestore';
 
 
-const store = createStore(
+export const store = createStore(
   reducers,
   {},
   applyMiddleware(reduxThunk)
