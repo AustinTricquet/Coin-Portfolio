@@ -12,6 +12,7 @@ import {
     if (
       action.type === UPDATE_SEARCH_SUCCESS
     ) {
+      console.log("action payload: ",action.payload[0].logo)
       return { ...state, suggestions: action.payload };
     } else if (
       action.type === UPDATE_SEARCH_ERROR

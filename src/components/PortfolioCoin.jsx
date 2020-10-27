@@ -52,7 +52,7 @@ const PortfolioCoin = ({coinID, name, symbol, valueUSD, amount}) => {
     return (
         <Div id={coinID} onClick={handleClick}>
             <Coin>
-                <Img src={logo} alt="React logo" className="App-logo" />
+                <Img src='https://assets.coingecko.com/coins/images/1/thumb/bitcoin.png?1547033579' alt="React logo" className="App-logo" />
                 <div>
                     <h3>{name}</h3>
                     <SubText>{symbol}</SubText>

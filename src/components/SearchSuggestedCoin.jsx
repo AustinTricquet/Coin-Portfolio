@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components';
-import logo from './logo.svg';
 
 const Div = styled.div`
     border-bottom: 1px solid #3A4A5E;
@@ -43,11 +42,14 @@ const SubText = styled.h5`
     color: #8993A8;
 `;
 
-const SearchSuggestedCoin = ({name, symbol, valueUSD, amount}) => {
+const SearchSuggestedCoin = ({name, symbol, logo, valueUSD, amount}) => {
+
+    
+
     return (
         <Div>
             <Coin>
-                <Img src={logo} alt="React logo" className="App-logo" />
+                <img src={logo} alt="Coin logo" className="coin-logo" />
                 <div>
                     <h3>{name}</h3>
                     <SubText>{symbol}</SubText>

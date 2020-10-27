@@ -95,10 +95,11 @@ const PortfolioList = ({coinData, handleInputChange, suggestions}) => {
                 />
             </InputGroup>
             {
-                suggestions.map( ({id, name, symbol, balance, price}) => 
+                suggestions.map( ({id, name, symbol, logo, balance, price}) => 
                     <SearchSuggestedCoin key={id}
                             name={name} 
                             symbol={symbol} 
+                            logo={logo}
                             amount={balance}
                             price={price}
                             valueUSD={price}/> 
