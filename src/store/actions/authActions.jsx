@@ -71,14 +71,8 @@ import {
         .signInWithEmailAndPassword(email, password)
         .then(data => {
           if (data.user.emailVerified) {
-            console.log("IF", data.user.emailVerified);
-            
-
             dispatch({ type: SIGNIN_SUCCESS });
-            dispatch(getCoinGeckoKeys());
-            
             callback();
-            
 
           } else {
             console.log("ELSE", data.user.emailVerified);

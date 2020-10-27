@@ -4,7 +4,6 @@ import SearchSuggestedCoin from './SearchSuggestedCoin';
 import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { fetchCoinData } from "../store/actions/coinDataActions";
 import { handleInputChange } from '../store/actions/coinSearchActions';
 
 const Div = styled.div`
