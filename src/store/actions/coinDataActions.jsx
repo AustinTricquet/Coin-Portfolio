@@ -7,29 +7,30 @@ import {
   import axios from 'axios';
   
   // Signing up with Firebase
-  export const fetchCoinData = () => async dispatch => {
+  export const fetchCoinData = (watchList) => async dispatch => {
     try {
         console.log('BEGIN FETCH')
         dispatch(beginApiCall());
-        const COIN_COUNT = 10;
+        //const COIN_COUNT = 10;
         const formatPrice = price => parseFloat(Number(price).toFixed(2));
         // HOW TO CALL SEARCH VIA COINPAPRIKA
         //'https://api.coinpaprika.com/v1/search/?q=bit'
-        const response = await axios.get('https://api.coinpaprika.com/v1/coins')
-        
-        
-        const coinIds = response.data.slice(0, COIN_COUNT).map( coin => coin.id);
-        const tickerUrl = 'https://api.coinpaprika.com/v1/tickers/';
-        const promises = coinIds.map(id => axios.get(tickerUrl + id));
+        //const response = await axios.get('https://api.coinpaprika.com/v1/coins')
+        console.log('fetch has been called, about to map watchlist')
+        //const coinIds = response.data.slice(0, COIN_COUNT).map( coin => coin.id);
+        const promises = watchList.map(coin => axios.get('https://api.coingecko.com/api/v3/coins/' + coin.newID));
+        //const tickerUrl = 'https://api.coinpaprika.com/v1/tickers/';
+        //const promises = coinIds.map(id => axios.get(tickerUrl + id));
         const coinData = await Promise.all(promises);
         const coinPriceData = coinData.map(function(response) {
-          const coin = response.data;
+          const data = response.data;
+          console.log('data: ---', data)
           return {
-            key: coin.id,
-            name: coin.name,
-            symbol: coin.symbol,
-            balance: 0,
-            price: formatPrice(coin.quotes.USD.price),
+            id: data.id,
+            name: data.name,
+            symbol: data.symbol.toUpperCase(),
+            image: data.image.small,
+            price: data.market_data.current_price.usd
           }
         })
         console.log('This is the coinData= ',coinPriceData)

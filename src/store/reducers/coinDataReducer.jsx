@@ -8,7 +8,32 @@ import {
   } from "../actions/actionTypes";
   
   const INITIAL_STATE = {
-    coinData: [],
+    watchList: [
+      {
+        newID: "bitcoin"
+      },
+      {
+        newID: "ethereum"
+      },
+      {
+        newID: "polkadot"
+      },
+      {
+        newID: "tron"
+      },
+      {
+        newID: "uniswap"
+      },
+      {
+        newID: "cardano"
+      },
+      {
+        newID: "usd-coin"
+      },
+      {
+        newID: "dai"
+      },
+    ],
     error: null
     }
   
@@ -18,7 +43,7 @@ import {
     } else if (
       action.type === FETCH_COIN_DATA_SUCCESS
     ) {
-      return { ...state, coinData: action.payload };
+      return { ...state, watchList: action.payload };
     } else if (
       action.type === ADD_COIN_ERROR ||
       action.type === REMOVE_COIN_ERROR ||

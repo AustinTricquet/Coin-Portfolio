@@ -19,7 +19,7 @@ import { Switch, Route } from 'react-router-dom';
 import { fetchCoinData } from "../store/actions/coinDataActions";
 import { getCoinGeckoKeys } from "../store/actions/onSigninActions";
 
-function App({ auth, coinData, fetchCoinData, getCoinGeckoKeys }) {
+function App({ auth, watchList, fetchCoinData, getCoinGeckoKeys }) {
   
   const Content = styled.div`
     padding-bottom: 4em;
@@ -31,8 +31,9 @@ function App({ auth, coinData, fetchCoinData, getCoinGeckoKeys }) {
   `;
 
   useEffect(() => {
-    if (coinData.length === 0 & auth.isEmpty === false) {
-      fetchCoinData().then(response => {console.log("fetch coin data response: ", response)})
+    if (auth.isEmpty === false) {
+      console.log('about to fetch watchlist')
+      fetchCoinData(watchList).then(response => {console.log("fetch coin data response: ", response)})
     }
     getCoinGeckoKeys().then(response => {console.log("Gecko Response: ", response)})
 
@@ -128,14 +129,14 @@ function App({ auth, coinData, fetchCoinData, getCoinGeckoKeys }) {
 function mapStateToProps(state) {
   return {
     auth: state.firebaseReducer.auth,
-    coinData: state.coinDataReducer.coinData,
+    watchList: state.coinDataReducer.watchList,
 
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchCoinData: () => dispatch(fetchCoinData()),
+    fetchCoinData: (watchList) => dispatch(fetchCoinData(watchList)),
     getCoinGeckoKeys: () => dispatch(getCoinGeckoKeys())
   };
 }

@@ -43,7 +43,7 @@ const SubText = styled.h5`
     color: #8993A8;
 `;
 
-const PortfolioCoin = ({coinID, name, symbol, valueUSD, amount}) => {
+const PortfolioCoin = ({coinID, name, symbol, image, price}) => {
     
     function handleClick() {
         console.log("CLICKED ",coinID)
@@ -52,7 +52,7 @@ const PortfolioCoin = ({coinID, name, symbol, valueUSD, amount}) => {
     return (
         <Div id={coinID} onClick={handleClick}>
             <Coin>
-                <Img src={logo} alt="React logo" className="App-logo" />
+                <Img src={image} alt="React logo" className="App-logo" />
                 <div>
                     <h3>{name}</h3>
                     <SubText>{symbol}</SubText>
@@ -60,8 +60,8 @@ const PortfolioCoin = ({coinID, name, symbol, valueUSD, amount}) => {
             </Coin>
             <Balance>
                 <div>
-                    <h3>${valueUSD}</h3>
-                    <SubText>{amount}</SubText>
+                    <h3>${price}</h3>
+                    <SubText></SubText>
                 </div>
             </Balance> 
         </Div>

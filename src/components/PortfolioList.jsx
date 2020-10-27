@@ -75,7 +75,7 @@ const InputGroup = styled.form`
 
 
 
-const PortfolioList = ({coinData, handleInputChange, suggestions}) => {
+const PortfolioList = ({watchList, handleInputChange, suggestions}) => {
 
     function handleChange(e) {
         handleInputChange(e.target.value);
@@ -103,14 +103,13 @@ const PortfolioList = ({coinData, handleInputChange, suggestions}) => {
                     )
             }
             {
-                coinData.map( ({key, name, symbol, balance, price}) => 
-                    <PortfolioCoin key={key}
-                            coinID={key}
+                watchList.map( ({id, name, symbol, image, price}) => 
+                    <PortfolioCoin key={id}
+                            coinID={id}
                             name={name} 
                             symbol={symbol} 
-                            amount={balance}
                             price={price}
-                            valueUSD={price}/> 
+                            image={image}/> 
                     )
                    
             }
@@ -120,7 +119,7 @@ const PortfolioList = ({coinData, handleInputChange, suggestions}) => {
 
 function mapStateToProps(state) {
     return {
-      coinData: state.coinDataReducer.coinData,
+      watchList: state.coinDataReducer.watchList,
       suggestions: state.coinSearchReducer.suggestions
     };
   }
