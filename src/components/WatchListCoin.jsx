@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components';
-import logo from './logo.svg';
 
 const Div = styled.div`
     border-bottom: 1px solid #3A4A5E;
@@ -43,7 +42,7 @@ const SubText = styled.h5`
     color: #8993A8;
 `;
 
-const PortfolioCoin = ({coinID, name, symbol, image, price}) => {
+const WatchListCoin = ({coinID, name, symbol, image, price}) => {
     
     function handleClick() {
         console.log("CLICKED ",coinID)
@@ -68,4 +67,4 @@ const PortfolioCoin = ({coinID, name, symbol, image, price}) => {
     )
 }
 
-export default PortfolioCoin
+export default WatchListCoin

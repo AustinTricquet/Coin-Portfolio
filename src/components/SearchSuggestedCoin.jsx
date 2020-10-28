@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components';
-import logo from './logo.svg';
 
 const Div = styled.div`
     border-bottom: 1px solid #3A4A5E;

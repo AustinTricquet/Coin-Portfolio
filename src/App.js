@@ -1,23 +1,25 @@
 import React, { useEffect } from 'react';
 
-import Portfolio from "./Portfolio";
-import Loader from './Loader';
-import Login from "./Login";
-import Home from "./Home";
-import About from "./About";
-import Navbar from './Navbar';
-import Contact from './Contact';
-import Footer from './Footer';
-import WatchList from './WatchList';
-import Trades from './Trades';
-import Taxes from './Taxes';
+import Loader from './components/Loader';
+import Navbar from './components/Navbar';
+
+import PortfolioPage from "./pages/PortfolioPage";
+import LoginPage from "./pages/LoginPage";
+import HomePage from "./pages/HomePage";
+import AboutPage from "./pages/AboutPage";
+import ContactPage from './pages/ContactPage';
+import WatchListPage from './pages/WatchListPage';
+import TradesPage from './pages/TradesPage';
+import TaxesPage from './pages/TaxesPage';
+
+import Footer from './components/Footer';
 
 import styled from 'styled-components';
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { Switch, Route } from 'react-router-dom';
-import { fetchCoinData } from "../store/actions/coinDataActions";
-import { getCoinGeckoKeys } from "../store/actions/onSigninActions";
+import { fetchCoinData } from "./store/actions/coinDataActions";
+import { getCoinGeckoKeys } from "./store/actions/onSigninActions";
 
 function App({ auth, watchList, fetchCoinData, getCoinGeckoKeys }) {
   
@@ -62,9 +64,9 @@ function App({ auth, watchList, fetchCoinData, getCoinGeckoKeys }) {
         </Navbar>
         <Content>
           <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/about" component={About} />
-            <Route exact path="/contact" component={Contact} />
+            <Route exact path="/" component={HomePage} />
+            <Route exact path="/about" component={AboutPage} />
+            <Route exact path="/contact" component={ContactPage} />
           </Switch>
         </Content>
         <Footer></Footer>
@@ -75,7 +77,7 @@ function App({ auth, watchList, fetchCoinData, getCoinGeckoKeys }) {
   const Landing = () => {
     return (
       <Switch>
-        <Route exact path="/login" component={Login} />
+        <Route exact path="/login" component={LoginPage} />
         <Route path="/" component={Site} />
        
       </Switch>
@@ -109,10 +111,10 @@ function App({ auth, watchList, fetchCoinData, getCoinGeckoKeys }) {
           ]}>
         </Navbar>
           <Switch>
-            <Route exact path="/watch-list" component={WatchList} />
-            <Route exact path="/trades" component={Trades} />
-            <Route exact path="/taxes" component={Taxes} />
-            <Route path="/" component={Portfolio} />
+            <Route exact path="/watch-list" component={WatchListPage} />
+            <Route exact path="/trades" component={TradesPage} />
+            <Route exact path="/taxes" component={TaxesPage} />
+            <Route path="/" component={PortfolioPage} />
           </Switch>
         <Footer></Footer>
       </PageContainer>

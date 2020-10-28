@@ -1,10 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
-import { compose } from "redux";
-import { connect } from "react-redux";
-import { signout } from "../store/actions/authActions";
-import requireAuth from "./hoc/requireAuth";
-import PortfolioList from './PortfolioList';
+import requireAuth from "../components/hoc/requireAuth";
+
 
 const Div = styled.div`
     text-align: center;
@@ -16,7 +13,7 @@ const Div = styled.div`
     width: 50%;
 `;
 
-const Trades = ({auth}) => {
+const TradesPage = ({auth}) => {
     return (
         <Div>
             <h1>Trades</h1>
@@ -27,4 +24,4 @@ const Trades = ({auth}) => {
 }
 
   
-export default requireAuth(Trades);
+export default requireAuth(TradesPage);

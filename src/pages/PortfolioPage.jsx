@@ -3,14 +3,13 @@ import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { signout } from "../store/actions/authActions";
-import requireAuth from "./hoc/requireAuth";
-import PortfolioList from './PortfolioList';
+import requireAuth from "../components/hoc/requireAuth";
 
 const Div = styled.div`
     max-height: 87vh;
 `;
 
-const Portfolio = ({ auth }) => {
+const PortfolioPage = ({ auth }) => {
   return (
     <>
     </>
@@ -35,5 +34,5 @@ export default compose(
     mapDispatchToProps
   ),
   requireAuth
-)(Portfolio);
+)(PortfolioPage);
 /*<PortfolioList coinData={props.coinData}/>*/
