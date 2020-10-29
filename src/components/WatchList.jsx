@@ -41,10 +41,6 @@ const WatchList = ({watchList, handleInputChange, suggestions}) => {
         handleInputChange(e.target.value);
     }
 
-    function handleClick(e) {
-        console.log("CLICKED ",e)
-    }
-
     return (
         <Div>
             <InputGroup>
@@ -56,6 +52,7 @@ const WatchList = ({watchList, handleInputChange, suggestions}) => {
             {
                 suggestions.map( ({id, name, symbol, image, price}) => 
                     <SearchSuggestedCoin key={id}
+                            coinID={id}
                             name={name} 
                             symbol={symbol} 
                             price={price}

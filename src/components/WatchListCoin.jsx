@@ -49,7 +49,7 @@ const WatchListCoin = ({coinID, name, symbol, image, price}) => {
     }
 
     return (
-        <Div id={coinID} onClick={handleClick}>
+        <Div onClick={handleClick}>
             <Coin>
                 <Img src={image} alt="React logo" className="App-logo" />
                 <div>
