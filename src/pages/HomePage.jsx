@@ -14,7 +14,7 @@ const Div = styled.div`
     width: 80%;
 `;
 
-const Home = ({ signin, signout, auth, history}) => {
+const HomePage = ({ auth }) => {
     return (
         <>
         <Div>
@@ -68,4 +68,4 @@ function mapStateToProps(state) {
       mapStateToProps,
       mapDispatchToProps
     ),
-  )(Home);
+  )(HomePage);

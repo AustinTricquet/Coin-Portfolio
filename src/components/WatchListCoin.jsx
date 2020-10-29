@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components';
-import logo from './logo.svg';
 
 const Div = styled.div`
     border-bottom: 1px solid #3A4A5E;
@@ -43,16 +42,16 @@ const SubText = styled.h5`
     color: #8993A8;
 `;
 
-const PortfolioCoin = ({coinID, name, symbol, valueUSD, amount}) => {
+const WatchListCoin = ({coinID, name, symbol, image, price}) => {
     
     function handleClick() {
         console.log("CLICKED ",coinID)
     }
 
     return (
-        <Div id={coinID} onClick={handleClick}>
+        <Div onClick={handleClick}>
             <Coin>
-                <Img src='https://assets.coingecko.com/coins/images/1/thumb/bitcoin.png?1547033579' alt="React logo" className="App-logo" />
+                <Img src={image} alt="React logo" className="App-logo" />
                 <div>
                     <h3>{name}</h3>
                     <SubText>{symbol}</SubText>
@@ -60,12 +59,12 @@ const PortfolioCoin = ({coinID, name, symbol, valueUSD, amount}) => {
             </Coin>
             <Balance>
                 <div>
-                    <h3>${valueUSD}</h3>
-                    <SubText>{amount}</SubText>
+                    <h3>${price}</h3>
+                    <SubText></SubText>
                 </div>
             </Balance> 
         </Div>
     )
 }
 
-export default PortfolioCoin
+export default WatchListCoin

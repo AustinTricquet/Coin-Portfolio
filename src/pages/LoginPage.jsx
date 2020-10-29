@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { signup, signin, resetPassword } from "../store/actions/authActions";
 import useForm from "../utils/useForm";
 import validate from "../utils/validateLoginForm";
-import Spinner from "./Spinner";
+import Spinner from "../components/Spinner";
 
 const LoginCard = styled.div`
   background-color: var(--nav-primary-color);
@@ -107,7 +107,7 @@ const Label = styled.p`
   float: start;
 `;
 
-const Login = ({
+const LoginPage = ({
   signup,
   signin,
   resetPassword,
@@ -253,4 +253,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Login);
+)(LoginPage);

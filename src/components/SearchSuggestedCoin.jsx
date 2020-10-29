@@ -41,9 +41,14 @@ const SubText = styled.h5`
     color: #8993A8;
 `;
 
-const SearchSuggestedCoin = ({name, symbol, image, price}) => {
+const SearchSuggestedCoin = ({coinID, name, symbol, image, price}) => {
+
+    function handleClick() {
+        console.log("CLICKED ",coinID)
+    }
+
     return (
-        <Div>
+        <Div onClick={handleClick}>
             <Coin>
                 <Img src={image} alt="React logo" className="App-logo" />
                 <div>

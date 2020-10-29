@@ -13,7 +13,7 @@ const Div = styled.div`
     width: 60%;
 `;
 
-const About = ({ auth }) => {
+const AboutPage = ({ auth }) => {
   return (
     <Div>
       <h1>About page</h1>
@@ -34,4 +34,4 @@ export default compose(
   connect(
     mapStateToProps
   ),
-)(About);
+)(AboutPage);
