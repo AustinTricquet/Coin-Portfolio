@@ -7,32 +7,32 @@ import { connect } from "react-redux";
 import { handleInputChange } from '../store/actions/coinSearchActions';
 
 const Div = styled.div`
-    height: 87vh;
-    min-width: 30vh;
-    width: 25%;
-    overflow: auto;
+  height: 87vh;
+  min-width: 30vh;
+  width: 25%;
+  overflow: auto;
 `;
 
 const InputGroup = styled.form`
-    border-bottom: 1px solid #3A4A5E;
-    border-top: 1px solid #3A4A5E;
-    display: flex;
-    justify-content: space-between;
-    padding: 1.5rem 1.5rem;
-    background-color: #28394F;
+  border-bottom: 1px solid #3A4A5E;
+  border-top: 1px solid #3A4A5E;
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5rem 1.5rem;
+  background-color: #28394F;
 
-    input {
-        -webkit-flex: 1;
+  input {
+      -webkit-flex: 1;
+    
+      outline: none;
+      border: 1px solid #dfe2e6;
+      color: #6b6c6f;
+      border-radius: 20px;
+      padding: 0.5rem 0.5rem; 
       
-        outline: none;
-        border: 1px solid #dfe2e6;
-        color: #6b6c6f;
-        border-radius: 20px;
-        padding: 0.5rem 0.5rem; 
-        
-        }
-        input.input-error {
-        border: 1px solid red; }
+      }
+      input.input-error {
+      border: 1px solid red; }
 `;
 
 const WatchList = ({watchList, handleInputChange, suggestions}) => {
