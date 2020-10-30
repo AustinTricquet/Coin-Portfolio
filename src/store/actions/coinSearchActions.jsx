@@ -7,6 +7,7 @@ import {
   
   // Get search suggestions from coinpaprika API and images and price info from Coin Gecko
   export const handleInputChange = (inputValue) => async dispatch => {
+    console.log('SEARCH IS: ', inputValue)
     try {
       if (inputValue !== "") {
         // Retreive stored coinGecko API database keys
@@ -89,6 +90,7 @@ import {
           payload: filteredcoinData
         })
       } else {
+        console.log('else activated')
         dispatch({
           type: UPDATE_SEARCH_SUCCESS,
           payload: []
