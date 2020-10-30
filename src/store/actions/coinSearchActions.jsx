@@ -14,8 +14,15 @@ import {
         const state = store.getState();
         const responseGecko = state.onSigninReducer.coinKeys
 
+        const instance = axios.create({baseURL:`https://api.coinpaprika.com/v1/search/?q=${inputValue}&c=currencies&limit=5`})
+
+        instance.interceptors.request.use(req => {
+          console.log("Request: ", req);
+          return req
+        })
+
         // Get search suggestions from coin paprikia API
-        const promise1 = axios.get(`https://api.coinpaprika.com/v1/search/?q=${inputValue}&c=currencies&limit=5`)
+        const promise1 = instance.get(`https://api.coinpaprika.com/v1/search/?q=${inputValue}&c=currencies&limit=5`)
         const coinPaprikaData = await promise1;
         const coinDataNewID = coinPaprikaData.data.currencies.map(function(response) { 
           console.log("Coin Paprika API Response: ", response);
