@@ -5,6 +5,7 @@ import {
     REMOVE_COIN_ERROR,
     FETCH_COIN_DATA_SUCCESS,
     FETCH_COIN_DATA_ERROR,
+    SELECTED_WATCH_LIST_COIN_SUCCESS,
   } from "../actions/actionTypes";
   
   const INITIAL_STATE = {
@@ -34,6 +35,7 @@ import {
         newID: "dai"
       },
     ],
+    selectedCoin: [],
     error: null
     }
   
@@ -44,6 +46,10 @@ import {
       action.type === FETCH_COIN_DATA_SUCCESS
     ) {
       return { ...state, watchList: action.payload };
+    } else if (
+      action.type === SELECTED_WATCH_LIST_COIN_SUCCESS
+    ) {
+      return { ...state, selectedCoin: action.payload };
     } else if (
       action.type === ADD_COIN_ERROR ||
       action.type === REMOVE_COIN_ERROR ||

@@ -1,10 +1,12 @@
 import {
     SIGNUP_ERROR,
-    FETCH_COIN_DATA_SUCCESS
+    FETCH_COIN_DATA_SUCCESS,
+    SELECTED_WATCH_LIST_COIN_SUCCESS
   } from "./actionTypes";
   import { beginApiCall, apiCallError } from "./apiStatusActions";
   import firebase from "../../services/firebase";
   import axios from 'axios';
+  import {store} from '../../index';
   
   // Signing up with Firebase
   export const fetchCoinData = (watchList) => async dispatch => {
@@ -29,14 +31,28 @@ import {
             id: data.id,
             name: data.name,
             symbol: data.symbol.toUpperCase(),
-            image: data.image.small,
-            price: data.market_data.current_price.usd
+            image: data.image.large,
+            price: data.market_data.current_price.usd.toFixed(2),
+            website: data.links.homepage[0],
+            description: data.description.en,
+            marketCap: data.market_data.market_cap.usd,
+            dayVolume: data.market_data.total_volume.usd,
+            rank: data.market_cap_rank,
+            ATH: data.market_data.ath.usd,
+            ATHDate: data.market_data.ath_date.usd,
+            ATL: data.market_data.atl.usd,
+            ATLDate: data.market_data.atl_date.usd,
+            dayPercentChange: data.market_data.price_change_percentage_24h_in_currency.usd.toFixed(2)
           }
         })
         console.log('This is the coinData= ',coinPriceData)
         dispatch({
             type: FETCH_COIN_DATA_SUCCESS,
             payload: coinPriceData
+        })
+        dispatch({
+          type: SELECTED_WATCH_LIST_COIN_SUCCESS,
+          payload: coinPriceData[0]
         })
         return(coinPriceData)
        
@@ -48,5 +64,20 @@ import {
           "Something went wrong using the API coin paprika"
       });
     }
+  };
+
+  export const selectCoin = (coinID) => async dispatch => {
+    console.log('Coin Selected: ', coinID);
+
+    const state = store.getState();
+    const watchList = state.coinDataReducer.watchList;
+
+    const coin = watchList.find((coin) => coin.id === coinID)
+    console.log('coin: ', coin)
+
+    dispatch({
+      type: SELECTED_WATCH_LIST_COIN_SUCCESS,
+      payload: coin
+    })
   };
   

@@ -60,13 +60,14 @@ const WatchList = ({watchList, handleInputChange, suggestions}) => {
                     )
             }
             {
-                watchList.map( ({id, name, symbol, image, price}) => 
+                watchList.map( ({id, name, symbol, image, price, dayPercentChange}) => 
                     <PortfolioCoin key={id}
                             coinID={id}
                             name={name} 
                             symbol={symbol} 
                             price={price}
-                            image={image}/> 
+                            image={image}
+                            dayPercentChange={dayPercentChange}/> 
                     )
                    
             }

@@ -9,16 +9,14 @@ const Container = styled.div`
     display: flex;
     height: 43.5vh;
     justify-content: space-between;
-    padding: 1em 2em 1em 2em;
 `;
 
 const Div = styled.div`
     height: 87vh;
     width: 75%;
-    padding: 0em 0em 2em 0em;
 `;
 
-const WatchListCoinDetail = ({ auth }) => {
+const WatchListCoinDetail = () => {
     return (
         <Div>
             <Container>
