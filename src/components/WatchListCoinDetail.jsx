@@ -2,6 +2,8 @@ import React from 'react'
 import styled from 'styled-components';
 import requireAuth from "../components/hoc/requireAuth";
 import CoinBasicInfo from './CoinBasicInfo';
+import CoinNews from './CoinNews';
+import CoinChart from './CoinChart';
 
 const Container = styled.div`
     display: flex;
@@ -21,10 +23,10 @@ const WatchListCoinDetail = ({ auth }) => {
         <Div>
             <Container>
                 <CoinBasicInfo></CoinBasicInfo>
-                <CoinBasicInfo></CoinBasicInfo>
+                <CoinNews></CoinNews>
             </Container>
             <Container>
-                <CoinBasicInfo></CoinBasicInfo>
+                <CoinChart></CoinChart>
             </Container>
         </Div>
     )
