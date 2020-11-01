@@ -1,7 +1,8 @@
 import {
     SIGNUP_ERROR,
     FETCH_COIN_DATA_SUCCESS,
-    SELECTED_WATCH_LIST_COIN_SUCCESS
+    SELECTED_WATCH_LIST_COIN_SUCCESS,
+    DISPLAY_COIN_DATA_SUCCESS
   } from "./actionTypes";
   import { beginApiCall, apiCallError } from "./apiStatusActions";
   import firebase from "../../services/firebase";
@@ -50,10 +51,13 @@ import {
             type: FETCH_COIN_DATA_SUCCESS,
             payload: coinPriceData
         })
-        dispatch({
-          type: SELECTED_WATCH_LIST_COIN_SUCCESS,
-          payload: coinPriceData[0]
-        })
+        //dispatch({
+         // type: SELECTED_WATCH_LIST_COIN_SUCCESS,
+         // payload: coinPriceData[0]
+        //})
+        console.log('about to selectCoin')
+        dispatch(selectCoin("bitcoin"))
+        console.log('select coin triggered')
         return(coinPriceData)
        
     } catch (err) {
@@ -70,14 +74,20 @@ import {
     console.log('Coin Selected: ', coinID);
 
     const state = store.getState();
-    const watchList = state.coinDataReducer.watchList;
+    const masterList = state.coinDataReducer.masterList;
 
-    const coin = watchList.find((coin) => coin.id === coinID)
+    const coin = masterList.find((coin) => coin.id === coinID)
     console.log('coin: ', coin)
 
+    const newWatchList = masterList.filter(coin => coin.id !== coinID);
+    
     dispatch({
       type: SELECTED_WATCH_LIST_COIN_SUCCESS,
       payload: coin
+    })
+    dispatch({
+      type: DISPLAY_COIN_DATA_SUCCESS,
+      payload: newWatchList
     })
   };
   

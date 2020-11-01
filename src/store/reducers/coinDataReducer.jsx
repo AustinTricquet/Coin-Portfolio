@@ -6,6 +6,9 @@ import {
     FETCH_COIN_DATA_SUCCESS,
     FETCH_COIN_DATA_ERROR,
     SELECTED_WATCH_LIST_COIN_SUCCESS,
+    UPDATE_SEARCH_SUCCESS,
+    UPDATE_SEARCH_ERROR,
+    DISPLAY_COIN_DATA_SUCCESS
   } from "../actions/actionTypes";
   
   const INITIAL_STATE = {
@@ -44,6 +47,8 @@ import {
       },
     ],
     selectedCoin: [],
+    suggestions: [],
+    masterList: [],
     error: null
     }
   
@@ -51,9 +56,17 @@ import {
     if (action.type === ADD_COIN_SUCCESS || action.type === REMOVE_COIN_SUCCESS) {
       return { ...state, authMsg: "" };
     } else if (
-      action.type === FETCH_COIN_DATA_SUCCESS
+      action.type === DISPLAY_COIN_DATA_SUCCESS
     ) {
       return { ...state, watchList: action.payload };
+    } else if (
+      action.type === FETCH_COIN_DATA_SUCCESS
+    ) {
+      return { ...state, masterList: action.payload };
+    } else if (
+      action.type === UPDATE_SEARCH_SUCCESS
+    ) {
+      return { ...state, suggestions: action.payload };
     } else if (
       action.type === SELECTED_WATCH_LIST_COIN_SUCCESS
     ) {
@@ -61,7 +74,8 @@ import {
     } else if (
       action.type === ADD_COIN_ERROR ||
       action.type === REMOVE_COIN_ERROR ||
-      action.type === FETCH_COIN_DATA_ERROR
+      action.type === FETCH_COIN_DATA_ERROR ||
+      action.type === UPDATE_SEARCH_ERROR
     ) {
       return { ...state, error: action.payload };
     } else {

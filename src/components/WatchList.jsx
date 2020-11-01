@@ -35,7 +35,7 @@ const InputGroup = styled.form`
       border: 1px solid red; }
 `;
 
-const WatchList = ({watchList, handleInputChange, suggestions}) => {
+const WatchList = ({watchList, handleInputChange, suggestions, selectedCoin}) => {
 
     function handleChange(e) {
         handleInputChange(e.target.value);
@@ -59,6 +59,13 @@ const WatchList = ({watchList, handleInputChange, suggestions}) => {
                             image={image}/> 
                     )
             }
+            <PortfolioCoin key={selectedCoin.id}
+                            coinID={selectedCoin.id}
+                            name={selectedCoin.name} 
+                            symbol={selectedCoin.symbol} 
+                            price={selectedCoin.price}
+                            image={selectedCoin.image}
+                            dayPercentChange={selectedCoin.dayPercentChange}/> 
             {
                 watchList.map( ({id, name, symbol, image, price, dayPercentChange}) => 
                     <PortfolioCoin key={id}
@@ -78,7 +85,8 @@ const WatchList = ({watchList, handleInputChange, suggestions}) => {
 function mapStateToProps(state) {
     return {
       watchList: state.coinDataReducer.watchList,
-      suggestions: state.coinSearchReducer.suggestions
+      suggestions: state.coinDataReducer.suggestions,
+      selectedCoin: state.coinDataReducer.selectedCoin
     };
   }
   
