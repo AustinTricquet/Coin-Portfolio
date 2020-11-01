@@ -4,7 +4,7 @@ import SearchSuggestedCoin from './SearchSuggestedCoin';
 import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { handleInputChange } from '../store/actions/coinSearchActions';
+import { handleInputChange } from '../store/actions/coinDataActions';
 
 const Div = styled.div`
   height: 87vh;
