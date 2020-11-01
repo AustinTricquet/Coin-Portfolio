@@ -71,7 +71,10 @@ const WatchListCoin = ({ selectCoin, coinID, name, symbol, image, price, dayPerc
 }
 
 
-function mapStateToProps() {
+function mapStateToProps(state) {
+    return {
+        watchList: state.coinDataReducer.watchList
+    }
   }
   
 function mapDispatchToProps(dispatch) {

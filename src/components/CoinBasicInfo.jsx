@@ -102,34 +102,38 @@ const CoinBasicInfo = ({selectedCoin}) => {
             
             <ContentBlock>
                 <Table>
-                    <tr>
-                        <th>
-                            <h3>Market Data:</h3>
-                        </th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p><strong>24h Trading Volume:</strong></p>
-                            <strong>${selectedCoin.dayVolume}</strong>
-                        </td>
-                        <td>
-                            <p><strong>Market Cap:</strong></p>
-                            <strong>${selectedCoin.marketCap}</strong>
-                            <SubText><strong>Market Cap Rank: {selectedCoin.rank}</strong></SubText>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p><strong>All-Time High:</strong></p>
-                            <strong>${selectedCoin.ATH}</strong>
-                            <SubText><strong>{selectedCoin.ATHDate}</strong></SubText>
-                        </td>
-                        <td>
-                            <p><strong>All-Time Low:</strong></p>
-                            <strong>${selectedCoin.ATL}</strong>
-                            <SubText><strong>{selectedCoin.ATLDate}</strong></SubText>
-                        </td> 
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th>
+                                <h3>Market Data:</h3>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <p><strong>24h Trading Volume:</strong></p>
+                                <strong>${selectedCoin.dayVolume}</strong>
+                            </td>
+                            <td>
+                                <p><strong>Market Cap:</strong></p>
+                                <strong>${selectedCoin.marketCap}</strong>
+                                <SubText><strong>Market Cap Rank: {selectedCoin.rank}</strong></SubText>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p><strong>All-Time High:</strong></p>
+                                <strong>${selectedCoin.ATH}</strong>
+                                <SubText><strong>{selectedCoin.ATHDate}</strong></SubText>
+                            </td>
+                            <td>
+                                <p><strong>All-Time Low:</strong></p>
+                                <strong>${selectedCoin.ATL}</strong>
+                                <SubText><strong>{selectedCoin.ATLDate}</strong></SubText>
+                            </td> 
+                        </tr>
+                    </tbody>
                 </Table>
             </ContentBlock>
             

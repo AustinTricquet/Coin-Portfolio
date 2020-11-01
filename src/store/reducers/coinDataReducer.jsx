@@ -11,27 +11,35 @@ import {
   const INITIAL_STATE = {
     watchList: [
       {
+        id:"bitcoin",
         newID: "bitcoin"
       },
       {
+        id:"ethereum",
         newID: "ethereum"
       },
       {
+        id:"polkadot",
         newID: "polkadot"
       },
       {
+        id:"tron",
         newID: "tron"
       },
       {
+        id:"uniswap",
         newID: "uniswap"
       },
       {
+        id:"cardano",
         newID: "cardano"
       },
       {
+        id:"usd-coin",
         newID: "usd-coin"
       },
       {
+        id:"dai",
         newID: "dai"
       },
     ],
