@@ -39,9 +39,9 @@ import {
             dayVolume: data.market_data.total_volume.usd,
             rank: data.market_cap_rank,
             ATH: data.market_data.ath.usd,
-            ATHDate: data.market_data.ath_date.usd,
+            ATHDate: data.market_data.ath_date.usd.slice(0,10),
             ATL: data.market_data.atl.usd,
-            ATLDate: data.market_data.atl_date.usd,
+            ATLDate: data.market_data.atl_date.usd.slice(0,10),
             dayPercentChange: data.market_data.price_change_percentage_24h_in_currency.usd.toFixed(2)
           }
         })

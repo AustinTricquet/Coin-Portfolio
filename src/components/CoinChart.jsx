@@ -7,9 +7,10 @@ const Div = styled.div`
     background-color: var(--nav-primary-color);
     border-radius: 1rem;
     color: var(--nav-text-color);
-    margin: 1rem 2rem 2rem 2rem;
+    margin: 0.75rem 1.5rem 1.5rem 1.5rem;
     padding: 2rem;
     width: 100%;
+    min-width: 25rem;
 `;
 
 const CoinChart = () => {

@@ -7,7 +7,7 @@ const Div = styled.div`
     background-color: var(--nav-primary-color);
     border-radius: 1rem;
     color: var(--nav-text-color);
-    margin: 2rem 2rem 1rem 1rem;
+    margin: 1.5rem 1.5rem 0.75rem 0.75rem;
     padding: 2rem;
     width: 40%;
 `;

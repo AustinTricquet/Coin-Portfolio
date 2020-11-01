@@ -9,21 +9,26 @@ const Div = styled.div`
     background-color: var(--nav-primary-color);
     border-radius: 1rem;
     color: var(--nav-text-color);
-    margin: 2rem 1rem 1rem 2rem;
-    padding: 2rem;
+    margin: 1.5rem 0.75rem 0.75rem 1.5rem;
+    padding: 1.5rem;
     width: 60%;
+    min-width: 25rem;
 `;
 
 const Header = styled.div`
     justify-content: space-between;
-    padding: 0rem 0rem 1.5rem 0rem;
+    padding: 0rem 0rem 1rem 0rem;
     display: flex;
 `;
 
 const ContentBlock = styled.div`
-    padding: 0rem 0rem 1rem 0rem; 
+    padding: 0rem 0rem 0.5rem 0rem; 
 
     h3 {
+        padding: 0rem 0rem 0.5rem 0rem;
+    }
+
+    p {
         padding: 0rem 0rem 0.5rem 0rem;
     }
 `;
@@ -53,8 +58,27 @@ const Price = styled.div`
     text-align: right;
 `;
 
-const SubText = styled.h3`
+const HeadSubText = styled.h3`
     color: #F0F1F3;
+`;
+
+const SubText = styled.p`
+    color: #F0F1F3;
+    font-size: 0.75rem;
+`;
+
+const Table = styled.table`
+    width: 100%;
+
+    th {
+        text-align: left;
+        padding-bottom: 0.25rem;
+    }
+
+    td {
+        text-align: left;
+        padding-bottom: 0.25rem
+    }
 `;
 
 const CoinBasicInfo = ({selectedCoin}) => {
@@ -65,23 +89,48 @@ const CoinBasicInfo = ({selectedCoin}) => {
                     <Img src={selectedCoin.image} alt="Coin logo" className="App-logo" />
                     <div>
                         <h1>{selectedCoin.name}</h1>
-                        <SubText>{selectedCoin.symbol}</SubText>
+                        <HeadSubText>{selectedCoin.symbol}</HeadSubText>
                     </div>
                 </Coin>
                 <Price>
                     <div>
                         <h1>${selectedCoin.price}</h1>
-                        <SubText>{selectedCoin.dayPercentChange}%</SubText>
+                        <HeadSubText>{selectedCoin.dayPercentChange}%</HeadSubText>
                     </div>
                 </Price> 
             </Header>
             
             <ContentBlock>
-                <h3>Market Info</h3>
-                <p><strong>24 Hour Trading Volume:</strong> ${selectedCoin.dayVolume}</p>
-                <p><strong>Market Cap:</strong> ${selectedCoin.marketCap} <strong>Rank:</strong> {selectedCoin.rank}</p>
-                <p><strong>All-Time High:</strong> {selectedCoin.ATH} --- {selectedCoin.ATHDate}</p>
-                <p><strong>All-Time Low:</strong> {selectedCoin.ATL} --- {selectedCoin.ATLDate}</p>
+                <Table>
+                    <tr>
+                        <th>
+                            <h3>Market Data:</h3>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p><strong>24h Trading Volume:</strong></p>
+                            <strong>${selectedCoin.dayVolume}</strong>
+                        </td>
+                        <td>
+                            <p><strong>Market Cap:</strong></p>
+                            <strong>${selectedCoin.marketCap}</strong>
+                            <SubText><strong>Market Cap Rank: {selectedCoin.rank}</strong></SubText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p><strong>All-Time High:</strong></p>
+                            <strong>${selectedCoin.ATH}</strong>
+                            <SubText><strong>{selectedCoin.ATHDate}</strong></SubText>
+                        </td>
+                        <td>
+                            <p><strong>All-Time Low:</strong></p>
+                            <strong>${selectedCoin.ATL}</strong>
+                            <SubText><strong>{selectedCoin.ATLDate}</strong></SubText>
+                        </td> 
+                    </tr>
+                </Table>
             </ContentBlock>
             
             <ContentBlock>
