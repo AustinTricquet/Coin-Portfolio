@@ -83,7 +83,12 @@ import {
       console.log('COIN SELECTED: ', coinID);
       const state = store.getState();
       const watchList = state.watchListReducer.watchList;
-      const selectedCoin = watchList.find((coin) => coin.id === coinID)
+
+      let selectedCoin = [];
+      let foundCoin = watchList.find((coin) => coin.id === coinID)
+      selectedCoin.push(foundCoin)
+
+      console.log("COIN FOUND LEN: ", selectedCoin.length)
 
       dispatch({
         type: SELECTED_WATCH_LIST_COIN_SUCCESS,

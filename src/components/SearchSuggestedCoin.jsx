@@ -1,5 +1,8 @@
 import React from 'react'
 import styled from 'styled-components';
+import { compose } from "redux";
+import { connect } from "react-redux";
+import { selectCoin } from '../store/actions/watchListActions';
 
 const Div = styled.div`
     border-bottom: 1px solid #3A4A5E;
@@ -41,10 +44,10 @@ const SubText = styled.h5`
     color: #8993A8;
 `;
 
-const SearchSuggestedCoin = ({coinID, name, symbol, image, price}) => {
+const SearchSuggestedCoin = ({ selectCoin, coinID, name, symbol, image, price, dayPercentChange }) => {
 
     function handleClick() {
-        console.log("CLICKED ",coinID)
+        selectCoin(coinID);
     }
 
     return (
@@ -59,10 +62,28 @@ const SearchSuggestedCoin = ({coinID, name, symbol, image, price}) => {
             <Balance>
                 <div>
                     <h3>${price}</h3>
+                    <SubText>{dayPercentChange}</SubText>
                 </div>
             </Balance> 
         </Div>
     )
 }
 
-export default SearchSuggestedCoin
+function mapStateToProps(state) {
+    return {
+        watchList_Display: state.watchListReducer.watchList_Display
+    };
+  }
+  
+function mapDispatchToProps(dispatch) {
+    return {
+        selectCoin: (coinID) => dispatch(selectCoin(coinID))
+    };
+}
+
+export default compose(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )
+  )(SearchSuggestedCoin);

@@ -49,22 +49,27 @@ const WatchList = ({watchList_Display, handleInputChange, suggestions, selectedC
                 />
             </InputGroup>
             {
-                suggestions.map( ({id, name, symbol, image, price}) => 
+                suggestions.map( ({id, name, symbol, image, price, dayPercentChange}) => 
                     <SearchSuggestedCoin key={id}
-                            coinID={id}
-                            name={name} 
-                            symbol={symbol} 
-                            price={price}
-                            image={image}/> 
+                          coinID={id}
+                          name={name} 
+                          symbol={symbol} 
+                          price={price}
+                          image={image}
+                          dayPercentChange={dayPercentChange}/> 
                     )
             }
-            <PortfolioCoin key={selectedCoin.id}
-                            coinID={selectedCoin.id}
-                            name={selectedCoin.name} 
-                            symbol={selectedCoin.symbol} 
-                            price={selectedCoin.price}
-                            image={selectedCoin.image}
-                            dayPercentChange={selectedCoin.dayPercentChange}/> 
+            {
+                selectedCoin.map( ({id, name, symbol, image, price, dayPercentChange}) =>
+                    <PortfolioCoin key={id}
+                                coinID={id}
+                                name={name} 
+                                symbol={symbol} 
+                                price={price}
+                                image={image}
+                                dayPercentChange={dayPercentChange}/> 
+                    )
+            }
             {
                 watchList_Display.map( ({id, name, symbol, image, price, dayPercentChange}) => 
                     <PortfolioCoin key={id}

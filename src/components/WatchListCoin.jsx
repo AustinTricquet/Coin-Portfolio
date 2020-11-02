@@ -45,7 +45,7 @@ const SubText = styled.h5`
     color: #8993A8;
 `;
 
-const WatchListCoin = ({ selectCoin, coinID, name, symbol, image, price, dayPercentChange}) => {
+const WatchListCoin = ({ selectCoin, coinID, name, symbol, image, price, dayPercentChange }) => {
     function handleClick() {
         selectCoin(coinID);
     }

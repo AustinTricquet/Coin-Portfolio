@@ -82,63 +82,71 @@ const Table = styled.table`
 
 const CoinBasicInfo = ({selectedCoin}) => {
     return (
-        <Div>
-            <Header>
-                <Coin>
-                    <Img src={selectedCoin.image} alt="Coin logo" className="App-logo" />
-                    <div>
-                        <h1>{selectedCoin.name}</h1>
-                        <HeadSubText>{selectedCoin.symbol}</HeadSubText>
-                    </div>
-                </Coin>
-                <Price>
-                    <div>
-                        <h1>${selectedCoin.price}</h1>
-                        <HeadSubText>{selectedCoin.dayPercentChange}%</HeadSubText>
-                    </div>
-                </Price> 
-            </Header>
-            <ContentBlock>
-                <Table>
-                    <thead>
-                        <tr>
-                            <th>
-                                <h3>Market Data:</h3>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <p><strong>24h Trading Volume:</strong></p>
-                                <strong>${selectedCoin.dayVolume}</strong>
-                            </td>
-                            <td>
-                                <p><strong>Market Cap:</strong></p>
-                                <strong>${selectedCoin.marketCap}</strong>
-                                <SubText><strong>Market Cap Rank: {selectedCoin.rank}</strong></SubText>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p><strong>All-Time High:</strong></p>
-                                <strong>${selectedCoin.ATH}</strong>
-                                <SubText><strong>{selectedCoin.ATHDate}</strong></SubText>
-                            </td>
-                            <td>
-                                <p><strong>All-Time Low:</strong></p>
-                                <strong>${selectedCoin.ATL}</strong>
-                                <SubText><strong>{selectedCoin.ATLDate}</strong></SubText>
-                            </td> 
-                        </tr>
-                    </tbody>
-                </Table>
-            </ContentBlock>
-            <ContentBlock>
-                <h3>More Info</h3>
-                <p>Website: <a href={selectedCoin.website}>{selectedCoin.website}</a></p>
-            </ContentBlock>
-        </Div>
+        <>
+            {
+                selectedCoin.map( ({id, name, symbol, image, price, dayPercentChange, dayVolume, marketCap, rank, ATH, ATHDate, ATL, ATLDate, website}) => 
+                        <Div key={id}>
+                        <Header>
+                            <Coin>
+                                <Img src={image} alt="Coin logo" className="App-logo" />
+                                <div>
+                                    <h1>{name}</h1>
+                                    <HeadSubText>{symbol}</HeadSubText>
+                                </div>
+                            </Coin>
+                            <Price>
+                                <div>
+                                    <h1>${price}</h1>
+                                    <HeadSubText>{dayPercentChange}%</HeadSubText>
+                                </div>
+                            </Price> 
+                        </Header>
+                        <ContentBlock>
+                            <Table>
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <h3>Market Data:</h3>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <p><strong>24h Trading Volume:</strong></p>
+                                            <strong>${dayVolume}</strong>
+                                        </td>
+                                        <td>
+                                            <p><strong>Market Cap:</strong></p>
+                                            <strong>${marketCap}</strong>
+                                            <SubText><strong>Market Cap Rank: {rank}</strong></SubText>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p><strong>All-Time High:</strong></p>
+                                            <strong>${ATH}</strong>
+                                            <SubText><strong>{ATHDate}</strong></SubText>
+                                        </td>
+                                        <td>
+                                            <p><strong>All-Time Low:</strong></p>
+                                            <strong>${ATL}</strong>
+                                            <SubText><strong>{ATLDate}</strong></SubText>
+                                        </td> 
+                                    </tr>
+                                </tbody>
+                            </Table>
+                        </ContentBlock>
+                        <ContentBlock>
+                            <h3>More Info</h3>
+                            <p>Website: <a href={website}>{website}</a></p>
+                        </ContentBlock>
+                    </Div>
+            
+        
+                )
+            }
+        </>
     )
 }
 
