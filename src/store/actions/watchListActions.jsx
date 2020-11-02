@@ -62,9 +62,7 @@ import {
   export const updateWatchList = () => async dispatch => {
     try {
       const state = store.getState();
-      console.log('STATE: ', state)
       const watchList = state.watchListReducer.watchList;
-
       const coinData = await dispatch(fetchCoinData(watchList))
 
       dispatch({
@@ -82,7 +80,7 @@ import {
 
   export const selectCoin = (coinID) => async dispatch => {
     try {
-      console.log('Coin Selected: ', coinID);
+      console.log('COIN SELECTED: ', coinID);
       const state = store.getState();
       const watchList = state.watchListReducer.watchList;
       const selectedCoin = watchList.find((coin) => coin.id === coinID)

@@ -10,7 +10,6 @@ import {
   
   export default function(state = INITIAL_STATE, action) {
     if (action.type === UPDATE_COIN_GECKO_KEYS_SUCCESS) {
-      console.log("update successful! Keys: ", action.payload);
       return { ...state, coinKeys: action.payload };
     } else if (
       action.type === UPDATE_COIN_GECKO_KEYS_ERROR

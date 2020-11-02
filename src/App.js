@@ -29,11 +29,10 @@ function App({ auth, updateWatchList, getCoinGeckoKeys }) {
 
   useEffect(() => {
     if (auth.isEmpty === false) {
-      console.log('about to fetch watchlist')
-      //fetchCoinData(watchList).then(response => {console.log("fetch coin data response: ", response)})
-      updateWatchList()
+      updateWatchList();
+      getCoinGeckoKeys();
     }
-    getCoinGeckoKeys().then(response => {console.log("Gecko Response: ", response)})
+    
 
   })
   
