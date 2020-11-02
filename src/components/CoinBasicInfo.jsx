@@ -144,7 +144,6 @@ const CoinBasicInfo = ({selectedCoin}) => {
 
 function mapStateToProps(state) {
     return {
-        watchList: state.watchListReducer.watchList,
         selectedCoin: state.watchListReducer.selectedCoin
     };
 }

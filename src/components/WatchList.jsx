@@ -35,7 +35,7 @@ const InputGroup = styled.form`
       border: 1px solid red; }
 `;
 
-const WatchList = ({watchList, handleInputChange, suggestions, selectedCoin}) => {
+const WatchList = ({watchList_Display, handleInputChange, suggestions, selectedCoin}) => {
     function handleChange(e) {
         handleInputChange(e.target.value);
     }
@@ -66,7 +66,7 @@ const WatchList = ({watchList, handleInputChange, suggestions, selectedCoin}) =>
                             image={selectedCoin.image}
                             dayPercentChange={selectedCoin.dayPercentChange}/> 
             {
-                watchList.map( ({id, name, symbol, image, price, dayPercentChange}) => 
+                watchList_Display.map( ({id, name, symbol, image, price, dayPercentChange}) => 
                     <PortfolioCoin key={id}
                             coinID={id}
                             name={name} 
@@ -82,7 +82,7 @@ const WatchList = ({watchList, handleInputChange, suggestions, selectedCoin}) =>
 
 function mapStateToProps(state) {
     return {
-      watchList: state.watchListReducer.watchList,
+      watchList_Display: state.watchListReducer.watchList_Display,
       suggestions: state.watchListReducer.suggestions,
       selectedCoin: state.watchListReducer.selectedCoin
     };

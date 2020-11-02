@@ -1,8 +1,8 @@
 import {
     FETCH_COIN_DATA_ERROR,
-    FETCH_COIN_DATA_SUCCESS,
+    UPDATE_WATCH_LIST_SUCCESS,
     SELECTED_WATCH_LIST_COIN_SUCCESS,
-    DISPLAY_COIN_DATA_SUCCESS,
+    DISPLAY_WATCH_LIST_SUCCESS,
     UPDATE_SEARCH_SUCCESS,
     UPDATE_SEARCH_ERROR
   } from "./actionTypes";
@@ -58,7 +58,7 @@ import {
     const coinData = await dispatch(fetchCoinData(watchList))
 
     dispatch({
-        type: FETCH_COIN_DATA_SUCCESS,
+        type: UPDATE_WATCH_LIST_SUCCESS,
         payload: coinData
     });
     dispatch(selectCoin(coinData[0].id));
@@ -67,17 +67,17 @@ import {
   export const selectCoin = (coinID) => async dispatch => {
     console.log('Coin Selected: ', coinID);
     const state = store.getState();
-    const masterList = state.watchListReducer.masterList;
-    const coin = masterList.find((coin) => coin.id === coinID)
-    const newWatchList = masterList.filter(coin => coin.id !== coinID);
+    const watchList = state.watchListReducer.watchList;
+    const selectedCoin = watchList.find((coin) => coin.id === coinID)
+    const watchList_Display = watchList.filter(coin => coin.id !== coinID);
     
     dispatch({
       type: SELECTED_WATCH_LIST_COIN_SUCCESS,
-      payload: coin
+      payload: selectedCoin
     })
     dispatch({
-      type: DISPLAY_COIN_DATA_SUCCESS,
-      payload: newWatchList
+      type: DISPLAY_WATCH_LIST_SUCCESS,
+      payload: watchList_Display
     })
   };
 
