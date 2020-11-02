@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
-
 import Loader from './components/Loader';
 import Navbar from './components/Navbar';
-
 import PortfolioPage from "./pages/PortfolioPage";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
@@ -11,18 +9,15 @@ import ContactPage from './pages/ContactPage';
 import WatchListPage from './pages/WatchListPage';
 import TradesPage from './pages/TradesPage';
 import TaxesPage from './pages/TaxesPage';
-
 import Footer from './components/Footer';
-
 import styled from 'styled-components';
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { Switch, Route } from 'react-router-dom';
-import { fetchCoinData } from "./store/actions/coinDataActions";
+import { updateWatchList } from "./store/actions/watchListActions";
 import { getCoinGeckoKeys } from "./store/actions/onSigninActions";
 
-function App({ auth, watchList, fetchCoinData, getCoinGeckoKeys }) {
-  
+function App({ auth, updateWatchList, getCoinGeckoKeys }) {
   const Content = styled.div`
     padding-bottom: 4em;
   `;
@@ -35,7 +30,8 @@ function App({ auth, watchList, fetchCoinData, getCoinGeckoKeys }) {
   useEffect(() => {
     if (auth.isEmpty === false) {
       console.log('about to fetch watchlist')
-      fetchCoinData(watchList).then(response => {console.log("fetch coin data response: ", response)})
+      //fetchCoinData(watchList).then(response => {console.log("fetch coin data response: ", response)})
+      updateWatchList()
     }
     getCoinGeckoKeys().then(response => {console.log("Gecko Response: ", response)})
 
@@ -79,13 +75,11 @@ function App({ auth, watchList, fetchCoinData, getCoinGeckoKeys }) {
       <Switch>
         <Route exact path="/login" component={LoginPage} />
         <Route path="/" component={Site} />
-       
       </Switch>
     );
   }
 
   const App = () => {
-
     return (
       <PageContainer>
         <Navbar 
@@ -131,14 +125,12 @@ function App({ auth, watchList, fetchCoinData, getCoinGeckoKeys }) {
 function mapStateToProps(state) {
   return {
     auth: state.firebaseReducer.auth,
-    watchList: state.coinDataReducer.watchList,
-
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchCoinData: (watchList) => dispatch(fetchCoinData(watchList)),
+    updateWatchList: () => dispatch(updateWatchList()),
     getCoinGeckoKeys: () => dispatch(getCoinGeckoKeys())
   };
 }
@@ -150,21 +142,15 @@ export default compose(
   )
 )(App);
 
+/*
+<Route exact path="/login" component={Login} />
+<Route exact path="/portfolio" component={Portfolio} />
+<Route exact path='/watch-list' component={WatchList} />
+<Route exact path='/trades' component={Trades} />
+<Route exact path='/taxes' component={Taxes} /> 
+*/
 
-
-  /*
-  <Route exact path="/login" component={Login} />
-  <Route exact path="/portfolio" component={Portfolio} />
-  <Route exact path='/watch-list' component={WatchList} />
-  <Route exact path='/trades' component={Trades} />
-  <Route exact path='/taxes' component={Taxes} /> 
-  */
-
-  /*
-  const {handleSignup} = useContext(firebaseAuth)
-  console.log(handleSignup)
-  */
-
-  /*
-  
-  */
+/*
+const {handleSignup} = useContext(firebaseAuth)
+console.log(handleSignup)
+*/

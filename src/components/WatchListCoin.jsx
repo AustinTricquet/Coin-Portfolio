@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { selectCoin } from '../store/actions/coinDataActions';
+import { selectCoin } from '../store/actions/watchListActions';
 
 const Div = styled.div`
     border-bottom: 1px solid #3A4A5E;
@@ -46,11 +46,9 @@ const SubText = styled.h5`
 `;
 
 const WatchListCoin = ({ selectCoin, coinID, name, symbol, image, price, dayPercentChange}) => {
-    
     function handleClick() {
         selectCoin(coinID);
     }
-
     return (
         <Div onClick={handleClick}>
             <Coin>
@@ -70,11 +68,10 @@ const WatchListCoin = ({ selectCoin, coinID, name, symbol, image, price, dayPerc
     )
 }
 
-
 function mapStateToProps(state) {
     return {
-        watchList: state.coinDataReducer.watchList
-    }
+        watchList: state.watchListReducer.watchList
+    };
   }
   
 function mapDispatchToProps(dispatch) {
@@ -82,8 +79,6 @@ function mapDispatchToProps(dispatch) {
         selectCoin: (coinID) => dispatch(selectCoin(coinID))
     };
 }
-
-
 
 export default compose(
     connect(

@@ -4,7 +4,7 @@ import SearchSuggestedCoin from './SearchSuggestedCoin';
 import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { handleInputChange } from '../store/actions/coinDataActions';
+import { handleInputChange } from '../store/actions/watchListActions';
 
 const Div = styled.div`
   height: 87vh;
@@ -36,7 +36,6 @@ const InputGroup = styled.form`
 `;
 
 const WatchList = ({watchList, handleInputChange, suggestions, selectedCoin}) => {
-
     function handleChange(e) {
         handleInputChange(e.target.value);
     }
@@ -75,8 +74,7 @@ const WatchList = ({watchList, handleInputChange, suggestions, selectedCoin}) =>
                             price={price}
                             image={image}
                             dayPercentChange={dayPercentChange}/> 
-                    )
-                   
+                    ) 
             }
         </Div>
     )
@@ -84,18 +82,17 @@ const WatchList = ({watchList, handleInputChange, suggestions, selectedCoin}) =>
 
 function mapStateToProps(state) {
     return {
-      watchList: state.coinDataReducer.watchList,
-      suggestions: state.coinDataReducer.suggestions,
-      selectedCoin: state.coinDataReducer.selectedCoin
+      watchList: state.watchListReducer.watchList,
+      suggestions: state.watchListReducer.suggestions,
+      selectedCoin: state.watchListReducer.selectedCoin
     };
   }
   
-  function mapDispatchToProps(dispatch) {
-    return {
-      handleInputChange: (query) => dispatch(handleInputChange(query))
-    };
-  }
-
+function mapDispatchToProps(dispatch) {
+  return {
+    handleInputChange: (query) => dispatch(handleInputChange(query))
+  };
+}
 
 export default compose(
     connect(

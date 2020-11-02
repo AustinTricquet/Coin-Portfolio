@@ -2,8 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { selectCoin } from '../store/actions/coinDataActions';
-
+import { selectCoin } from '../store/actions/watchListActions';
 
 const Div = styled.div`
     background-color: var(--nav-primary-color);
@@ -99,7 +98,6 @@ const CoinBasicInfo = ({selectedCoin}) => {
                     </div>
                 </Price> 
             </Header>
-            
             <ContentBlock>
                 <Table>
                     <thead>
@@ -136,22 +134,18 @@ const CoinBasicInfo = ({selectedCoin}) => {
                     </tbody>
                 </Table>
             </ContentBlock>
-            
             <ContentBlock>
                 <h3>More Info</h3>
                 <p>Website: <a href={selectedCoin.website}>{selectedCoin.website}</a></p>
             </ContentBlock>
-           
         </Div>
     )
 }
 
-
-
 function mapStateToProps(state) {
     return {
-        watchList: state.coinDataReducer.watchList,
-        selectedCoin: state.coinDataReducer.selectedCoin
+        watchList: state.watchListReducer.watchList,
+        selectedCoin: state.watchListReducer.selectedCoin
     };
 }
 
@@ -160,8 +154,6 @@ function mapDispatchToProps(dispatch) {
       selectCoin: (coinID) => dispatch(selectCoin(coinID))
   };
 }
-
-
 
 export default compose(
   connect(
