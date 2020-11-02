@@ -1,10 +1,14 @@
 import {
+    FETCH_COIN_DATA_SUCCESS,
     FETCH_COIN_DATA_ERROR,
     UPDATE_WATCH_LIST_SUCCESS,
+    UPDATE_WATCH_LIST_ERROR,
     SELECTED_WATCH_LIST_COIN_SUCCESS,
+    SELECTED_WATCH_LIST_COIN_ERROR,
     DISPLAY_WATCH_LIST_SUCCESS,
-    UPDATE_SEARCH_SUCCESS,
-    UPDATE_SEARCH_ERROR
+    DISPLAY_WATCH_LIST_ERROR,
+    UPDATE_SEARCH_SUGGESTIONS_SUCCESS,
+    UPDATE_SEARCH_SUGGESTIONS_ERROR
   } from "./actionTypes";
   import { beginApiCall, apiCallError } from "./apiStatusActions";
   import axios from 'axios';
@@ -37,6 +41,11 @@ import {
           }
         })
         console.log('COIN DATA: ',coinData)
+
+        dispatch({
+          type: FETCH_COIN_DATA_SUCCESS,
+          payload: "Fetch Coin Data from 'Coin Gecko API' Success!"
+        })
         
         return(coinData)
        
@@ -51,34 +60,58 @@ import {
   };
 
   export const updateWatchList = () => async dispatch => {
-    const state = store.getState();
-    console.log('STATE: ', state)
-    const watchList = state.watchListReducer.watchList;
+    try {
+      const state = store.getState();
+      console.log('STATE: ', state)
+      const watchList = state.watchListReducer.watchList;
 
-    const coinData = await dispatch(fetchCoinData(watchList))
+      const coinData = await dispatch(fetchCoinData(watchList))
 
-    dispatch({
-        type: UPDATE_WATCH_LIST_SUCCESS,
-        payload: coinData
-    });
-    dispatch(selectCoin(coinData[0].id));
+      dispatch({
+          type: UPDATE_WATCH_LIST_SUCCESS,
+          payload: coinData
+      });
+      dispatch(selectCoin(coinData[0].id));
+    } catch {
+      dispatch({
+        type: UPDATE_WATCH_LIST_ERROR,
+        payload: "Update Watch List error"
+      })
+    }
   }
 
   export const selectCoin = (coinID) => async dispatch => {
-    console.log('Coin Selected: ', coinID);
-    const state = store.getState();
-    const watchList = state.watchListReducer.watchList;
-    const selectedCoin = watchList.find((coin) => coin.id === coinID)
-    const watchList_Display = watchList.filter(coin => coin.id !== coinID);
-    
-    dispatch({
-      type: SELECTED_WATCH_LIST_COIN_SUCCESS,
-      payload: selectedCoin
-    })
-    dispatch({
-      type: DISPLAY_WATCH_LIST_SUCCESS,
-      payload: watchList_Display
-    })
+    try {
+      console.log('Coin Selected: ', coinID);
+      const state = store.getState();
+      const watchList = state.watchListReducer.watchList;
+      const selectedCoin = watchList.find((coin) => coin.id === coinID)
+
+      dispatch({
+        type: SELECTED_WATCH_LIST_COIN_SUCCESS,
+        payload: selectedCoin
+      })
+
+      try {
+        const watchList_Display = watchList.filter(coin => coin.id !== coinID);
+
+        dispatch({
+          type: DISPLAY_WATCH_LIST_SUCCESS,
+          payload: watchList_Display
+        })
+      } catch {
+        dispatch({
+          type: DISPLAY_WATCH_LIST_ERROR,
+          payload: "Something went wrong displaying the rest of the coins in watch list."
+        })
+      }
+
+    } catch {
+      dispatch({
+        type: SELECTED_WATCH_LIST_COIN_ERROR,
+        payload: "Something went wrong selecting a coin."
+      })
+    }
   };
 
   export const handleInputChange = (inputValue) => async dispatch => {
@@ -147,19 +180,19 @@ import {
         console.log('SUGGESTED COINS: ', suggestedCoins);
           
         dispatch({
-          type: UPDATE_SEARCH_SUCCESS,
+          type: UPDATE_SEARCH_SUGGESTIONS_SUCCESS,
           payload: suggestedCoins
         })
       } else {
         console.log('else activated')
         dispatch({
-          type: UPDATE_SEARCH_SUCCESS,
+          type: UPDATE_SEARCH_SUGGESTIONS_SUCCESS,
           payload: []
         })
       }
     } catch (err) {
       dispatch({
-        type: UPDATE_SEARCH_ERROR,
+        type: UPDATE_SEARCH_SUGGESTIONS_ERROR,
         payload:
           "Something went wrong searching for coins."
       });

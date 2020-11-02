@@ -4,11 +4,15 @@ import {
     REMOVE_COIN_SUCCESS,
     REMOVE_COIN_ERROR,
     UPDATE_WATCH_LIST_SUCCESS,
+    UPDATE_WATCH_LIST_ERROR,
+    FETCH_COIN_DATA_SUCCESS,
     FETCH_COIN_DATA_ERROR,
     SELECTED_WATCH_LIST_COIN_SUCCESS,
-    UPDATE_SEARCH_SUCCESS,
-    UPDATE_SEARCH_ERROR,
-    DISPLAY_WATCH_LIST_SUCCESS
+    SELECTED_WATCH_LIST_COIN_ERROR,
+    UPDATE_SEARCH_SUGGESTIONS_SUCCESS,
+    UPDATE_SEARCH_SUGGESTIONS_ERROR,
+    DISPLAY_WATCH_LIST_SUCCESS,
+    DISPLAY_WATCH_LIST_ERROR
   } from "../actions/actionTypes";
   
   const INITIAL_STATE = {
@@ -49,12 +53,16 @@ import {
     selectedCoin: [],
     suggestions: [],
     watchList_Display: [],
+    watchListMsg: null,
     error: null
     }
   
   export default function(state = INITIAL_STATE, action) {
-    if (action.type === ADD_COIN_SUCCESS || action.type === REMOVE_COIN_SUCCESS) {
-      return { ...state, authMsg: "" };
+    if (action.type === ADD_COIN_SUCCESS || 
+        action.type === REMOVE_COIN_SUCCESS || 
+        action.type === FETCH_COIN_DATA_SUCCESS
+    ) {
+      return { ...state, watchListMsg: "" };
     } else if (
       action.type === DISPLAY_WATCH_LIST_SUCCESS
     ) {
@@ -64,7 +72,7 @@ import {
     ) {
       return { ...state, watchList: action.payload };
     } else if (
-      action.type === UPDATE_SEARCH_SUCCESS
+      action.type === UPDATE_SEARCH_SUGGESTIONS_SUCCESS
     ) {
       return { ...state, suggestions: action.payload };
     } else if (
@@ -75,7 +83,10 @@ import {
       action.type === ADD_COIN_ERROR ||
       action.type === REMOVE_COIN_ERROR ||
       action.type === FETCH_COIN_DATA_ERROR ||
-      action.type === UPDATE_SEARCH_ERROR
+      action.type === UPDATE_SEARCH_SUGGESTIONS_ERROR ||
+      action.type === UPDATE_WATCH_LIST_ERROR ||
+      action.type === SELECTED_WATCH_LIST_COIN_ERROR ||
+      action.type === DISPLAY_WATCH_LIST_ERROR
     ) {
       return { ...state, error: action.payload };
     } else {
