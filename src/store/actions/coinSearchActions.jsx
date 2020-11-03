@@ -13,10 +13,25 @@ import {
         const state = store.getState();
         const responseGecko = state.onSigninReducer.coinKeys
 
+        
+
+        const instance = axios.create({baseURL:`https://api.coinpaprika.com/v1/search/?q=${inputValue}&c=currencies&limit=5`})
+
+        instance.interceptors.request.use(req => {
+          return console.log("request issssss: ",req)
+         }
+        );
+        
+        console.log('inst. created about to get it')
+        const promise3 = await instance.get()
+        console.log ("promise3 ",promise3)
+
         // Get search suggestions from coin paprikia API
-        const promise1 = axios.get(`https://api.coinpaprika.com/v1/search/?q=${inputValue}&c=currencies&limit=5`)
-        const coinPaprikaData = await promise1;
-        const coinDataNewID = coinPaprikaData.data.currencies.map(function(response) { 
+        //const promise1 = await axios.get(`https://api.coinpaprika.com/v1/search/?q=${inputValue}&c=currencies&limit=5`)
+        //console.log('promise.cong ', axios.config)
+        const coinPaprikaData = await promise3;
+        //console.log('DATA FROM PAPRIKA: ', promise3);
+        const coinDataNewID = coinPaprikaData.map(function(response) { 
           console.log("Coin Paprika API Response: ", response);
       
           // Various searching methods to find coins in coinGecko API Database from search suggestions
