@@ -40,10 +40,16 @@ const WatchList = ({watchList_Display, handleInputChange, suggestions, selectedC
         handleInputChange(e.target.value);
     }
 
+    function handleSubmit(e) {
+      e.preventDefault();
+      console.log("ENTER HAS BEEN HIT");
+    }
+
     return (
         <Div>
             <InputGroup>
-                <input
+                <input type="text"
+                    onClick={handleSubmit}
                     placeholder="Search"
                     onChange={handleChange}
                 />

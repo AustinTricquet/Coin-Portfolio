@@ -18,6 +18,7 @@ import {
   export const fetchCoinData = (coinList) => async dispatch => {
     try {
         dispatch(beginApiCall());
+        console.log("COINLIST SUBMITTED FOR LOOKUP: ", coinList);
         const coinDataPromises = coinList.map(coin => axios.get('https://api.coingecko.com/api/v3/coins/' + coin.newID));
         const coinDataResponses = await Promise.all(coinDataPromises);
         const coinData = coinDataResponses.map(function(response) {

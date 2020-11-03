@@ -14,10 +14,10 @@ import styled from 'styled-components';
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { Switch, Route } from 'react-router-dom';
-import { updateWatchList } from "./store/actions/watchListActions";
+import { fetchCoinData, updateWatchList } from "./store/actions/watchListActions";
 import { getCoinGeckoKeys } from "./store/actions/onSigninActions";
 
-function App({ auth, updateWatchList, getCoinGeckoKeys }) {
+function App({ auth, updateWatchList, getCoinGeckoKeys, fetchCoinData }) {
   const Content = styled.div`
     padding-bottom: 4em;
   `;
@@ -32,9 +32,18 @@ function App({ auth, updateWatchList, getCoinGeckoKeys }) {
       updateWatchList();
       getCoinGeckoKeys();
     }
-    
-
   })
+
+  const renderCoin = async (routerProps) => {
+    console.log("router props: ",routerProps)
+    let coinID = routerProps.location.pathname.slice(12)
+    console.log("coinID: ", coinID)
+    let coinList = [{newID: coinID}]
+    let coinData = await fetchCoinData(coinList);
+    console.log('found the coin in route!: ', coinData, coinData.length);
+    return(coinData.length === 1 ? <WatchListPage/> : "Not found")
+
+  }
   
   const Site = () => {
     return(
@@ -79,6 +88,7 @@ function App({ auth, updateWatchList, getCoinGeckoKeys }) {
   }
 
   const App = () => {
+
     return (
       <PageContainer>
         <Navbar 
@@ -105,6 +115,7 @@ function App({ auth, updateWatchList, getCoinGeckoKeys }) {
         </Navbar>
           <Switch>
             <Route exact path="/watch-list" component={WatchListPage} />
+            <Route path = "/watch-list/:id" render = { routerProps => renderCoin(routerProps)} />
             <Route exact path="/trades" component={TradesPage} />
             <Route exact path="/taxes" component={TaxesPage} />
             <Route path="/" component={PortfolioPage} />
@@ -130,7 +141,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     updateWatchList: () => dispatch(updateWatchList()),
-    getCoinGeckoKeys: () => dispatch(getCoinGeckoKeys())
+    getCoinGeckoKeys: () => dispatch(getCoinGeckoKeys()),
+    fetchCoinData: (list) => dispatch(fetchCoinData(list))
   };
 }
 
