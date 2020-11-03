@@ -16,7 +16,7 @@ const Div = styled.div`
 
 const Header = styled.div`
     justify-content: space-between;
-    padding: 0rem 0rem 1rem 0rem;
+    padding: 0rem 0rem 0.5rem 0rem;
     display: flex;
 `;
 
@@ -29,6 +29,11 @@ const ContentBlock = styled.div`
 
     p {
         padding: 0rem 0rem 0.5rem 0rem;
+        
+    }
+
+    tbody {
+        vertical-align: top;
     }
 `;
 

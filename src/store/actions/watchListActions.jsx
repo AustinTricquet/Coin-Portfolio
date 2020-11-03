@@ -83,12 +83,22 @@ import {
       console.log('COIN SELECTED: ', coinID);
       const state = store.getState();
       const watchList = state.watchListReducer.watchList;
-
+      const suggestedCoins = state.watchListReducer.suggestions;
       let selectedCoin = [];
-      let foundCoin = watchList.find((coin) => coin.id === coinID)
-      selectedCoin.push(foundCoin)
-
-      console.log("COIN FOUND LEN: ", selectedCoin.length)
+      let foundCoinWatchList = watchList.find((coin) => coin.id === coinID)
+      let foundCoinsuggestion = suggestedCoins.find((coin) => coin.id === coinID)
+      if (foundCoinWatchList === undefined) {
+        if (foundCoinsuggestion === undefined) {
+          dispatch({
+            type: SELECTED_WATCH_LIST_COIN_ERROR,
+            payload: "Something went wrong selecting a coin. Selection is not in suggestions or watchlist"
+          })
+        } else { 
+          selectedCoin.push(foundCoinsuggestion)
+        }
+      } else { 
+        selectedCoin.push(foundCoinWatchList)
+      }
 
       dispatch({
         type: SELECTED_WATCH_LIST_COIN_SUCCESS,
@@ -172,6 +182,7 @@ import {
         console.log("SUGGESTED COINS KEYS: ", suggestedCoins_CoinKeys)
 
         let suggestedCoins = await dispatch(fetchCoinData(suggestedCoins_CoinKeys))
+        console.log("SUGGESTED COINS AFTER DISPATCH: ", suggestedCoins);
         
         // filter out any duplicate results (can happen during forks of various coins)
         suggestedCoins = suggestedCoins.filter((coin, index, self) => 
