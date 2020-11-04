@@ -24,6 +24,7 @@ import {
         const coinData = coinDataResponses.map(function(response) {
           const data = response.data;
           return {
+            key: data.id,
             id: data.id,
             name: data.name,
             symbol: data.symbol.toUpperCase(),
@@ -64,13 +65,20 @@ import {
     try {
       const state = store.getState();
       const watchList = state.watchListReducer.watchList;
+      //const selectedCoin = state.watchListReducer.selectCoin;
       const coinData = await dispatch(fetchCoinData(watchList))
-
+      console.log("ABOUT TO DISPATCH COIN DATA: ", coinData)
       dispatch({
           type: UPDATE_WATCH_LIST_SUCCESS,
           payload: coinData
       });
-      dispatch(selectCoin(coinData[0].id));
+
+      //if (selectedCoin === []) {
+      //dispatch(selectCoin(coinData[0].id));
+      //}
+      //console.log("SELECTED COIN: ", selectedCoin)
+      dispatch(refreshDisplayList())
+      
     } catch {
       dispatch({
         type: UPDATE_WATCH_LIST_ERROR,
@@ -79,46 +87,67 @@ import {
     }
   }
 
+  export const refreshDisplayList = () => async dispatch => {
+    try {
+      const state = store.getState();
+      const watchList = state.watchListReducer.watchList;
+      const selectedCoin = state.watchListReducer.selectedCoin;
+      console.log('SELECTED COIN: ', selectedCoin[0].id)
+      const watchList_Display = watchList.filter(coin => coin.id !== selectedCoin[0].id);
+      console.log('ABOUT TO DISPATCH NEW DISPLAY LIST: ', watchList_Display)
+
+      dispatch({
+        type: DISPLAY_WATCH_LIST_SUCCESS,
+        payload: watchList_Display
+      })
+    } catch {
+      dispatch({
+        type: DISPLAY_WATCH_LIST_ERROR,
+        payload: "Something went wrong displaying the rest of the coins in watch list."
+      })
+    }
+  }
+
   export const selectCoin = (coinID) => async dispatch => {
     try {
       console.log('COIN SELECTED: ', coinID);
       const state = store.getState();
-      const watchList = state.watchListReducer.watchList;
+      
       const suggestedCoins = state.watchListReducer.suggestions;
+      //console.log("WATCHLIST: ",watchList )
+      console.log("SUGGESTIONS: ",suggestedCoins)
       let selectedCoin = [];
-      let foundCoinWatchList = watchList.find((coin) => coin.id === coinID)
-      let foundCoinsuggestion = suggestedCoins.find((coin) => coin.id === coinID)
-      if (foundCoinWatchList === undefined) {
-        if (foundCoinsuggestion === undefined) {
-          dispatch({
-            type: SELECTED_WATCH_LIST_COIN_ERROR,
-            payload: "Something went wrong selecting a coin. Selection is not in suggestions or watchlist"
-          })
-        } else { 
-          selectedCoin.push(foundCoinsuggestion)
-        }
-      } else { 
-        selectedCoin.push(foundCoinWatchList)
-      }
+      //let foundCoinWatchList = watchList.find((coin) => coin.id === coinID)
+      //let foundCoinsuggestion = suggestedCoins.find((coin) => coin.id === coinID)
+
+      const coinData = await dispatch(fetchCoinData([{newID: coinID}]));
+      //console.log("COIN FOUND WATCHLIST: ", foundCoinWatchList);
+      //console.log("COIN FOUND SUGGESTIONS: ", foundCoinsuggestion);
+      //if (foundCoinWatchList === undefined) {
+        //if (foundCoinsuggestion === undefined) {
+          //dispatch({
+            //type: SELECTED_WATCH_LIST_COIN_ERROR,
+           // payload: "Something went wrong selecting a coin. Selection is not in suggestions or watchlist"
+         // })
+       // } else { 
+          //selectedCoin.push(foundCoinsuggestion)
+       // }
+      //} else { 
+       // selectedCoin.push(foundCoinWatchList)
+      //}
+
+      selectedCoin.push(coinData);
+
+      dispatch(refreshDisplayList());
+
+      console.log("ABOUT TO DISPATCH SELECTED COIN: ", coinData);
 
       dispatch({
         type: SELECTED_WATCH_LIST_COIN_SUCCESS,
-        payload: selectedCoin
+        payload: coinData
       })
 
-      try {
-        const watchList_Display = watchList.filter(coin => coin.id !== coinID);
-
-        dispatch({
-          type: DISPLAY_WATCH_LIST_SUCCESS,
-          payload: watchList_Display
-        })
-      } catch {
-        dispatch({
-          type: DISPLAY_WATCH_LIST_ERROR,
-          payload: "Something went wrong displaying the rest of the coins in watch list."
-        })
-      }
+      
 
     } catch {
       dispatch({

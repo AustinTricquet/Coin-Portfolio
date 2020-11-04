@@ -14,10 +14,10 @@ import styled from 'styled-components';
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { Switch, Route } from 'react-router-dom';
-import { fetchCoinData, updateWatchList } from "./store/actions/watchListActions";
+import { fetchCoinData, updateWatchList, selectCoin } from "./store/actions/watchListActions";
 import { getCoinGeckoKeys } from "./store/actions/onSigninActions";
 
-function App({ auth, updateWatchList, getCoinGeckoKeys, fetchCoinData }) {
+function App({ auth, updateWatchList, getCoinGeckoKeys, fetchCoinData, selectCoin }) {
   const Content = styled.div`
     padding-bottom: 4em;
   `;
@@ -34,14 +34,20 @@ function App({ auth, updateWatchList, getCoinGeckoKeys, fetchCoinData }) {
     }
   })
 
-  const renderCoin = async (routerProps) => {
+  const renderCoin = (routerProps) => {
     console.log("router props: ",routerProps)
     let coinID = routerProps.location.pathname.slice(12)
     console.log("coinID: ", coinID)
     let coinList = [{newID: coinID}]
-    let coinData = await fetchCoinData(coinList);
-    console.log('found the coin in route!: ', coinData, coinData.length);
-    return(coinData.length === 1 ? <WatchListPage/> : "Not found")
+    //fetchCoinData(coinList);
+    updateWatchList()
+    
+    selectCoin(coinID)
+    
+    //updateWatchList();
+    //getCoinGeckoKeys();
+    //console.log('found the coin in route!: ', coinData, coinData.length);
+    return(<WatchListPage/>)
 
   }
   
@@ -142,7 +148,8 @@ function mapDispatchToProps(dispatch) {
   return {
     updateWatchList: () => dispatch(updateWatchList()),
     getCoinGeckoKeys: () => dispatch(getCoinGeckoKeys()),
-    fetchCoinData: (list) => dispatch(fetchCoinData(list))
+    fetchCoinData: (list) => dispatch(fetchCoinData(list)),
+    selectCoin: (coinID) => dispatch(selectCoin(coinID))
   };
 }
 
