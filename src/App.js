@@ -31,6 +31,7 @@ function App({ auth, updateWatchList, getCoinGeckoKeys, fetchCoinData, selectCoi
     async function x() {
       if (auth.isEmpty === false) {
         getCoinGeckoKeys();
+        //console.log('Watchlist in render: ', watchList)
         //await updateWatchList();
         
       }
@@ -41,14 +42,23 @@ function App({ auth, updateWatchList, getCoinGeckoKeys, fetchCoinData, selectCoi
   const renderCoin = (routerProps) => {
     console.log("router props: ",window.history)
     let coinID = routerProps.location.pathname.slice(12)
+
+
     console.log("coinID: ", coinID)
-    let coinList = [{newID: coinID}]
+    if (coinID === "") {
+      //console.log('Watchlist in render: ', watchList)
+      coinID = 'bitcoin'
+    }
+
+    //let coinList = [{newID: coinID}]
     //fetchCoinData(coinList);
     //updateWatchList()
     async function x() {
       await updateWatchList();
       selectCoin(coinID)
     }
+
+   
     x()
     //routerProps.history.push("/")
     //updateWatchList()
@@ -129,7 +139,7 @@ function App({ auth, updateWatchList, getCoinGeckoKeys, fetchCoinData, selectCoi
           ]}>
         </Navbar>
           <Switch>
-            <Route exact path="/watch-list" component={WatchListPage} />
+            <Route exact path="/watch-list" render = { routerProps => renderCoin(routerProps)} />
             <Route path = "/watch-list/:id" render = { routerProps => renderCoin(routerProps)} />
             <Route exact path="/trades" component={TradesPage} />
             <Route exact path="/taxes" component={TaxesPage} />
@@ -150,6 +160,7 @@ function App({ auth, updateWatchList, getCoinGeckoKeys, fetchCoinData, selectCoi
 function mapStateToProps(state) {
   return {
     auth: state.firebaseReducer.auth,
+    
   };
 }
 

@@ -19,7 +19,7 @@ import {
     try {
         dispatch(beginApiCall());
         console.log("COINLIST SUBMITTED FOR LOOKUP: ", coinList);
-        const coinDataPromises = coinList.map(coin => axios.get('https://api.coingecko.com/api/v3/coins/' + coin.newID));
+        const coinDataPromises = coinList.map(coin => axios.get('https://api.coingecko.com/api/v3/coins/' + coin.id));
         const coinDataResponses = await Promise.all(coinDataPromises);
         const coinData = coinDataResponses.map(function(response) {
           const data = response.data;
@@ -64,6 +64,7 @@ import {
   export const updateWatchList = () => async dispatch => {
     try {
       const state = store.getState();
+      console.log("STATE: ", state)
       const watchList = state.watchListReducer.watchList;
       //const selectedCoin = state.watchListReducer.selectCoin;
       const coinData = await dispatch(fetchCoinData(watchList))
@@ -92,6 +93,7 @@ import {
     try {
       const state = store.getState();
       const watchList = state.watchListReducer.watchList;
+      console.log('WATCH LIST PLEASEE: ', watchList)
       const selectedCoin = state.watchListReducer.selectedCoin;
       console.log("SELECTED COIN STATE: ", selectedCoin)
       let watchList_Display = []
@@ -130,7 +132,7 @@ import {
       //let foundCoinWatchList = watchList.find((coin) => coin.id === coinID)
       //let foundCoinsuggestion = suggestedCoins.find((coin) => coin.id === coinID)
 
-      const coinData = await dispatch(fetchCoinData([{newID: coinID}]));
+      const coinData = await dispatch(fetchCoinData([{id: coinID}]));
       //console.log("COIN FOUND WATCHLIST: ", foundCoinWatchList);
       //console.log("COIN FOUND SUGGESTIONS: ", foundCoinsuggestion);
       //if (foundCoinWatchList === undefined) {
@@ -151,13 +153,14 @@ import {
       
       //window.history.push("/")
       console.log("ABOUT TO DISPATCH SELECTED COIN: ", coinData);
-      console.log('History: ', window.history)
+      //console.log('History: ', window.history)
       //window.history.push("/")
       await dispatch({
         type: SELECTED_WATCH_LIST_COIN_SUCCESS,
         payload: coinData
       })
-      dispatch(refreshDisplayList());
+      await dispatch(refreshDisplayList());
+      
       //window.history.push("/watch-list/ethereum")
 
       
@@ -205,22 +208,22 @@ import {
           if (geckoData === undefined) {
             //console.log('Resorting to skipping coin :(')
             return {
-              newID: "",
+              id: "",
             }
           }
         
-          response.newID = geckoData.id
+          response.id = geckoData.id
           return {
-            newID: response.newID,
+            id: response.id,
           }});
   
         // filter out any coins that don't exist in coinGecko API database (returned empty)
-        suggestedCoins_CoinKeys = suggestedCoins_CoinKeys.filter((coin) => (coin.newID !== ""));
+        suggestedCoins_CoinKeys = suggestedCoins_CoinKeys.filter((coin) => (coin.id !== ""));
 
         if (suggestedCoins_CoinKeys.length < 5) {
           //console.log('LAST ditch effort to find the element using what info was passed to search bar to find directly in coingecko database keys')
           const coinKey = coinKeys.data.filter((element) => (element.name.toLowerCase().includes(inputValue.toLowerCase()))).slice(0, (5 - suggestedCoins_CoinKeys.length));
-          coinKey.map(coin => suggestedCoins_CoinKeys.push({ newID: coin.id}))}
+          coinKey.map(coin => suggestedCoins_CoinKeys.push({ id: coin.id}))}
 
         console.log("SUGGESTED COINS KEYS: ", suggestedCoins_CoinKeys)
 

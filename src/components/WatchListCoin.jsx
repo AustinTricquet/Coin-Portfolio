@@ -48,13 +48,16 @@ const SubText = styled.h5`
 
 const WatchListCoin = withRouter(({ history, selectCoin, coinID, name, symbol, image, price, dayPercentChange }) => {
 
-    function handleClick() {
+    async function handleClick() {
         //selectCoin(coinID);
         //window.history.push("/")
-        console.log('window history: ', history)
+        //console.log('window history: ', history)
         let route = "/watch-list/" + coinID
-        history.push(route)
-        selectCoin(coinID);
+        
+        //await selectCoin(coinID);
+        history.push(route);
+
+        
         
     }
     return (
