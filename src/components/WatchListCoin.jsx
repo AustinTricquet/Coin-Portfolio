@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { selectCoin } from '../store/actions/watchListActions';
+import { withRouter } from 'react-router-dom';
 
 const Div = styled.div`
     border-bottom: 1px solid #3A4A5E;
@@ -45,9 +46,16 @@ const SubText = styled.h5`
     color: #8993A8;
 `;
 
-const WatchListCoin = ({ selectCoin, coinID, name, symbol, image, price, dayPercentChange }) => {
+const WatchListCoin = withRouter(({ history, selectCoin, coinID, name, symbol, image, price, dayPercentChange }) => {
+
     function handleClick() {
+        //selectCoin(coinID);
+        //window.history.push("/")
+        console.log('window history: ', history)
+        let route = "/watch-list/" + coinID
+        history.push(route)
         selectCoin(coinID);
+        
     }
     return (
         <Div onClick={handleClick}>
@@ -66,7 +74,7 @@ const WatchListCoin = ({ selectCoin, coinID, name, symbol, image, price, dayPerc
             </Balance> 
         </Div>
     )
-}
+})
 
 function mapStateToProps(state) {
     return {

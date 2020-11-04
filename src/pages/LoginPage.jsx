@@ -134,7 +134,7 @@ const LoginPage = ({
       } else {
         // signin
         signin(credentials.email, credentials.password, () =>
-          history.push("/")
+          history.push("/watch-list/bitcoin")
         );
       }
     }
@@ -145,7 +145,6 @@ const LoginPage = ({
   return (
     <LoginCard>
       <h1>Coin Portfolio</h1>
-      
       <h2>
         {reset ? "Reset password" : newUser ? "Create an account" : "Log In"}
       </h2>

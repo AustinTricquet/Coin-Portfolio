@@ -28,21 +28,30 @@ function App({ auth, updateWatchList, getCoinGeckoKeys, fetchCoinData, selectCoi
   `;
 
   useEffect(() => {
-    if (auth.isEmpty === false) {
-      updateWatchList();
-      getCoinGeckoKeys();
+    async function x() {
+      if (auth.isEmpty === false) {
+        getCoinGeckoKeys();
+        //await updateWatchList();
+        
+      }
     }
+    x()
   })
 
   const renderCoin = (routerProps) => {
-    console.log("router props: ",routerProps)
+    console.log("router props: ",window.history)
     let coinID = routerProps.location.pathname.slice(12)
     console.log("coinID: ", coinID)
     let coinList = [{newID: coinID}]
     //fetchCoinData(coinList);
-    updateWatchList()
-    
-    selectCoin(coinID)
+    //updateWatchList()
+    async function x() {
+      await updateWatchList();
+      selectCoin(coinID)
+    }
+    x()
+    //routerProps.history.push("/")
+    //updateWatchList()
     
     //updateWatchList();
     //getCoinGeckoKeys();

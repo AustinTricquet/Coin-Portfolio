@@ -77,7 +77,8 @@ import {
       //dispatch(selectCoin(coinData[0].id));
       //}
       //console.log("SELECTED COIN: ", selectedCoin)
-      dispatch(refreshDisplayList())
+      //await dispatch(selectCoin(coinData[0].id))
+      //dispatch(refreshDisplayList())
       
     } catch {
       dispatch({
@@ -92,9 +93,18 @@ import {
       const state = store.getState();
       const watchList = state.watchListReducer.watchList;
       const selectedCoin = state.watchListReducer.selectedCoin;
-      console.log('SELECTED COIN: ', selectedCoin[0].id)
-      const watchList_Display = watchList.filter(coin => coin.id !== selectedCoin[0].id);
-      console.log('ABOUT TO DISPATCH NEW DISPLAY LIST: ', watchList_Display)
+      console.log("SELECTED COIN STATE: ", selectedCoin)
+      let watchList_Display = []
+      if (selectedCoin.length === 1) {
+        console.log('SELECTED COIN: ', selectedCoin[0].id)
+        watchList_Display = watchList.filter(coin => coin.id !== selectedCoin[0].id);
+        console.log('ABOUT TO DISPATCH NEW DISPLAY LIST: ', watchList_Display)
+
+      } else {
+        console.log('triggered else')
+        watchList_Display = watchList
+      }
+      
 
       dispatch({
         type: DISPLAY_WATCH_LIST_SUCCESS,
@@ -138,14 +148,17 @@ import {
 
       selectedCoin.push(coinData);
 
-      dispatch(refreshDisplayList());
-
+      
+      //window.history.push("/")
       console.log("ABOUT TO DISPATCH SELECTED COIN: ", coinData);
-
-      dispatch({
+      console.log('History: ', window.history)
+      //window.history.push("/")
+      await dispatch({
         type: SELECTED_WATCH_LIST_COIN_SUCCESS,
         payload: coinData
       })
+      dispatch(refreshDisplayList());
+      //window.history.push("/watch-list/ethereum")
 
       
 
