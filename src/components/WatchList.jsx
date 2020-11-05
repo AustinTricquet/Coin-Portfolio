@@ -4,7 +4,8 @@ import SearchSuggestedCoin from './SearchSuggestedCoin';
 import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { handleInputChange } from '../store/actions/watchListActions';
+import { handleInputChange, selectCoin } from '../store/actions/watchListActions';
+import { withRouter } from 'react-router-dom';
 
 const Div = styled.div`
   height: 87vh;
@@ -35,22 +36,34 @@ const InputGroup = styled.form`
       border: 1px solid red; }
 `;
 
-const WatchList = ({watchList_Display, handleInputChange, suggestions, selectedCoin}) => {
+const WatchList = withRouter(({history, watchList_Display, handleInputChange, suggestions, selectedCoin, selectCoin}) => {
     function handleChange(e) {
         e.preventDefault();
         handleInputChange(e.target.value);
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
       e.preventDefault();
-      console.log("ENTER HAS BEEN HIT");
+      document.getElementById("watchListSearch").reset();
+      handleInputChange("");
+      console.log("SUGESSTIONSSSSSSSSSSSSSS: ", suggestions)
+      // if statement helps prevent error when submitting form before suggestions are pulled.
+      if (suggestions.length > 0) {
+        let targetSuggestion = suggestions[0].id;
+        selectCoin(targetSuggestion);
+        let route = "/watch-list/" + targetSuggestion;
+        history.push(route);
+      } else {
+        // essentially it needs to act similar to handleinputchange function where it looks up suggestions based on text input and returns the first suggestion for submission.
+        console.log("BUILD FUNCTION TO HANDLE PRESUBMITTED SUGGESTIONS") 
+      }
+      
     }
 
     return (
         <Div>
-            <InputGroup>
+            <InputGroup onSubmit={handleSubmit} id="watchListSearch">
                 <input type="text"
-                    onClick={handleSubmit}
                     placeholder="Search"
                     onChange={handleChange}
                 />
@@ -90,7 +103,7 @@ const WatchList = ({watchList_Display, handleInputChange, suggestions, selectedC
             }
         </Div>
     )
-}
+})
 
 function mapStateToProps(state) {
     return {
@@ -102,7 +115,8 @@ function mapStateToProps(state) {
   
 function mapDispatchToProps(dispatch) {
   return {
-    handleInputChange: (query) => dispatch(handleInputChange(query))
+    handleInputChange: (query) => dispatch(handleInputChange(query)),
+    selectCoin: (coinID) => dispatch(selectCoin(coinID))
   };
 }
 

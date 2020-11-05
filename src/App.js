@@ -32,9 +32,6 @@ function App({ auth, updateWatchList, getCoinGeckoKeys, fetchCoinData, selectCoi
     async function x() {
       if (auth.isEmpty === false) {
         getCoinGeckoKeys();
-        //console.log('Watchlist in render: ', watchList)
-        //await updateWatchList();
-        
       }
     }
     x()
@@ -43,43 +40,24 @@ function App({ auth, updateWatchList, getCoinGeckoKeys, fetchCoinData, selectCoi
   const renderCoin = (routerProps) => {
     console.log("router props: ", routerProps)
     let coinID = routerProps.location.pathname.slice(12)
-
-    
-
     
     console.log("coinID: ", coinID)
     if (coinID === "") {
-      //console.log('Watchlist in render: ', watchList)
       coinID = 'bitcoin'
     }
-    // causes infinte loop
-    //state.watchListReducer.suggestions = []
-
-    //let coinList = [{newID: coinID}]
-    //fetchCoinData(coinList);
-    //updateWatchList()
-    async function x() {
+    async function loadWatchListData() {
       await updateWatchList();
       await selectCoin(coinID);
-      const state = store.getState();
-      console.log("STATE: ", state)
-      const historyLength = state.watchListReducer.historyLength;
-      const historyLen = routerProps.history.length;
-      console.log("History len: ", historyLen, historyLength)
+      //const state = store.getState();
+      //console.log("STATE: ", state)
+      //const historyLength = state.watchListReducer.historyLength;
+      //const historyLen = routerProps.history.length;
+      //console.log("History len: ", historyLen, historyLength)
       //updateSuggestions()
-      //console.log(' suggestions are.....: ',suggestions)
-      
-      
+      //console.log(' suggestions are.....: ',suggestions)      
     }
 
-   
-    x()
-    //routerProps.history.push("/")
-    //updateWatchList()
-    
-    //updateWatchList();
-    //getCoinGeckoKeys();
-    //console.log('found the coin in route!: ', coinData, coinData.length);
+    loadWatchListData()
     return(<WatchListPage/>)
 
   }
