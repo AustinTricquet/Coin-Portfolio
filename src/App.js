@@ -14,11 +14,11 @@ import styled from 'styled-components';
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { Switch, Route } from 'react-router-dom';
-import { fetchCoinData, updateWatchList, selectCoin, updateSuggestions } from "./store/actions/watchListActions";
+import { fetchCoinData, updateWatchList, selectCoin } from "./store/actions/watchListActions";
 import { getCoinGeckoKeys } from "./store/actions/onSigninActions";
 import {store} from './index';
 
-function App({ auth, updateWatchList, getCoinGeckoKeys, fetchCoinData, selectCoin, updateSuggestions }) {
+function App({ auth, updateWatchList, getCoinGeckoKeys, fetchCoinData, selectCoin }) {
   const Content = styled.div`
     padding-bottom: 4em;
   `;
@@ -47,14 +47,7 @@ function App({ auth, updateWatchList, getCoinGeckoKeys, fetchCoinData, selectCoi
     }
     async function loadWatchListData() {
       await updateWatchList();
-      await selectCoin(coinID);
-      //const state = store.getState();
-      //console.log("STATE: ", state)
-      //const historyLength = state.watchListReducer.historyLength;
-      //const historyLen = routerProps.history.length;
-      //console.log("History len: ", historyLen, historyLength)
-      //updateSuggestions()
-      //console.log(' suggestions are.....: ',suggestions)      
+      await selectCoin(coinID);    
     }
 
     loadWatchListData()
@@ -161,8 +154,7 @@ function mapDispatchToProps(dispatch) {
     updateWatchList: () => dispatch(updateWatchList()),
     getCoinGeckoKeys: () => dispatch(getCoinGeckoKeys()),
     fetchCoinData: (list) => dispatch(fetchCoinData(list)),
-    selectCoin: (coinID) => dispatch(selectCoin(coinID)),
-    updateSuggestions: (list) => dispatch(updateSuggestions(list))
+    selectCoin: (coinID) => dispatch(selectCoin(coinID))
   };
 }
 

@@ -134,7 +134,7 @@ const LoginPage = ({
       } else {
         // signin
         signin(credentials.email, credentials.password, () =>
-          history.push("/watch-list/bitcoin")
+          history.push("/")
         );
       }
     }

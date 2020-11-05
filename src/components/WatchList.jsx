@@ -46,11 +46,9 @@ const WatchList = withRouter(({history, watchList_Display, handleInputChange, su
       e.preventDefault();
       document.getElementById("watchListSearch").reset();
       handleInputChange("");
-      console.log("SUGESSTIONSSSSSSSSSSSSSS: ", suggestions)
       // if statement helps prevent error when submitting form before suggestions are pulled.
       if (suggestions.length > 0) {
         let targetSuggestion = suggestions[0].id;
-        selectCoin(targetSuggestion);
         let route = "/watch-list/" + targetSuggestion;
         history.push(route);
       } else {

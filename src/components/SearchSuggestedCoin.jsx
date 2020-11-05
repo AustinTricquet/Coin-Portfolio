@@ -45,12 +45,11 @@ const SubText = styled.h5`
     color: #8993A8;
 `;
 
-const SearchSuggestedCoin = withRouter(({ history, handleInputChange, selectCoin, coinID, name, symbol, image, price, dayPercentChange }) => {
+const SearchSuggestedCoin = withRouter(({ history, handleInputChange, coinID, name, symbol, image, price, dayPercentChange }) => {
 
     function handleClick() {
         document.getElementById("watchListSearch").reset();
         handleInputChange("");
-        selectCoin(coinID);
         let route = "/watch-list/" + coinID;
         history.push(route);
     }

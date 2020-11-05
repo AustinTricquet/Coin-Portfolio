@@ -6,12 +6,9 @@ import {
     SELECTED_WATCH_LIST_COIN_SUCCESS,
     SELECTED_WATCH_LIST_COIN_ERROR,
     DISPLAY_WATCH_LIST_SUCCESS,
-    
     DISPLAY_WATCH_LIST_ERROR,
     UPDATE_SEARCH_SUGGESTIONS_SUCCESS,
     UPDATE_SEARCH_SUGGESTIONS_ERROR,
-
-    UPDATE_HISTORY_LENGTH
   } from "./actionTypes";
   import { beginApiCall, apiCallError } from "./apiStatusActions";
   import axios from 'axios';
@@ -21,7 +18,6 @@ import {
   export const fetchCoinData = (coinList) => async dispatch => {
     try {
         dispatch(beginApiCall());
-        console.log("COINLIST SUBMITTED FOR LOOKUP: ", coinList);
         const coinDataPromises = coinList.map(coin => axios.get('https://api.coingecko.com/api/v3/coins/' + coin.id));
         const coinDataResponses = await Promise.all(coinDataPromises);
         const coinData = coinDataResponses.map(function(response) {
@@ -45,13 +41,11 @@ import {
             dayPercentChange: data.market_data.price_change_percentage_24h_in_currency.usd.toFixed(2)
           }
         })
-        console.log('COIN DATA: ',coinData)
-
+        console.log('FETCH COIN DATA OUTPUT: ',coinData)
         dispatch({
           type: FETCH_COIN_DATA_SUCCESS,
           payload: "Fetch Coin Data from 'Coin Gecko API' Success!"
         })
-        
         return(coinData)
        
     } catch (err) {
@@ -64,39 +58,29 @@ import {
     }
   };
 
-  export const updateSuggestions = (int) => async dispatch => {
-    try {
-      
-      dispatch({
-        type: UPDATE_HISTORY_LENGTH,
-        payload: int
-      })
-
-    } catch {
-      console.log("error with updating suggestions")
-    }
-  }
+  //export const updateSuggestions = (coin) => async dispatch => {
+  //  try { 
+   //   console.log("UPDATE SUGGESTIONS OUTPUT: ", coin)
+   //   dispatch({
+   //     type: UPDATE_HISTORY_LENGTH,
+    //    payload: coin
+   //   })
+   // } catch {
+  //    console.log("error with updating suggestions")
+  //  }
+ // }
 
   export const updateWatchList = () => async dispatch => {
     try {
       const state = store.getState();
-      console.log("STATE: ", state)
       const watchList = state.watchListReducer.watchList;
-      //const selectedCoin = state.watchListReducer.selectCoin;
+      console.log("CALLING 'FETCH COIN DATA' FROM 'UPDATE WATCH LIST'")
       const coinData = await dispatch(fetchCoinData(watchList))
-      console.log("ABOUT TO DISPATCH COIN DATA: ", coinData)
+      console.log("UPDATE WATCH LIST OUTPUT: ", coinData)
       dispatch({
           type: UPDATE_WATCH_LIST_SUCCESS,
           payload: coinData
       });
-
-      //if (selectedCoin === []) {
-      //dispatch(selectCoin(coinData[0].id));
-      //}
-      //console.log("SELECTED COIN: ", selectedCoin)
-      //await dispatch(selectCoin(coinData[0].id))
-      //dispatch(refreshDisplayList())
-      
     } catch {
       dispatch({
         type: UPDATE_WATCH_LIST_ERROR,
@@ -109,21 +93,14 @@ import {
     try {
       const state = store.getState();
       const watchList = state.watchListReducer.watchList;
-      console.log('WATCH LIST PLEASEE: ', watchList)
       const selectedCoin = state.watchListReducer.selectedCoin;
-      console.log("SELECTED COIN STATE: ", selectedCoin)
       let watchList_Display = []
       if (selectedCoin.length === 1) {
-        console.log('SELECTED COIN: ', selectedCoin[0].id)
         watchList_Display = watchList.filter(coin => coin.id !== selectedCoin[0].id);
-        console.log('ABOUT TO DISPATCH NEW DISPLAY LIST: ', watchList_Display)
-
       } else {
-        console.log('triggered else')
         watchList_Display = watchList
       }
-      
-
+      console.log("REFRESH DISPLAY LIST OUTPUT: ", watchList_Display);
       dispatch({
         type: DISPLAY_WATCH_LIST_SUCCESS,
         payload: watchList_Display
@@ -138,48 +115,17 @@ import {
 
   export const selectCoin = (coinID) => async dispatch => {
     try {
-      console.log('COIN SELECTED: ', coinID);
-      const state = store.getState();
-      
-      const suggestedCoins = state.watchListReducer.suggestions;
-      //console.log("WATCHLIST: ",watchList )
-      console.log("SUGGESTIONS: ",suggestedCoins)
       let selectedCoin = [];
-      //let foundCoinWatchList = watchList.find((coin) => coin.id === coinID)
-      //let foundCoinsuggestion = suggestedCoins.find((coin) => coin.id === coinID)
-
+      console.log("CALLING 'FETCH COIN DATA' from 'SELECT COIN'");
       const coinData = await dispatch(fetchCoinData([{id: coinID}]));
-      //console.log("COIN FOUND WATCHLIST: ", foundCoinWatchList);
-      //console.log("COIN FOUND SUGGESTIONS: ", foundCoinsuggestion);
-      //if (foundCoinWatchList === undefined) {
-        //if (foundCoinsuggestion === undefined) {
-          //dispatch({
-            //type: SELECTED_WATCH_LIST_COIN_ERROR,
-           // payload: "Something went wrong selecting a coin. Selection is not in suggestions or watchlist"
-         // })
-       // } else { 
-          //selectedCoin.push(foundCoinsuggestion)
-       // }
-      //} else { 
-       // selectedCoin.push(foundCoinWatchList)
-      //}
-
       selectedCoin.push(coinData);
-
-      
-      //window.history.push("/")
-      console.log("ABOUT TO DISPATCH SELECTED COIN: ", coinData);
-      //console.log('History: ', window.history)
-      //window.history.push("/")
+      console.log("SELECT COIN OUTPUT: ", coinData);
       await dispatch({
         type: SELECTED_WATCH_LIST_COIN_SUCCESS,
         payload: coinData
       })
+      console.log("CALLING 'REFRESH DISPLAY' LIST FROM 'SELECT COIN'");
       await dispatch(refreshDisplayList());
-      
-      //window.history.push("/watch-list/ethereum")
-
-      
 
     } catch {
       dispatch({
@@ -190,7 +136,6 @@ import {
   };
 
   export const handleInputChange = (inputValue) => async dispatch => {
-    console.log('SEARCH INPUT VALUE: ', inputValue)
     try {
       if (inputValue !== "") {
         // Retreive stored coinGecko API database keys
@@ -208,7 +153,7 @@ import {
         // Get search suggestions from coin paprikia API
         const suggestedCoinsResponse = await axios.get(`https://api.coinpaprika.com/v1/search/?q=${inputValue}&c=currencies&limit=5`)
         let suggestedCoins_CoinKeys = suggestedCoinsResponse.data.currencies.map(function(response) { 
-          console.log("SUGGESTED COINS RESPONSE: ", response);
+          //console.log("SUGGESTED COINS RESPONSE: ", response);
       
           // Various searching methods to find coins in coinGecko API Database from search suggestions
           let geckoData = coinKeys.data.find((element) => (element.name === response.name));
@@ -241,10 +186,10 @@ import {
           const coinKey = coinKeys.data.filter((element) => (element.name.toLowerCase().includes(inputValue.toLowerCase()))).slice(0, (5 - suggestedCoins_CoinKeys.length));
           coinKey.map(coin => suggestedCoins_CoinKeys.push({ id: coin.id}))}
 
-        console.log("SUGGESTED COINS KEYS: ", suggestedCoins_CoinKeys)
-
+        //console.log("SUGGESTED COINS KEYS: ", suggestedCoins_CoinKeys)
+        console.log("CALLING 'FETCH COIN DATA' FROM 'HANDLE INPUT CHANGE'");
         let suggestedCoins = await dispatch(fetchCoinData(suggestedCoins_CoinKeys))
-        console.log("SUGGESTED COINS AFTER DISPATCH: ", suggestedCoins);
+        //console.log("SUGGESTED COINS AFTER DISPATCH: ", suggestedCoins);
         
         // filter out any duplicate results (can happen during forks of various coins)
         suggestedCoins = suggestedCoins.filter((coin, index, self) => 
@@ -252,15 +197,14 @@ import {
              t.place === coin.place && t.name === coin.name
            ))
         )
-
-        console.log('SUGGESTED COINS: ', suggestedCoins);
-          
+        console.log("'HANDLE INPUT CHANGE' (SUGGESTED COINS) OUTPUT: ", suggestedCoins);
         dispatch({
           type: UPDATE_SEARCH_SUGGESTIONS_SUCCESS,
           payload: suggestedCoins
         })
       } else {
-        console.log('else activated')
+        //console.log('else activated')
+        console.log("'HANDLE INPUT CHANGE' (SUGGESTED COINS) OUTPUT: []");
         dispatch({
           type: UPDATE_SEARCH_SUGGESTIONS_SUCCESS,
           payload: []
