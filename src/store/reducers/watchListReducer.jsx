@@ -12,7 +12,9 @@ import {
     UPDATE_SEARCH_SUGGESTIONS_SUCCESS,
     UPDATE_SEARCH_SUGGESTIONS_ERROR,
     DISPLAY_WATCH_LIST_SUCCESS,
-    DISPLAY_WATCH_LIST_ERROR
+    DISPLAY_WATCH_LIST_ERROR,
+
+    UPDATE_HISTORY_LENGTH
   } from "../actions/actionTypes";
   
   const INITIAL_STATE = {
@@ -53,6 +55,7 @@ import {
     selectedCoin: [],
     suggestions: [],
     watchList_Display: [],
+    historyLength: [],
     watchListMsg: null,
     error: null
     }
@@ -75,6 +78,10 @@ import {
       action.type === UPDATE_SEARCH_SUGGESTIONS_SUCCESS
     ) {
       return { ...state, suggestions: action.payload };
+    } else if (
+      action.type === UPDATE_HISTORY_LENGTH
+    ) {
+      return { ...state, historyLength: action.payload}
     } else if (
       action.type === SELECTED_WATCH_LIST_COIN_SUCCESS
     ) {

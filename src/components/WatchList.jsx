@@ -37,6 +37,7 @@ const InputGroup = styled.form`
 
 const WatchList = ({watchList_Display, handleInputChange, suggestions, selectedCoin}) => {
     function handleChange(e) {
+        e.preventDefault();
         handleInputChange(e.target.value);
     }
 

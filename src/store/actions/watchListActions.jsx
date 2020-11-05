@@ -6,9 +6,12 @@ import {
     SELECTED_WATCH_LIST_COIN_SUCCESS,
     SELECTED_WATCH_LIST_COIN_ERROR,
     DISPLAY_WATCH_LIST_SUCCESS,
+    
     DISPLAY_WATCH_LIST_ERROR,
     UPDATE_SEARCH_SUGGESTIONS_SUCCESS,
-    UPDATE_SEARCH_SUGGESTIONS_ERROR
+    UPDATE_SEARCH_SUGGESTIONS_ERROR,
+
+    UPDATE_HISTORY_LENGTH
   } from "./actionTypes";
   import { beginApiCall, apiCallError } from "./apiStatusActions";
   import axios from 'axios';
@@ -60,6 +63,19 @@ import {
       });
     }
   };
+
+  export const updateSuggestions = (int) => async dispatch => {
+    try {
+      
+      dispatch({
+        type: UPDATE_HISTORY_LENGTH,
+        payload: int
+      })
+
+    } catch {
+      console.log("error with updating suggestions")
+    }
+  }
 
   export const updateWatchList = () => async dispatch => {
     try {

@@ -2,7 +2,8 @@ import React from 'react'
 import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { selectCoin } from '../store/actions/watchListActions';
+import { selectCoin,  handleInputChange } from '../store/actions/watchListActions';
+import { withRouter } from 'react-router-dom';
 
 const Div = styled.div`
     border-bottom: 1px solid #3A4A5E;
@@ -44,10 +45,17 @@ const SubText = styled.h5`
     color: #8993A8;
 `;
 
-const SearchSuggestedCoin = ({ selectCoin, coinID, name, symbol, image, price, dayPercentChange }) => {
+const SearchSuggestedCoin = withRouter(({ history, handleInputChange, selectCoin, coinID, name, symbol, image, price, dayPercentChange }) => {
 
     function handleClick() {
         selectCoin(coinID);
+        let route = "/watch-list/" + coinID
+        
+        //await selectCoin(coinID);
+        
+        
+        handleInputChange("")
+        history.push(route);
     }
 
     return (
@@ -67,7 +75,7 @@ const SearchSuggestedCoin = ({ selectCoin, coinID, name, symbol, image, price, d
             </Balance> 
         </Div>
     )
-}
+})
 
 function mapStateToProps(state) {
     return {
@@ -77,7 +85,8 @@ function mapStateToProps(state) {
   
 function mapDispatchToProps(dispatch) {
     return {
-        selectCoin: (coinID) => dispatch(selectCoin(coinID))
+        selectCoin: (coinID) => dispatch(selectCoin(coinID)),
+        handleInputChange: (query) => dispatch(handleInputChange(query))
     };
 }
 

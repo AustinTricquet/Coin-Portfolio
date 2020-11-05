@@ -14,10 +14,11 @@ import styled from 'styled-components';
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { Switch, Route } from 'react-router-dom';
-import { fetchCoinData, updateWatchList, selectCoin } from "./store/actions/watchListActions";
+import { fetchCoinData, updateWatchList, selectCoin, updateSuggestions } from "./store/actions/watchListActions";
 import { getCoinGeckoKeys } from "./store/actions/onSigninActions";
+import {store} from './index';
 
-function App({ auth, updateWatchList, getCoinGeckoKeys, fetchCoinData, selectCoin }) {
+function App({ auth, updateWatchList, getCoinGeckoKeys, fetchCoinData, selectCoin, updateSuggestions }) {
   const Content = styled.div`
     padding-bottom: 4em;
   `;
@@ -40,22 +41,35 @@ function App({ auth, updateWatchList, getCoinGeckoKeys, fetchCoinData, selectCoi
   })
 
   const renderCoin = (routerProps) => {
-    console.log("router props: ",window.history)
+    console.log("router props: ", routerProps)
     let coinID = routerProps.location.pathname.slice(12)
 
+    
 
+    
     console.log("coinID: ", coinID)
     if (coinID === "") {
       //console.log('Watchlist in render: ', watchList)
       coinID = 'bitcoin'
     }
+    // causes infinte loop
+    //state.watchListReducer.suggestions = []
 
     //let coinList = [{newID: coinID}]
     //fetchCoinData(coinList);
     //updateWatchList()
     async function x() {
       await updateWatchList();
-      selectCoin(coinID)
+      await selectCoin(coinID);
+      const state = store.getState();
+      console.log("STATE: ", state)
+      const historyLength = state.watchListReducer.historyLength;
+      const historyLen = routerProps.history.length;
+      console.log("History len: ", historyLen, historyLength)
+      //updateSuggestions()
+      //console.log(' suggestions are.....: ',suggestions)
+      
+      
     }
 
    
@@ -160,7 +174,7 @@ function App({ auth, updateWatchList, getCoinGeckoKeys, fetchCoinData, selectCoi
 function mapStateToProps(state) {
   return {
     auth: state.firebaseReducer.auth,
-    
+    historyLength: state.watchListReducer.historyLength
   };
 }
 
@@ -169,7 +183,8 @@ function mapDispatchToProps(dispatch) {
     updateWatchList: () => dispatch(updateWatchList()),
     getCoinGeckoKeys: () => dispatch(getCoinGeckoKeys()),
     fetchCoinData: (list) => dispatch(fetchCoinData(list)),
-    selectCoin: (coinID) => dispatch(selectCoin(coinID))
+    selectCoin: (coinID) => dispatch(selectCoin(coinID)),
+    updateSuggestions: (list) => dispatch(updateSuggestions(list))
   };
 }
 
