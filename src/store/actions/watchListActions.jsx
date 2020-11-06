@@ -9,6 +9,8 @@ import {
     DISPLAY_WATCH_LIST_ERROR,
     UPDATE_SEARCH_SUGGESTIONS_SUCCESS,
     UPDATE_SEARCH_SUGGESTIONS_ERROR,
+    ADD_COIN_SUCCESS,
+    REMOVE_COIN_SUCCESS
   } from "./actionTypes";
   import { beginApiCall, apiCallError } from "./apiStatusActions";
   import axios from 'axios';
@@ -69,6 +71,32 @@ import {
   //    console.log("error with updating suggestions")
   //  }
  // }
+
+  export const add = (selectedCoin) => async dispatch => {
+    const state = store.getState();
+    const watchList = state.watchListReducer.watchList;
+
+    const newWatchList = watchList;
+    newWatchList.push(selectedCoin[0]);
+    console.log("NEW WATCH LIST: ", newWatchList)
+    dispatch({
+      type: ADD_COIN_SUCCESS,
+      payload: newWatchList
+    })
+  }
+
+  export const remove = (selectedCoin) => async dispatch => {
+    const state = store.getState();
+    const watchList = state.watchListReducer.watchList;
+
+
+    const newWatchList = watchList.filter((coin) => (coin.id !== selectedCoin[0].id));
+    console.log('newWatchList: ', newWatchList)
+    dispatch({
+      type: REMOVE_COIN_SUCCESS,
+      payload: newWatchList
+    })
+  }
 
   export const updateWatchList = () => async dispatch => {
     try {

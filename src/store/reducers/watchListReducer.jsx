@@ -61,11 +61,18 @@ import {
     }
   
   export default function(state = INITIAL_STATE, action) {
-    if (action.type === ADD_COIN_SUCCESS || 
-        action.type === REMOVE_COIN_SUCCESS || 
-        action.type === FETCH_COIN_DATA_SUCCESS
+    if ( 
+      action.type === FETCH_COIN_DATA_SUCCESS
     ) {
       return { ...state, watchListMsg: "" };
+    } else if (
+      action.type === ADD_COIN_SUCCESS
+    ) {
+      return { ...state, watchList: action.payload}
+    } else if (
+      action.type === REMOVE_COIN_SUCCESS
+    ) {
+      return { ...state, watchList: action.payload}
     } else if (
       action.type === DISPLAY_WATCH_LIST_SUCCESS
     ) {

@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { selectCoin } from '../store/actions/watchListActions';
+import { selectCoin, add, remove } from '../store/actions/watchListActions';
 
 const Div = styled.div`
     background-color: var(--nav-primary-color);
@@ -71,6 +71,14 @@ const SubText = styled.p`
     font-size: 0.75rem;
 `;
 
+const Button = styled.button`
+    height: 3rem;
+    width: 3rem;
+    background-color: white;
+    border-radius: 100%;
+    margin: 0rem 1rem 0rem 0rem;
+`;
+
 const Table = styled.table`
     width: 100%;
 
@@ -85,7 +93,39 @@ const Table = styled.table`
     }
 `;
 
-const CoinBasicInfo = ({selectedCoin}) => {
+const CoinBasicInfo = ({selectedCoin, watchList, add, remove}) => {
+    function addCoin() {
+        console.log('ADD COIN')
+        add(selectedCoin)
+    }
+
+    function removeCoin() {
+        console.log('REMOVE COIN')
+        remove(selectedCoin)
+    }
+
+    let buttonCondition = null;
+
+    
+    try {
+        const coin = watchList.find((coin) => (coin.id === selectedCoin[0].id));
+        console.log("Coin: ", coin)
+        if (coin !== undefined) {
+            buttonCondition = <Button onClick={removeCoin}>REMOVE</Button>
+        } else {
+            buttonCondition = <Button onClick={addCoin}>ADD</Button>
+        }
+    } catch {
+        
+    }
+    
+        
+
+        
+        
+    
+
+
     return (
         <>
             {
@@ -99,12 +139,15 @@ const CoinBasicInfo = ({selectedCoin}) => {
                                     <HeadSubText>{symbol}</HeadSubText>
                                 </div>
                             </Coin>
+                            
                             <Price>
                                 <div>
                                     <h1>${price}</h1>
                                     <HeadSubText>{dayPercentChange}%</HeadSubText>
                                 </div>
                             </Price> 
+                            {buttonCondition}
+                            
                         </Header>
                         <ContentBlock>
                             <Table>
@@ -157,13 +200,16 @@ const CoinBasicInfo = ({selectedCoin}) => {
 
 function mapStateToProps(state) {
     return {
-        selectedCoin: state.watchListReducer.selectedCoin
+        selectedCoin: state.watchListReducer.selectedCoin,
+        watchList: state.watchListReducer.watchList
     };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-      selectCoin: (coinID) => dispatch(selectCoin(coinID))
+      selectCoin: (coinID) => dispatch(selectCoin(coinID)),
+      add: (selectedCoin) => dispatch(add(selectedCoin)),
+      remove: (selectedCoin) => dispatch(remove(selectedCoin))
   };
 }
 
