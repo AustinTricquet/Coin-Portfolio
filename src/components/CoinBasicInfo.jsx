@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { selectCoin, add, remove } from '../store/actions/watchListActions';
+import { withRouter } from 'react-router-dom';
 
 const Div = styled.div`
     background-color: var(--nav-primary-color);
@@ -93,43 +94,21 @@ const Table = styled.table`
     }
 `;
 
-const CoinBasicInfo = ({selectedCoin, watchList, add, remove}) => {
+const CoinBasicInfo = withRouter(({history, selectedCoin, add, remove}) => {
     function addCoin() {
-        console.log('ADD COIN')
         add(selectedCoin)
+        history.push("/watch-list/"+selectedCoin[0].id);
     }
 
     function removeCoin() {
-        console.log('REMOVE COIN')
         remove(selectedCoin)
+        history.push("/watch-list/"+selectedCoin[0].id);
     }
-
-    let buttonCondition = null;
-
-    
-    try {
-        const coin = watchList.find((coin) => (coin.id === selectedCoin[0].id));
-        console.log("Coin: ", coin)
-        if (coin !== undefined) {
-            buttonCondition = <Button onClick={removeCoin}>REMOVE</Button>
-        } else {
-            buttonCondition = <Button onClick={addCoin}>ADD</Button>
-        }
-    } catch {
-        
-    }
-    
-        
-
-        
-        
-    
-
 
     return (
         <>
             {
-                selectedCoin.map( ({id, name, symbol, image, price, dayPercentChange, dayVolume, marketCap, rank, ATH, ATHDate, ATL, ATLDate, website}) => 
+                selectedCoin.map( ({id, name, symbol, image, price, dayPercentChange, dayVolume, marketCap, rank, ATH, ATHDate, ATL, ATLDate, website, onWatchList}) => 
                         <Div key={id}>
                         <Header>
                             <Coin>
@@ -138,15 +117,14 @@ const CoinBasicInfo = ({selectedCoin, watchList, add, remove}) => {
                                     <h1>{name}</h1>
                                     <HeadSubText>{symbol}</HeadSubText>
                                 </div>
-                            </Coin>
-                            
+                            </Coin>      
                             <Price>
                                 <div>
                                     <h1>${price}</h1>
                                     <HeadSubText>{dayPercentChange}%</HeadSubText>
                                 </div>
                             </Price> 
-                            {buttonCondition}
+                            { onWatchList === false ? <Button onClick={addCoin}>ADD</Button> : <Button onClick={removeCoin}>REMOVE</Button>}
                             
                         </Header>
                         <ContentBlock>
@@ -190,18 +168,15 @@ const CoinBasicInfo = ({selectedCoin, watchList, add, remove}) => {
                             <p>Website: <a href={website}>{website}</a></p>
                         </ContentBlock>
                     </Div>
-            
-        
                 )
             }
         </>
     )
-}
+})
 
 function mapStateToProps(state) {
     return {
         selectedCoin: state.watchListReducer.selectedCoin,
-        watchList: state.watchListReducer.watchList
     };
 }
 

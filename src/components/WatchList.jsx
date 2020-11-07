@@ -4,7 +4,7 @@ import SearchSuggestedCoin from './SearchSuggestedCoin';
 import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { handleInputChange, selectCoin } from '../store/actions/watchListActions';
+import { handleInputChange } from '../store/actions/watchListActions';
 import { withRouter } from 'react-router-dom';
 
 const Div = styled.div`
@@ -36,7 +36,7 @@ const InputGroup = styled.form`
       border: 1px solid red; }
 `;
 
-const WatchList = withRouter(({history, watchList_Display, handleInputChange, suggestions, selectedCoin, selectCoin}) => {
+const WatchList = withRouter(({history, watchList_Display, handleInputChange, suggestions, selectedCoin}) => {
     function handleChange(e) {
         e.preventDefault();
         handleInputChange(e.target.value);
@@ -114,7 +114,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     handleInputChange: (query) => dispatch(handleInputChange(query)),
-    selectCoin: (coinID) => dispatch(selectCoin(coinID))
   };
 }
 

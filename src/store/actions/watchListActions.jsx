@@ -15,15 +15,30 @@ import {
   import { beginApiCall, apiCallError } from "./apiStatusActions";
   import axios from 'axios';
   import {store} from '../../index';
+import { findAllByTestId } from "@testing-library/react";
   
   // Fetch Coin Data for watch list
   export const fetchCoinData = (coinList) => async dispatch => {
+    const state = store.getState();
+    const watchList = state.watchListReducer.watchList;
     try {
         dispatch(beginApiCall());
         const coinDataPromises = coinList.map(coin => axios.get('https://api.coingecko.com/api/v3/coins/' + coin.id));
         const coinDataResponses = await Promise.all(coinDataPromises);
         const coinData = coinDataResponses.map(function(response) {
+          // add if statement to see if in watchlist
+
           const data = response.data;
+
+          let onWatchList = watchList.find((coin) => (coin.id === data.id));
+          console.log("inWatchList: ", onWatchList);
+
+          if ( onWatchList === undefined) {
+            onWatchList = false;
+          } else {
+            onWatchList = true;
+          }
+
           return {
             key: data.id,
             id: data.id,
@@ -40,10 +55,15 @@ import {
             ATHDate: data.market_data.ath_date.usd.slice(0,10),
             ATL: data.market_data.atl.usd,
             ATLDate: data.market_data.atl_date.usd.slice(0,10),
-            dayPercentChange: data.market_data.price_change_percentage_24h_in_currency.usd.toFixed(2)
+            dayPercentChange: data.market_data.price_change_percentage_24h_in_currency.usd.toFixed(2),
+            onWatchList: onWatchList
           }
         })
         console.log('FETCH COIN DATA OUTPUT: ',coinData)
+        
+        //working on 
+        
+        
         dispatch({
           type: FETCH_COIN_DATA_SUCCESS,
           payload: "Fetch Coin Data from 'Coin Gecko API' Success!"
@@ -60,22 +80,9 @@ import {
     }
   };
 
-  //export const updateSuggestions = (coin) => async dispatch => {
-  //  try { 
-   //   console.log("UPDATE SUGGESTIONS OUTPUT: ", coin)
-   //   dispatch({
-   //     type: UPDATE_HISTORY_LENGTH,
-    //    payload: coin
-   //   })
-   // } catch {
-  //    console.log("error with updating suggestions")
-  //  }
- // }
-
   export const add = (selectedCoin) => async dispatch => {
     const state = store.getState();
     const watchList = state.watchListReducer.watchList;
-
     const newWatchList = watchList;
     newWatchList.push(selectedCoin[0]);
     console.log("NEW WATCH LIST: ", newWatchList)
@@ -88,8 +95,6 @@ import {
   export const remove = (selectedCoin) => async dispatch => {
     const state = store.getState();
     const watchList = state.watchListReducer.watchList;
-
-
     const newWatchList = watchList.filter((coin) => (coin.id !== selectedCoin[0].id));
     console.log('newWatchList: ', newWatchList)
     dispatch({

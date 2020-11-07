@@ -46,11 +46,10 @@ const SubText = styled.h5`
     color: #8993A8;
 `;
 
-const WatchListCoin = withRouter(({ history, selectCoin, coinID, name, symbol, image, price, dayPercentChange }) => {
+const WatchListCoin = withRouter(({ history, coinID, name, symbol, image, price, dayPercentChange }) => {
 
     async function handleClick() {
-        let route = "/watch-list/" + coinID
-        history.push(route);
+        history.push("/watch-list/" + coinID);
     }
     return (
         <Div onClick={handleClick}>
