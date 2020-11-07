@@ -4,6 +4,9 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { selectCoin, add, remove } from '../store/actions/watchListActions';
 import { withRouter } from 'react-router-dom';
+import plus from '../images/plus.png';
+import minus from '../images/minus.png';
+
 
 const Div = styled.div`
     background-color: var(--nav-primary-color);
@@ -54,6 +57,15 @@ const Img = styled.img`
     margin: 0rem 1rem 0rem 0rem;
 `;
 
+const ButtonImg = styled.img`
+    height: 2.5rem;
+    width: 2.5rem;
+    pointer-events: none;
+    background-color: inherit;
+    border-radius: 100%;
+    border: 0px;
+`;
+
 const Price = styled.div`
     color: #F0F1F3;
     display: flex;
@@ -73,11 +85,18 @@ const SubText = styled.p`
 `;
 
 const Button = styled.button`
-    height: 3rem;
-    width: 3rem;
-    background-color: white;
+    height: 2.5rem;
+    width: 2.5rem;
     border-radius: 100%;
-    margin: 0rem 1rem 0rem 0rem;
+    border: 0px;
+    margin: 0.5rem 0rem 0rem 0rem;
+    :focus {
+        outline: none;
+        box-shadow: none;
+    }
+    background-color: inherit;
+    text-align: center;
+
 `;
 
 const Table = styled.table`
@@ -124,7 +143,9 @@ const CoinBasicInfo = withRouter(({history, selectedCoin, add, remove}) => {
                                     <HeadSubText>{dayPercentChange}%</HeadSubText>
                                 </div>
                             </Price> 
-                            { onWatchList === false ? <Button onClick={addCoin}>ADD</Button> : <Button onClick={removeCoin}>REMOVE</Button>}
+                        
+                            { onWatchList === false ? <Button onClick={addCoin}><ButtonImg src={plus} alt="Add"></ButtonImg></Button> : <Button onClick={removeCoin}><ButtonImg src={minus} alt="minus"></ButtonImg></Button>}
+              
                             
                         </Header>
                         <ContentBlock>
