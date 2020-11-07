@@ -17,6 +17,7 @@ const CoinChart = () => {
     return (
         <Div>
             <h1>Coin Chart!</h1>
+            <canvas id="coinChart"></canvas>
         </Div>
     )
 }
