@@ -119,10 +119,6 @@ import {
       const watchList = state.watchListReducer.watchList;
       const selectedCoin = state.watchListReducer.selectedCoin;
       let watchList_Display = [];
-
-      
-
-
       if (selectedCoin.length === 1) {
         watchList_Display = watchList.filter(coin => coin.id !== selectedCoin[0].id).sort((a,b) => (b.marketCap - a.marketCap));
       } else {
@@ -179,10 +175,11 @@ import {
         })*/
 
         // Get search suggestions from coin paprikia API
-        const suggestedCoinsResponse = await axios.get(`https://api.coinpaprika.com/v1/search/?q=${inputValue}&c=currencies&limit=5`)
+        const suggestedCoinsResponse = await axios.get(`https://api.coinpaprika.com/v1/search/?q=${inputValue}&c=currencies&limit=3`)
         let suggestedCoins_CoinKeys = suggestedCoinsResponse.data.currencies.map(function(response) { 
           //console.log("SUGGESTED COINS RESPONSE: ", response);
       
+
           // Various searching methods to find coins in coinGecko API Database from search suggestions
           let geckoData = coinKeys.data.find((element) => (element.name === response.name));
           if (geckoData === undefined) {
@@ -209,7 +206,7 @@ import {
         // filter out any coins that don't exist in coinGecko API database (returned empty)
         suggestedCoins_CoinKeys = suggestedCoins_CoinKeys.filter((coin) => (coin.id !== ""));
 
-        if (suggestedCoins_CoinKeys.length < 5) {
+        if (suggestedCoins_CoinKeys.length < 3) {
           //console.log('LAST ditch effort to find the element using what info was passed to search bar to find directly in coingecko database keys')
           const coinKey = coinKeys.data.filter((element) => (element.name.toLowerCase().includes(inputValue.toLowerCase()))).slice(0, (5 - suggestedCoins_CoinKeys.length));
           coinKey.map(coin => suggestedCoins_CoinKeys.push({ id: coin.id}))}

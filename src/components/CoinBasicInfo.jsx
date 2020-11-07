@@ -18,7 +18,7 @@ const Div = styled.div`
     border: 3px solid var(--nav-primary-color);
     padding: 1.5rem;
     width: 60%;
-    min-width: 25rem;
+    min-width: 27rem;
 `;
 
 const Header = styled.div`
