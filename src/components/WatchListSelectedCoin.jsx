@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { selectCoin,  handleInputChange } from '../store/actions/watchListActions';
+import { selectCoin } from '../store/actions/watchListActions';
 import { withRouter } from 'react-router-dom';
 
 const Div = styled.div`
@@ -11,9 +11,10 @@ const Div = styled.div`
     display: flex;
     justify-content: space-between;
     padding: 1.5rem 0rem;
-    background-color: #c9bcbe;
+    background-color: #28394F;
+    background-color: white;
     :hover {
-        background-color: white;
+        background-color: #c9bcbe;
     }
 `;
 
@@ -28,6 +29,7 @@ const Img = styled.img`
     height: 2.5rem;
     width: 2.5rem;
     pointer-events: none;
+    background-color: inherit;
     border-radius: 100%;
     margin: 0rem 1rem;
 `;
@@ -45,15 +47,11 @@ const SubText = styled.h5`
     color: #8993A8;
 `;
 
-const SearchSuggestedCoin = withRouter(({ history, handleInputChange, coinID, name, symbol, image, price, dayPercentChange }) => {
+const WatchListSelectedCoin = withRouter(({ history, coinID, name, symbol, image, price, dayPercentChange }) => {
 
-    function handleClick() {
-        document.getElementById("watchListSearch").reset();
-        handleInputChange("");
-        let route = "/watch-list/" + coinID;
-        history.push(route);
+    async function handleClick() {
+        history.push("/watch-list/" + coinID);
     }
-
     return (
         <Div onClick={handleClick}>
             <Coin>
@@ -66,7 +64,7 @@ const SearchSuggestedCoin = withRouter(({ history, handleInputChange, coinID, na
             <Balance>
                 <div>
                     <h3>${price}</h3>
-                    <SubText>{dayPercentChange}</SubText>
+                    <SubText>{dayPercentChange}%</SubText>
                 </div>
             </Balance> 
         </Div>
@@ -81,8 +79,7 @@ function mapStateToProps(state) {
   
 function mapDispatchToProps(dispatch) {
     return {
-        selectCoin: (coinID) => dispatch(selectCoin(coinID)),
-        handleInputChange: (query) => dispatch(handleInputChange(query))
+        selectCoin: (coinID) => dispatch(selectCoin(coinID))
     };
 }
 
@@ -91,4 +88,4 @@ export default compose(
       mapStateToProps,
       mapDispatchToProps
     )
-  )(SearchSuggestedCoin);
+  )(WatchListSelectedCoin);

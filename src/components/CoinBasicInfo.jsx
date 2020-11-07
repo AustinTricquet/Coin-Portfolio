@@ -10,9 +10,12 @@ import minus from '../images/minus.png';
 
 const Div = styled.div`
     background-color: var(--nav-primary-color);
+    background-color: white;
     border-radius: 1rem;
     color: var(--nav-text-color);
+    color: #28394F;
     margin: 1.5rem 0.75rem 0.75rem 1.5rem;
+    border: 3px solid var(--nav-primary-color);
     padding: 1.5rem;
     width: 60%;
     min-width: 25rem;
@@ -25,6 +28,8 @@ const Header = styled.div`
 `;
 
 const ContentBlock = styled.div`
+   
+ 
     padding: 0rem 0rem 0.5rem 0rem; 
 
     h3 {
@@ -45,7 +50,7 @@ const Coin = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #F0F1F3;
+    color: #28394F;
 `;
 
 const Img = styled.img`
@@ -67,7 +72,7 @@ const ButtonImg = styled.img`
 `;
 
 const Price = styled.div`
-    color: #F0F1F3;
+    color: #28394F;
     display: flex;
     justify-content: top;
     align-items: center;
@@ -76,11 +81,11 @@ const Price = styled.div`
 `;
 
 const HeadSubText = styled.h3`
-    color: #F0F1F3;
+    color: #8993A8;
 `;
 
 const SubText = styled.p`
-    color: #F0F1F3;
+    color: #8993A8;
     font-size: 0.75rem;
 `;
 

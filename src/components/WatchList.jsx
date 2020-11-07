@@ -1,5 +1,6 @@
 import React from 'react';
-import PortfolioCoin from './WatchListCoin';
+import WatchListCoin from './WatchListCoin';
+import WatchListSelectedCoin from './WatchListSelectedCoin';
 import SearchSuggestedCoin from './SearchSuggestedCoin';
 import styled from 'styled-components';
 import { compose } from "redux";
@@ -79,7 +80,7 @@ const WatchList = withRouter(({history, watchList_Display, handleInputChange, su
             }
             {
                 selectedCoin.map( ({id, name, symbol, image, price, dayPercentChange}) =>
-                    <PortfolioCoin key={id}
+                    <WatchListSelectedCoin key={id}
                                 coinID={id}
                                 name={name} 
                                 symbol={symbol} 
@@ -90,7 +91,7 @@ const WatchList = withRouter(({history, watchList_Display, handleInputChange, su
             }
             {
                 watchList_Display.map( ({id, name, symbol, image, price, dayPercentChange}) => 
-                    <PortfolioCoin key={id}
+                    <WatchListCoin key={id}
                             coinID={id}
                             name={name} 
                             symbol={symbol} 
