@@ -15,7 +15,6 @@ import {
   import { beginApiCall, apiCallError } from "./apiStatusActions";
   import axios from 'axios';
   import {store} from '../../index';
-import { findAllByTestId } from "@testing-library/react";
   
   // Fetch Coin Data for watch list
   export const fetchCoinData = (coinList) => async dispatch => {
@@ -26,13 +25,8 @@ import { findAllByTestId } from "@testing-library/react";
         const coinDataPromises = coinList.map(coin => axios.get('https://api.coingecko.com/api/v3/coins/' + coin.id));
         const coinDataResponses = await Promise.all(coinDataPromises);
         const coinData = coinDataResponses.map(function(response) {
-          // add if statement to see if in watchlist
-
           const data = response.data;
-
           let onWatchList = watchList.find((coin) => (coin.id === data.id));
-          console.log("inWatchList: ", onWatchList);
-
           if ( onWatchList === undefined) {
             onWatchList = false;
           } else {
@@ -60,9 +54,6 @@ import { findAllByTestId } from "@testing-library/react";
           }
         })
         console.log('FETCH COIN DATA OUTPUT: ',coinData)
-        
-        //working on 
-        
         
         dispatch({
           type: FETCH_COIN_DATA_SUCCESS,
@@ -127,11 +118,15 @@ import { findAllByTestId } from "@testing-library/react";
       const state = store.getState();
       const watchList = state.watchListReducer.watchList;
       const selectedCoin = state.watchListReducer.selectedCoin;
-      let watchList_Display = []
+      let watchList_Display = [];
+
+      
+
+
       if (selectedCoin.length === 1) {
-        watchList_Display = watchList.filter(coin => coin.id !== selectedCoin[0].id);
+        watchList_Display = watchList.filter(coin => coin.id !== selectedCoin[0].id).sort((a,b) => (b.marketCap - a.marketCap));
       } else {
-        watchList_Display = watchList
+        watchList_Display = watchList.sort((a,b) => (b.marketCap - a.marketCap));
       }
       console.log("REFRESH DISPLAY LIST OUTPUT: ", watchList_Display);
       dispatch({
