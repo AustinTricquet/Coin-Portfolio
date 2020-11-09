@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components';
-import requireAuth from "../components/hoc/requireAuth";
 import Chart from 'chart.js';
+import { compose } from "redux";
+import { connect } from "react-redux";
+import { selectCoin } from '../store/actions/watchListActions';
 
 
 const Div = styled.div`
@@ -22,20 +24,26 @@ const Canvas = styled.canvas`
     height: 100% !important;
 `;
 
-const CoinChart = () => {
+const CoinChart = ({selectedCoin}) => {
 
     useEffect(() => {
+        try {
+        const chartPrices = selectedCoin[0].chartPrices;
+        const chartDates = selectedCoin[0].chartDates;
+        console.log("Date example: ", Date(chartDates[5]),);
+        
+        console.log("prices: ", chartPrices)
         const ctx = document.getElementById('coinChart').getContext('2d');
         const coinChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['1', '2', '3', '4', '5', '6','7', '8', '9', '10', '11', '12'],
+                labels: chartDates,
                 datasets: [{
                     legend: {
                         display: false
                     },
                     label: 'Bitcoin',
-                    data: [12, 19, 3, 5, 2, 312, 19, 3, 5, 2, 3,100],
+                    data: chartPrices,
                     backgroundColor: [
                         'orange'
                         //'rgba(255, 99, 132, 0.2)',
@@ -64,12 +72,15 @@ const CoinChart = () => {
                 scales: {
                     yAxes: [{
                         ticks: {
-                            beginAtZero: true
+                            beginAtZero: false
                         }
                     }]
                 }
             }
         })
+    } catch {
+        
+    }
     })
     
 
@@ -82,4 +93,21 @@ const CoinChart = () => {
 }
 
 
-export default requireAuth(CoinChart);
+function mapStateToProps(state) {
+    return {
+        selectedCoin: state.watchListReducer.selectedCoin,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+      selectCoin: (coinID) => dispatch(selectCoin(coinID)),
+  };
+}
+
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)(CoinChart);

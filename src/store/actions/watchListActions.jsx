@@ -32,7 +32,6 @@ import {
           } else {
             onWatchList = true;
           }
-
           return {
             key: data.id,
             id: data.id,
@@ -142,6 +141,10 @@ import {
       let selectedCoin = [];
       console.log("CALLING 'FETCH COIN DATA' from 'SELECT COIN'");
       const coinData = await dispatch(fetchCoinData([{id: coinID}]));
+
+      const chartData = await dispatch(fetchCoinChart(coinID));
+      coinData[0].chartPrices = chartData.prices;
+      coinData[0].chartDates = chartData.dates;
       selectedCoin.push(coinData);
       console.log("SELECT COIN OUTPUT: ", coinData);
       await dispatch({
@@ -150,6 +153,8 @@ import {
       })
       console.log("CALLING 'REFRESH DISPLAY' LIST FROM 'SELECT COIN'");
       await dispatch(refreshDisplayList());
+
+
 
     } catch {
       dispatch({
@@ -243,5 +248,45 @@ import {
       });
     }
   };
+
+  export const fetchCoinChart = (coinID) => async dispatch => {
+    try {
+        dispatch(beginApiCall());
+        //console.log('BEGIN CHART FETCH')
+        const coinChartDataResponse = await axios.get('https://api.coingecko.com/api/v3/coins/' + coinID + '/market_chart?vs_currency=usd&days=14');
+        //console.log("Chart Data Response: ", coinChartDataResponse.data.prices);
+        const prices = [];
+        const dates = [];
+        const dates2 = [];
+        const priceData = coinChartDataResponse.data.prices;
+
+        priceData.forEach((arr) => {
+          let date = arr[0];
+          let price = arr[1].toFixed(2);
+          dates.push(date);
+          prices.push(price);
+        })
+
+        //dates.forEach((date) => {
+        //  let newDate = Date(date).sliced(0,10);
+       //   console.log("NEW DATEEEEEEEEEEEEEEE")
+        //  dates2.push(newDate);
+       // })
+        console.log("DATE: ", dates)
+
+        //console.log('prices: ', prices);
+
+        return {dates, prices};
+        
+       
+    } catch (err) {
+      dispatch(apiCallError());
+      dispatch({
+        type: FETCH_COIN_DATA_ERROR,
+        payload:
+          "Something went wrong using the 'Coin Gecko API'"
+      });
+    }
+  }  
   
   
