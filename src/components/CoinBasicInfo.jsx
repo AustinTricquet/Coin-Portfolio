@@ -7,38 +7,38 @@ import { withRouter } from 'react-router-dom';
 import plus from '../images/plus.png';
 import minus from '../images/minus.png';
 
+//Need to adjust font size depending on screen size
 
 const Div = styled.div`
     background-color: var(--nav-primary-color);
     background-color: white;
-    border-radius: 1rem;
+    border-radius: 1em;
     color: var(--nav-text-color);
     color: #28394F;
-    margin: 1.5rem 0.75rem 0.75rem 1.5rem;
+    margin: 1.5em 0.75em 0.75em 1.5em;
     border: 3px solid var(--nav-primary-color);
-    padding: 1.5rem;
+    padding: 1em;
     width: 60%;
-    min-width: 27rem;
+    min-width: 27em;
+    vertical-align: top;
+    font-size: 0.87em;
 `;
 
 const Header = styled.div`
     justify-content: space-between;
-    padding: 0rem 0rem 0.5rem 0rem;
+    padding: 0em 0em 0.5em 0em;
     display: flex;
 `;
 
 const ContentBlock = styled.div`
-   
- 
-    padding: 0rem 0rem 0.5rem 0rem; 
+    padding: 0em 0em 0.5em 0em; 
 
     h3 {
-        padding: 0rem 0rem 0.5rem 0rem;
+        padding: 0em 0em 0.25em 0em;
     }
 
     p {
-        padding: 0rem 0rem 0.5rem 0rem;
-        
+        padding: 0em 0em 0.25em 0em;
     }
 
     tbody {
@@ -54,17 +54,17 @@ const Coin = styled.div`
 `;
 
 const Img = styled.img`
-    height: 3rem;
-    width: 3rem;
+    height: 3em;
+    width: 3em;
     pointer-events: none;
     background-color: white;
     border-radius: 100%;
-    margin: 0rem 1rem 0rem 0rem;
+    margin: 0em 1em 0em 0em;
 `;
 
 const ButtonImg = styled.img`
-    height: 2.5rem;
-    width: 2.5rem;
+    height: 2.5em;
+    width: 2.5em;
     pointer-events: none;
     background-color: inherit;
     border-radius: 100%;
@@ -76,8 +76,9 @@ const Price = styled.div`
     display: flex;
     justify-content: top;
     align-items: center;
-    margin: 0rem 0rem 0rem 1rem;
+    margin: 0em 0em 0em 0em;
     text-align: right;
+    justify-content: space-between;
 `;
 
 const HeadSubText = styled.h3`
@@ -86,22 +87,23 @@ const HeadSubText = styled.h3`
 
 const SubText = styled.p`
     color: #8993A8;
-    font-size: 0.75rem;
+    font-size: 0.75em;
 `;
 
 const Button = styled.button`
-    height: 2.5rem;
-    width: 2.5rem;
+    height: 2.5em;
+    width: 2.5em;
+    background-color: inherit;
     border-radius: 100%;
     border: 0px;
-    margin: 0.5rem 0rem 0rem 0rem;
+    margin: 0em 0em 0em 1em;
+    
     :focus {
         outline: none;
         box-shadow: none;
     }
     background-color: inherit;
-    text-align: center;
-
+    
 `;
 
 const Table = styled.table`
@@ -109,12 +111,12 @@ const Table = styled.table`
 
     th {
         text-align: left;
-        padding-bottom: 0.25rem;
+        padding-bottom: 0.1em;
     }
 
     td {
         text-align: left;
-        padding-bottom: 0.25rem
+        padding-bottom: 0.1em
     }
 `;
 
@@ -133,7 +135,7 @@ const CoinBasicInfo = withRouter(({history, selectedCoin, add, remove}) => {
         <>
             {
                 selectedCoin.map( ({id, name, symbol, image, price, dayPercentChange, dayVolume, marketCap, rank, ATH, ATHDate, ATL, ATLDate, website, onWatchList}) => 
-                        <Div key={id}>
+                    <Div key={id}>
                         <Header>
                             <Coin>
                                 <Img src={image} alt="Coin logo" className="App-logo" />
@@ -147,11 +149,8 @@ const CoinBasicInfo = withRouter(({history, selectedCoin, add, remove}) => {
                                     <h1>${price}</h1>
                                     <HeadSubText>{dayPercentChange}%</HeadSubText>
                                 </div>
-                            </Price> 
-                        
-                            { onWatchList === false ? <Button onClick={addCoin}><ButtonImg src={plus} alt="Add"></ButtonImg></Button> : <Button onClick={removeCoin}><ButtonImg src={minus} alt="minus"></ButtonImg></Button>}
-              
-                            
+                                { onWatchList === false ? <Button onClick={addCoin}><ButtonImg src={plus} alt="Add"></ButtonImg></Button> : <Button onClick={removeCoin}><ButtonImg src={minus} alt="minus"></ButtonImg></Button>}
+                            </Price>  
                         </Header>
                         <ContentBlock>
                             <Table>
