@@ -12,26 +12,27 @@ import minus from '../images/minus.png';
 const Div = styled.div`
     background-color: var(--nav-primary-color);
     background-color: white;
-    border-radius: 1em;
+    border-radius: 0.5em;
     color: var(--nav-text-color);
     color: #28394F;
     margin: 1.5em 0.75em 0.75em 1.5em;
-    border: 3px solid var(--nav-primary-color);
-    padding: 1em;
+    border: 4px solid #E6EDFF;
+    padding: 0em;
     width: 60%;
     min-width: 27em;
     vertical-align: top;
-    font-size: 0.87em;
+    font-size: 0.9em;
 `;
 
 const Header = styled.div`
     justify-content: space-between;
-    padding: 0em 0em 0.5em 0em;
+    padding: 0.25em 1em 0.5em 1em;
     display: flex;
+    background-color: #E6EDFF;
 `;
 
 const ContentBlock = styled.div`
-    padding: 0em 0em 0.5em 0em; 
+    padding: 0.5em 1em 0.5em 1em; 
 
     h3 {
         padding: 0em 0em 0.25em 0em;
@@ -187,8 +188,6 @@ const CoinBasicInfo = withRouter(({history, selectedCoin, add, remove}) => {
                                     </tr>
                                 </tbody>
                             </Table>
-                        </ContentBlock>
-                        <ContentBlock>
                             <h3>More Info</h3>
                             <p>Website: <a href={website}>{website}</a></p>
                         </ContentBlock>
