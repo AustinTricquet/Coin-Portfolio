@@ -10,7 +10,6 @@ import minus from '../images/minus.png';
 //Need to adjust font size depending on screen size
 
 const Div = styled.div`
-    color: var(--nav-text-color);
     color: #28394F;
     margin: 1.5em 0.75em 0.75em 1.5em;
     width: 60%;

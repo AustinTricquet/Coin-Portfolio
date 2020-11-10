@@ -5,15 +5,61 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { selectCoin } from '../store/actions/watchListActions';
 
-
 const Div = styled.div`
-    background-color: var(--nav-primary-color);
-    border-radius: 1rem;
-    color: var(--nav-text-color);
+    color: #28394F;
     margin: 0.75rem 1.5rem 1.5rem 1.5rem;
-    padding: 2rem;
     width: 100%;
     min-width: 25rem;
+`;
+
+const Header = styled.div`
+    justify-content: space-between;
+    padding: 0.25em 1em 0.25em 1em;
+    display: flex;
+    background-color: #E6EDFF;
+    border: 2px solid #E6EDFF;
+    box-sizing: border-box;
+    border-radius: 0.5em 0.5em 0em 0em;
+    height: 15%;
+
+    h3 {
+        margin: auto 0em;
+    }
+`;
+
+const ChartButtonGroup = styled.div`
+    color: white;
+    padding: 0em;
+    cursor: pointer;
+    float: left;
+    vertical-align: middle;
+    margin: auto 0em;
+    justify-conent: center;
+
+    button {
+        background-color: white;
+        border: 1px solid #8993A8;
+        padding: 0.2em 0.4em;
+        margin: 0em;
+        
+        :focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        :hover {
+            background-color: #8993A8;
+            color: white;
+        }
+
+        :first-child {
+            border-radius:  0.5em 0em 0em 0.5em;
+        }
+
+        :last-child {
+            border-radius: 0em 0.5em 0.5em 0em;
+        }
+    }
 `;
 
 const Canvas = styled.canvas`
@@ -21,7 +67,11 @@ const Canvas = styled.canvas`
     color: var(--nav-text-color);
     width: 100% !important;
     min-width: 25rem;
-    height: 100% !important;
+    height: 85% !important;
+    border-radius: 0em 0em 0.5em 0.5em;
+    border: 2px solid #E6EDFF;
+    width: 100%;
+    padding: 1em 1em 1em 1em;
 `;
 
 const CoinChart = ({selectedCoin}) => {
@@ -77,16 +127,23 @@ const CoinChart = ({selectedCoin}) => {
                     }]
                 }
             }
-        })
-    } catch {
-        
-    }
+        })} catch {    
+        }
     })
     
-
-
     return (
         <Div>
+            <Header>
+                <h3>USD/BTC</h3>
+                <ChartButtonGroup>
+                    <button>24h</button>
+                    <button>7d</button>
+                    <button>14d</button>
+                    <button>30d</button>
+                    <button>1y</button>
+                    <button>Max</button>
+                </ChartButtonGroup>
+            </Header>
             <Canvas id="coinChart"></Canvas>
         </Div>
     )
