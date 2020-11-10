@@ -10,14 +10,9 @@ import minus from '../images/minus.png';
 //Need to adjust font size depending on screen size
 
 const Div = styled.div`
-    background-color: var(--nav-primary-color);
-    background-color: white;
-    border-radius: 0.5em;
     color: var(--nav-text-color);
     color: #28394F;
     margin: 1.5em 0.75em 0.75em 1.5em;
-    border: 4px solid #E6EDFF;
-    padding: 0em;
     width: 60%;
     min-width: 27em;
     vertical-align: top;
@@ -29,10 +24,17 @@ const Header = styled.div`
     padding: 0.25em 1em 0.5em 1em;
     display: flex;
     background-color: #E6EDFF;
+    border: 2px solid #E6EDFF;
+    box-sizing: border-box;
+    border-radius: 0.5em 0.5em 0em 0em;
+    
 `;
 
 const ContentBlock = styled.div`
     padding: 0.5em 1em 0.5em 1em; 
+    border-radius: 0em 0em 0.5em 0.5em;
+    background-color: white;
+    border: 2px solid #E6EDFF;
 
     h3 {
         padding: 0em 0em 0.25em 0em;

@@ -16,7 +16,6 @@ const Div = styled.div`
     width: 75%;
     background-color: #F3F6FE;
     
-    
 `;
 
 const WatchListCoinDetail = () => {
