@@ -261,11 +261,15 @@ import {
         const priceData = coinChartDataResponse.data.prices;
 
         priceData.forEach((arr) => {
-          let date = arr[0];
-          let price = arr[1].toFixed(2);
+          console.log(arr[0])
+          let date = new Date(arr[0]).toString().slice(0,10);
+          //date.slice(0,10);
+          console.log('date: ', date)
+          let price = arr[1];
           dates.push(date);
           prices.push(price);
         })
+        
 
         //dates.forEach((date) => {
         //  let newDate = Date(date).sliced(0,10);
