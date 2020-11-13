@@ -5,9 +5,15 @@ import CoinBasicInfo from './CoinBasicInfo';
 import CoinNews from './CoinNews';
 import CoinChart from './CoinChart';
 
-const Container = styled.div`
+const WidgetsContainer = styled.div`
     display: flex;
-    height: 43.5vh;
+    height: 40%;
+    justify-content: space-between;
+`;
+
+const ChartContainer = styled.div`
+    display: flex;
+    height: 60%;
     justify-content: space-between;
 `;
 
@@ -20,13 +26,13 @@ const Div = styled.div`
 const WatchListCoinDetail = () => {
     return (
         <Div>
-            <Container>
+            <WidgetsContainer>
                 <CoinBasicInfo></CoinBasicInfo>
                 <CoinNews></CoinNews>
-            </Container>
-            <Container>
+            </WidgetsContainer>
+            <ChartContainer>
                 <CoinChart></CoinChart>
-            </Container>
+            </ChartContainer>
         </Div>
     )
 }

@@ -16,6 +16,8 @@ const Div = styled.div`
     min-width: 27em;
     vertical-align: top;
     font-size: 0.9em;
+    
+   
 `;
 
 const Header = styled.div`
@@ -26,7 +28,7 @@ const Header = styled.div`
     border: 2px solid #E6EDFF;
     box-sizing: border-box;
     border-radius: 0.5em 0.5em 0em 0em;
-    
+    height: 25%;
 `;
 
 const ContentBlock = styled.div`
@@ -34,6 +36,7 @@ const ContentBlock = styled.div`
     border-radius: 0em 0em 0.5em 0.5em;
     background-color: white;
     border: 2px solid #E6EDFF;
+    height: 75%;
 
     h3 {
         padding: 0em 0em 0.25em 0em;
