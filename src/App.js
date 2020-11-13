@@ -16,7 +16,6 @@ import { compose } from "redux";
 import { Switch, Route } from 'react-router-dom';
 import { fetchCoinData, updateWatchList, selectCoin } from "./store/actions/watchListActions";
 import { getCoinGeckoKeys } from "./store/actions/onSigninActions";
-import {store} from './index';
 
 function App({ auth, updateWatchList, getCoinGeckoKeys, fetchCoinData, selectCoin }) {
   const Content = styled.div`
@@ -47,7 +46,7 @@ function App({ auth, updateWatchList, getCoinGeckoKeys, fetchCoinData, selectCoi
     }
     async function loadWatchListData() {
       await updateWatchList();
-      await selectCoin(coinID);    
+      await selectCoin(coinID, 1);    
     }
 
     loadWatchListData()
@@ -154,7 +153,7 @@ function mapDispatchToProps(dispatch) {
     updateWatchList: () => dispatch(updateWatchList()),
     getCoinGeckoKeys: () => dispatch(getCoinGeckoKeys()),
     fetchCoinData: (list) => dispatch(fetchCoinData(list)),
-    selectCoin: (coinID) => dispatch(selectCoin(coinID))
+    selectCoin: (coinID, days) => dispatch(selectCoin(coinID, days))
   };
 }
 

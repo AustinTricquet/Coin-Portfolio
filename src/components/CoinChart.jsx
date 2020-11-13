@@ -1,4 +1,4 @@
-import React, { useEffect, componentDidMount } from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components';
 import Chart from 'chart.js';
 import { compose } from "redux";
@@ -74,7 +74,7 @@ const Canvas = styled.canvas`
     padding: 1em 1em 1em 1em;
 `;
 
-const CoinChart = ({selectedCoin}) => {
+const CoinChart = ({selectedCoin, selectCoin}) => {
 
     useEffect(() => {
         
@@ -82,6 +82,26 @@ const CoinChart = ({selectedCoin}) => {
             const ctx = document.getElementById('coinChart').getContext('2d');
             const chartPrices = selectedCoin[0].chartPrices;
             const chartDates = selectedCoin[0].chartDates;
+            console.log("TRY THIS")
+
+            //let priceNumbers = chartPrices.map((price) => (parseFloat(price)))
+       
+            
+            
+
+
+            let priceMin = (Math.min.apply(null, chartPrices))
+            let priceMax = Math.max.apply(null, chartPrices)
+            let priceDelta = priceMax - priceMin;
+
+
+            
+            let chartStep = priceDelta * 0.2;
+            console.log('chartStep', chartStep)
+            let chartMax = priceMax + chartStep;
+            let chartMin = priceMin - chartStep;
+
+
 
             Chart.defaults.LineWithLine = Chart.defaults.line;
             Chart.controllers.LineWithLine = Chart.controllers.line.extend({
@@ -136,7 +156,7 @@ const CoinChart = ({selectedCoin}) => {
                     ],
                     borderWidth: 3,
                     pointHoverBackgroundColor: 'rgba(75, 192, 192, 1)',
-                    pointHoverRadius: 4,
+                    pointHoverRadius: 1,
                     
                 }]
             },
@@ -153,8 +173,14 @@ const CoinChart = ({selectedCoin}) => {
                   scales: {
                      yAxes: [{
                         ticks: {
-                           beginAtZero: false
+                           beginAtZero: false,
+                           stepSize: chartStep
                         }
+                     }],
+                     xAxes: [{
+                         ticks: {
+                             stepSize: 100
+                         }
                      }]
                   }
                }
@@ -171,18 +197,25 @@ const CoinChart = ({selectedCoin}) => {
         }
     
     })
+
+
+    function handleClick(e) {
+     
+        console.log("CLICK: ", selectedCoin[0].id, e.target.value);
+        selectCoin(selectedCoin[0].id, e.target.value);
+    }
     
     return (
         <Div>
             <Header>
                 <h3>USD/{selectedCoin[0].symbol}</h3>
                 <ChartButtonGroup>
-                    <button>24h</button>
-                    <button>7d</button>
-                    <button>14d</button>
-                    <button>30d</button>
-                    <button>1y</button>
-                    <button>Max</button>
+                    <button type="radio" active onClick={handleClick} value='1'>24h</button>
+                    <button type="radio" onClick={handleClick} value='7'>7d</button>
+                    <button type="radio" onClick={handleClick} value='14'>14d</button>
+                    <button type="radio" onClick={handleClick} value='30'>30d</button>
+                    <button type="radio" onClick={handleClick} value='365'>1y</button>
+                    <button type="radio" onClick={handleClick} value='max'>Max</button>
                 </ChartButtonGroup>
             </Header>
             <Canvas id="coinChart"></Canvas>
@@ -199,7 +232,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-      selectCoin: (coinID) => dispatch(selectCoin(coinID)),
+      selectCoin: (coinID, days) => dispatch(selectCoin(coinID, days)),
   };
 }
 

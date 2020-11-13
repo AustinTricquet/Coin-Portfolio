@@ -14,7 +14,7 @@ import {
     authMsg: ""
   };
   
-  export default function(state = INITIAL_STATE, action) {
+  export default function authReducer(state = INITIAL_STATE, action) {
     if (action.type === SIGNIN_SUCCESS || action.type === SIGNOUT_SUCCESS) {
       return { ...state, authMsg: "" };
     } else if (

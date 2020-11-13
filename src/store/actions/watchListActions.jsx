@@ -136,13 +136,13 @@ import {
     }
   }
 
-  export const selectCoin = (coinID) => async dispatch => {
+  export const selectCoin = (coinID, days) => async dispatch => {
     try {
       let selectedCoin = [];
       console.log("CALLING 'FETCH COIN DATA' from 'SELECT COIN'");
       const coinData = await dispatch(fetchCoinData([{id: coinID}]));
 
-      const chartData = await dispatch(fetchCoinChart(coinID));
+      const chartData = await dispatch(fetchCoinChart(coinID, days));
       coinData[0].chartPrices = chartData.prices;
       coinData[0].chartDates = chartData.dates;
       selectedCoin.push(coinData);
@@ -249,36 +249,23 @@ import {
     }
   };
 
-  export const fetchCoinChart = (coinID) => async dispatch => {
+  export const fetchCoinChart = (coinID, days) => async dispatch => {
     try {
         dispatch(beginApiCall());
         //console.log('BEGIN CHART FETCH')
-        const coinChartDataResponse = await axios.get('https://api.coingecko.com/api/v3/coins/' + coinID + '/market_chart?vs_currency=usd&days=14');
+        const coinChartDataResponse = await axios.get('https://api.coingecko.com/api/v3/coins/' + coinID + '/market_chart?vs_currency=usd&days=' + days);
         //console.log("Chart Data Response: ", coinChartDataResponse.data.prices);
         const prices = [];
         const dates = [];
-        const dates2 = [];
         const priceData = coinChartDataResponse.data.prices;
 
         priceData.forEach((arr) => {
           console.log(arr[0])
           let date = new Date(arr[0]).toString().slice(0,10);
-          //date.slice(0,10);
-          console.log('date: ', date)
           let price = arr[1];
           dates.push(date);
           prices.push(price);
         })
-        
-
-        //dates.forEach((date) => {
-        //  let newDate = Date(date).sliced(0,10);
-       //   console.log("NEW DATEEEEEEEEEEEEEEE")
-        //  dates2.push(newDate);
-       // })
-        console.log("DATE: ", dates)
-
-        //console.log('prices: ', prices);
 
         return {dates, prices};
         

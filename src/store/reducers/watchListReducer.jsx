@@ -52,7 +52,7 @@ import {
         newID: "dai"
       },
     ],
-    selectedCoin: [],
+    selectedCoin: [{symbol: null}],
     suggestions: [],
     watchList_Display: [],
     historyLength: [],
@@ -60,7 +60,7 @@ import {
     error: null
     }
   
-  export default function(state = INITIAL_STATE, action) {
+  export default function watchListReducer(state = INITIAL_STATE, action) {
     if ( 
       action.type === FETCH_COIN_DATA_SUCCESS
     ) {

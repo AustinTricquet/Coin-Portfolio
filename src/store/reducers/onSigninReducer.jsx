@@ -8,7 +8,7 @@ import {
     errorMsg: null
   };
   
-  export default function(state = INITIAL_STATE, action) {
+  export default function onSigninReducer(state = INITIAL_STATE, action) {
     if (action.type === UPDATE_COIN_GECKO_KEYS_SUCCESS) {
       return { ...state, coinKeys: action.payload };
     } else if (
