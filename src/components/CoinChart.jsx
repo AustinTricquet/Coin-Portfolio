@@ -101,6 +101,17 @@ const CoinChart = ({selectedCoin, selectCoin}) => {
             let chartMax = priceMax + chartStep;
             let chartMin = priceMin - chartStep;
 
+            console.log("Price Delta: ", priceDelta)
+
+            chartStep = Math.ceil(chartStep/250)*250
+            console.log("result: ", chartStep)
+            const chartStepList = [1,2,2.5,5,10,20,25,50,100,200,250,500,1000]
+            if (priceDelta > 1) {
+                console.log("len...: ", priceDelta.toFixed(0).toString().length)
+            } else {
+
+            }
+
 
 
             Chart.defaults.LineWithLine = Chart.defaults.line;
