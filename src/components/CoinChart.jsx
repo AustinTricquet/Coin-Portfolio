@@ -84,6 +84,20 @@ const CoinChart = ({selectedCoin, selectCoin}) => {
             const priceMin = (Math.min.apply(null, chartPrices))
             const priceMax = Math.max.apply(null, chartPrices)
             const priceDelta = priceMax - priceMin;
+            let timeUnit = '';
+            const coinTime = parseInt(selectedCoin[0].chartTimeFrame)
+            console.log("coinTime: ", coinTime)
+            if (coinTime === 1) {
+                timeUnit = 'hour';
+            } else if (coinTime === 7 || coinTime === 14) {
+                timeUnit = 'day'
+            } else if (coinTime === 30) {
+                timeUnit = 'week'
+            } else if (coinTime === 365) {
+                timeUnit = 'month'
+            } else {
+                timeUnit = 'year'
+            }
 
             // Default if something goes wrong with dynamic calculations for chart step.
             let chartStep = priceDelta * 0.2;
@@ -191,17 +205,30 @@ const CoinChart = ({selectedCoin, selectCoin}) => {
                     
                   },
                   scales: {
-                     yAxes: [{
+                    bounds: 'ticks',
+                    yAxes: [{
+                    ticks: {
+                        beginAtZero: false,
+                        stepSize: chartStep
+                    }
+                    }],
+                    xAxes: [{
+                    type: 'time',
+                    time: {
+                        unit: timeUnit,
+                        displayFormats: {
+                            'hour': 'h:mm A',
+                            'day': 'MMM D',
+                            'week': 'll',
+                            'month': 'MMM YY',
+                            'year': 'YYYY',
+                        },
                         ticks: {
-                           beginAtZero: false,
-                           stepSize: chartStep
-                        }
-                     }],
-                     xAxes: [{
-                         ticks: {
-                             stepSize: 100
-                         }
-                     }]
+                        
+                    },
+                    
+                    }
+                    }]
                   }
                }
             });

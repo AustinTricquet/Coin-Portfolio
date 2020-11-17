@@ -145,6 +145,7 @@ import {
       const chartData = await dispatch(fetchCoinChart(coinID, days));
       coinData[0].chartPrices = chartData.prices;
       coinData[0].chartDates = chartData.dates;
+      coinData[0].chartTimeFrame = days
       selectedCoin.push(coinData);
       console.log("SELECT COIN OUTPUT: ", coinData);
       await dispatch({
@@ -261,7 +262,7 @@ import {
 
         priceData.forEach((arr) => {
           console.log(arr[0])
-          let date = new Date(arr[0]).toString().slice(0,10);
+          let date = arr[0];
           let price = arr[1];
           dates.push(date);
           prices.push(price);
