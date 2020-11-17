@@ -77,43 +77,52 @@ const Canvas = styled.canvas`
 const CoinChart = ({selectedCoin, selectCoin}) => {
 
     useEffect(() => {
-        
         try {
             const ctx = document.getElementById('coinChart').getContext('2d');
             const chartPrices = selectedCoin[0].chartPrices;
             const chartDates = selectedCoin[0].chartDates;
-            console.log("TRY THIS")
+            const priceMin = (Math.min.apply(null, chartPrices))
+            const priceMax = Math.max.apply(null, chartPrices)
+            const priceDelta = priceMax - priceMin;
 
-            //let priceNumbers = chartPrices.map((price) => (parseFloat(price)))
-       
-            
-            
-
-
-            let priceMin = (Math.min.apply(null, chartPrices))
-            let priceMax = Math.max.apply(null, chartPrices)
-            let priceDelta = priceMax - priceMin;
-
-
-            
+            // Default if something goes wrong with dynamic calculations for chart step.
             let chartStep = priceDelta * 0.2;
-            console.log('chartStep', chartStep)
-            let chartMax = priceMax + chartStep;
-            let chartMin = priceMin - chartStep;
+            
+            // Dynamic calculations to analyze the priceDelta (max price - min price) and find an appropriate chart step size for the display.
+            let deltaLen = priceDelta.toFixed(0).length
+            let firstDigit = parseInt(priceDelta.toFixed(0)[0])
 
-            console.log("Price Delta: ", priceDelta)
-
-            chartStep = Math.ceil(chartStep/250)*250
-            console.log("result: ", chartStep)
-            const chartStepList = [1,2,2.5,5,10,20,25,50,100,200,250,500,1000]
-            if (priceDelta > 1) {
-                console.log("len...: ", priceDelta.toFixed(0).toString().length)
-            } else {
-
+            // special case if priceDelta is less than 1
+            if(priceDelta < 1){
+                let priceDeltaFloat = priceDelta.toFixed(20).match(/^-?\d*\.?0*\d{0,1}/)[0];
+                deltaLen = -(priceDeltaFloat.length - 3);
+                firstDigit = parseInt(priceDeltaFloat[priceDeltaFloat.length -1]);
             }
 
-
-
+            // First - checks for what the first digit is to determine the base multiplier
+            // Second - calculates magnitude based on the size of the chart priceDelta - small chart delta = small magnitude - large chart delta = large magnitude
+            if (firstDigit === 1 ) {
+                console.log("1 has fired");
+                let base = 0.025
+                let magnitude = 10 ** deltaLen;
+                chartStep = base * magnitude;
+            } else if (firstDigit === 2 || firstDigit === 3) {
+                console.log("2 or 3 has fired");
+                let base = 0.05
+                let magnitude = 10 ** deltaLen;
+                chartStep = base * magnitude;
+            } else if (firstDigit === 4 || firstDigit === 5 || firstDigit === 6 || firstDigit === 7 ) {
+                console.log("4,5,6 or 7 has fired");
+                let base = 0.1
+                let magnitude = 10 ** deltaLen;
+                chartStep = base * magnitude;
+            } else if (firstDigit === 8 || firstDigit === 9) {
+                console.log("8 or greater has fired");
+                let base = 0.2
+                let magnitude = 10 ** deltaLen;
+                chartStep = base * magnitude;  
+            }
+            
             Chart.defaults.LineWithLine = Chart.defaults.line;
             Chart.controllers.LineWithLine = Chart.controllers.line.extend({
                draw: function(ease) {
