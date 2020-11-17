@@ -201,33 +201,30 @@ const CoinChart = ({selectedCoin, selectCoin}) => {
             
                   responsive: true,
                   tooltips: {
-                     intersect: false,
+                    intersect: false,
+                    mode: 'x-axis'
                     
                   },
                   scales: {
                     bounds: 'ticks',
                     yAxes: [{
-                    ticks: {
-                        beginAtZero: false,
-                        stepSize: chartStep
-                    }
+                        ticks: {
+                            beginAtZero: false,
+                            stepSize: chartStep
+                        }
                     }],
                     xAxes: [{
-                    type: 'time',
-                    time: {
-                        unit: timeUnit,
-                        displayFormats: {
-                            'hour': 'h:mm A',
-                            'day': 'MMM D',
-                            'week': 'll',
-                            'month': 'MMM YY',
-                            'year': 'YYYY',
-                        },
-                        ticks: {
-                        
-                    },
-                    
-                    }
+                        type: 'time',
+                        time: {
+                            unit: timeUnit,
+                            displayFormats: {
+                                'hour': 'h:mm A',
+                                'day': 'MMM D',
+                                'week': 'll',
+                                'month': 'MMM YY',
+                                'year': 'YYYY',
+                            },
+                        }
                     }]
                   }
                }
