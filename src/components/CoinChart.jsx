@@ -8,8 +8,8 @@ import { selectCoin } from '../store/actions/watchListActions';
 const Div = styled.div`
     color: #28394F;
     margin: 0.75rem 1.5rem 1.5rem 1.5rem;
-    width: 100%;
     min-width: 25rem;
+    width: 100%;
 `;
 
 const Header = styled.div`
@@ -65,12 +65,10 @@ const ChartButtonGroup = styled.div`
 const Canvas = styled.canvas`
     background-color: white;
     color: var(--nav-text-color);
-    width: 100% !important;
     min-width: 25rem;
     height: 85% !important;
     border-radius: 0em 0em 0.5em 0.5em;
     border: 2px solid #E6EDFF;
-    width: 100%;
     padding: 1em 1em 1em 1em;
 `;
 
@@ -154,7 +152,7 @@ const CoinChart = ({selectedCoin, selectCoin}) => {
                      ctx.beginPath();
                      ctx.moveTo(x, topY);
                      ctx.lineTo(x, bottomY);
-                     ctx.lineWidth = 2;
+                     ctx.lineWidth = 1;
                      ctx.strokeStyle = '#07C';
                      ctx.stroke();
                      ctx.restore();
@@ -170,6 +168,7 @@ const CoinChart = ({selectedCoin, selectCoin}) => {
                     label: selectedCoin[0].name,
                     pointRadius: 0,
                     data: chartPrices,
+
                     backgroundColor: [
                         
                         //'rgba(255, 99, 132, 0.2)',
@@ -196,7 +195,7 @@ const CoinChart = ({selectedCoin, selectCoin}) => {
             },
                 options: {
                     legend: {
-                        display: false
+                        display: false,
                     },
             
                   responsive: true,
@@ -210,7 +209,8 @@ const CoinChart = ({selectedCoin, selectCoin}) => {
                     yAxes: [{
                         ticks: {
                             beginAtZero: false,
-                            stepSize: chartStep
+                            stepSize: chartStep,
+                            fontSize: 15
                         }
                     }],
                     xAxes: [{
@@ -224,6 +224,9 @@ const CoinChart = ({selectedCoin, selectCoin}) => {
                                 'month': 'MMM YY',
                                 'year': 'YYYY',
                             },
+                        },
+                        ticks: {
+                            fontSize: 15
                         }
                     }]
                   }
