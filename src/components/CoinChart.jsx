@@ -62,11 +62,17 @@ const ChartButtonGroup = styled.div`
     }
 `;
 
+const CanvasContainer = styled.div`
+    position: relative;
+    margin: auto;
+    height: 85% !important;
+  
+
+`;
+
 const Canvas = styled.canvas`
     background-color: white;
     color: var(--nav-text-color);
-    min-width: 25rem;
-    height: 85% !important;
     border-radius: 0em 0em 0.5em 0.5em;
     border: 2px solid #E6EDFF;
     padding: 1em 1em 1em 1em;
@@ -194,6 +200,7 @@ const CoinChart = ({selectedCoin, selectCoin}) => {
                 }]
             },
                 options: {
+                    maintainAspectRatio: false,
                     legend: {
                         display: false,
                     },
@@ -265,7 +272,9 @@ const CoinChart = ({selectedCoin, selectCoin}) => {
                     <button type="radio" onClick={handleClick} value='max'>Max</button>
                 </ChartButtonGroup>
             </Header>
-            <Canvas id="coinChart"></Canvas>
+            <CanvasContainer>
+                <Canvas id="coinChart"></Canvas>
+            </CanvasContainer>
         </Div>
     )
 }
