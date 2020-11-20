@@ -159,7 +159,7 @@ const CoinChart = ({selectedCoin, selectCoin}) => {
                      ctx.moveTo(x, topY);
                      ctx.lineTo(x, bottomY);
                      ctx.lineWidth = 1;
-                     ctx.strokeStyle = '#07C';
+                     ctx.strokeStyle = 'rgba(0, 119, 204, 1)';
                      ctx.stroke();
                      ctx.restore();
                   }
@@ -172,7 +172,6 @@ const CoinChart = ({selectedCoin, selectCoin}) => {
                 labels: chartDates,
                 datasets: [{
                     label: selectedCoin[0].name,
-                    pointRadius: 0,
                     data: chartPrices,
 
                     backgroundColor: [
@@ -193,50 +192,60 @@ const CoinChart = ({selectedCoin, selectCoin}) => {
                         //'rgba(153, 102, 255, 1)',
                         'rgba(255, 159, 64, .8)'
                     ],
-                    borderWidth: 3,
-                    pointHoverBackgroundColor: 'rgba(75, 192, 192, 1)',
-                    pointHoverRadius: 1,
-                    
+                    borderWidth: 3,  
+                    pointBackgroundColor: 'rgba(0, 119, 204, 0.6)'                 
                 }]
             },
                 options: {
                     maintainAspectRatio: false,
                     legend: {
                         display: false,
+                    },         
+                    responsive: true,
+                    tooltips: {
+                        intersect: false,
+                        mode: 'x-axis'
                     },
-            
-                  responsive: true,
-                  tooltips: {
-                    intersect: false,
-                    mode: 'x-axis'
-                    
-                  },
-                  scales: {
-                    bounds: 'ticks',
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: false,
-                            stepSize: chartStep,
-                            fontSize: 15
+                    hover: {
+                        mode: 'x-axis',
+                        animationDuration: 0,
+                        intersect: false
+                        
+                    },
+                    elements: {
+                        point: {
+                            hitRadius: 0,
+                            hoverRadius: 5,
+                            radius: 0,
+                            
                         }
-                    }],
-                    xAxes: [{
-                        type: 'time',
-                        time: {
-                            unit: timeUnit,
-                            displayFormats: {
-                                'hour': 'h:mm A',
-                                'day': 'MMM D',
-                                'week': 'll',
-                                'month': 'MMM YY',
-                                'year': 'YYYY',
+                    },
+                    scales: {
+                        bounds: 'ticks',
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: false,
+                                stepSize: chartStep,
+                                fontSize: 15
+                            }
+                        }],
+                        xAxes: [{
+                            type: 'time',
+                            time: {
+                                unit: timeUnit,
+                                displayFormats: {
+                                    'hour': 'h:mm A',
+                                    'day': 'MMM D',
+                                    'week': 'll',
+                                    'month': 'MMM YY',
+                                    'year': 'YYYY',
+                                },
                             },
-                        },
-                        ticks: {
-                            fontSize: 15
-                        }
-                    }]
-                  }
+                            ticks: {
+                                fontSize: 15
+                            }
+                        }]
+                    }
                }
             });
 
