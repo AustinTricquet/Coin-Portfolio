@@ -32,13 +32,22 @@ import {
           } else {
             onWatchList = true;
           }
+          let price = data.market_data.current_price.usd
+          if (price > 999.99) {
+            price = price.toFixed(0);
+          } else if ( price < 1.99) {
+            price = price.toFixed(4);
+          } else {
+            price = price.toFixed(2);
+          }
+
           return {
             key: data.id,
             id: data.id,
             name: data.name,
             symbol: data.symbol.toUpperCase(),
             image: data.image.large,
-            price: data.market_data.current_price.usd.toFixed(2),
+            price: price,
             website: data.links.homepage[0],
             description: data.description.en,
             marketCap: data.market_data.market_cap.usd,
@@ -262,8 +271,16 @@ import {
 
         priceData.forEach((arr) => {
           console.log(arr[0])
-          let date = arr[0];
+          const date = arr[0];
           let price = arr[1];
+          if (arr[1] > 999.99) {
+            price = arr[1].toFixed(0);
+          } else if ( arr[1] < 9.99) {
+            price = arr[1].toFixed(4);
+          } else {
+            price = arr[1].toFixed(2);
+          }
+          
           dates.push(date);
           prices.push(price);
         })
