@@ -4,6 +4,7 @@ import authReducer from "./authReducer";
 import apiStatusReducer from "./apiStatusReducer";
 import watchListReducer from "./watchListReducer";
 import onSigninReducer from "./onSigninReducer";
+import portfolioReducer from "./portfolioReducer";
 
 export default combineReducers({
   firebaseReducer,
@@ -11,4 +12,5 @@ export default combineReducers({
   apiStatusReducer,
   watchListReducer,
   onSigninReducer,
+  portfolioReducer
 });
