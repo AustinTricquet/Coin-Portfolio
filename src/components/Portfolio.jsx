@@ -38,7 +38,7 @@ const InputGroup = styled.form`
       border: 1px solid red; }
 `;
 
-const Portfolio = withRouter(({history, watchList_Display, handleInputChange, suggestions, selectedCoin, viewPortfolio, changePortfolioView}) => {
+const Portfolio = withRouter(({history, watchList_Display, handleInputChange, suggestions, selectedCoin, viewPortfolio, changePortfolioView, wallets_Display}) => {
 
     function handleChange(e) {
         e.preventDefault();
@@ -85,18 +85,18 @@ const Portfolio = withRouter(({history, watchList_Display, handleInputChange, su
                     </InputGroup>
                 </div>
             }
-            {
+            { viewPortfolio === true ? 
                 selectedCoin.map( ({id, name, symbol, image, price, dayPercentChange}) =>
-                    <WatchListSelectedCoin key={id}
-                                coinID={id}
-                                name={name} 
-                                symbol={symbol} 
-                                price={price}
-                                image={image}
-                                dayPercentChange={dayPercentChange}/> 
-                    )
+                <WatchListSelectedCoin key={id}
+                            coinID={id}
+                            name={name} 
+                            symbol={symbol} 
+                            price={price}
+                            image={image}
+                            dayPercentChange={dayPercentChange}/> 
+                ): null
             }
-            {
+            { viewPortfolio === true ? 
                 watchList_Display.map( ({id, name, symbol, image, price, dayPercentChange}) => 
                     <WatchListCoin key={id}
                             coinID={id}
@@ -105,8 +105,14 @@ const Portfolio = withRouter(({history, watchList_Display, handleInputChange, su
                             price={price}
                             image={image}
                             dayPercentChange={dayPercentChange}/> 
-                    ) 
+                    )
+                :
+                wallets_Display.map( ({id, address}) =>
+                <WatchListCoin key={id}
+                            name ={address}/>
+                )
             }
+            
         </Div>
     )
 })
@@ -116,7 +122,10 @@ function mapStateToProps(state) {
       watchList_Display: state.watchListReducer.watchList_Display,
       suggestions: state.watchListReducer.suggestions,
       selectedCoin: state.watchListReducer.selectedCoin,
-      viewPortfolio: state.portfolioReducer.viewPortfolio
+      viewPortfolio: state.portfolioReducer.viewPortfolio,
+
+      wallets_Display: state.portfolioReducer.wallets_Display,
+
     };
   }
   
