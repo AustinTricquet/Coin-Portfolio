@@ -6,16 +6,23 @@ import {
     authMsg: "",
     viewPortfolio: true,
     wallets: [{
-      address: "woeifjoewifj2oei",
-      blockchain: "Ethereum"
+      name: "coinbase",
+      address: "asfe8302029e3ur0w82ede0",
+      blockchain: "Ethereum",
+      totalValue: "103.45",
+      dayPercentChange: "7"
     },
     {
       address: "2384h23ofn2938fh230",
       blockchain: "Bitcoin"
     }],
     wallets_Display: [{
-      address: "2384h23ofn2938fh230",
-      blockchain: "Bitcoin"
+      image: "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880",
+      name: "Coinbase",
+      address: "asfe8302029e3ur0w82ede0",
+      blockchain: "Ethereum",
+      totalValue: "103.45",
+      dayPercentChange: "7"
     }],
     selectedWallet: [{address: null}],
     portfolioCoins: [{}],

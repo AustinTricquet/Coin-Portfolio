@@ -40,7 +40,7 @@ import {
           } else {
             price = price.toFixed(2);
           }
-
+          console.log("img: ", data.image.large)
           return {
             key: data.id,
             id: data.id,

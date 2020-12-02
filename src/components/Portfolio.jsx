@@ -1,7 +1,7 @@
 import React from 'react';
-import WatchListCoin from './WatchListCoin';
+import PortfolioCoin from './PortfolioCoin';
+import PortfolioWallet from './PortfolioWallet';
 import WatchListSelectedCoin from './WatchListSelectedCoin';
-import SearchSuggestedCoin from './SearchSuggestedCoin';
 import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
@@ -69,7 +69,6 @@ const Portfolio = withRouter(({history, watchList_Display, handleInputChange, su
 
     return (
         <Div>
-            {}
             <InputGroup>
                 { viewPortfolio === true ? <h1>Portfolio</h1> : <h1>Wallets</h1>}
                 <button onClick={changeView}>{viewPortfolio === true ? "View Wallets" : "View Portfolio"}</button> 
@@ -98,7 +97,7 @@ const Portfolio = withRouter(({history, watchList_Display, handleInputChange, su
             }
             { viewPortfolio === true ? 
                 watchList_Display.map( ({id, name, symbol, image, price, dayPercentChange}) => 
-                    <WatchListCoin key={id}
+                    <PortfolioCoin key={id}
                             coinID={id}
                             name={name} 
                             symbol={symbol} 
@@ -107,9 +106,13 @@ const Portfolio = withRouter(({history, watchList_Display, handleInputChange, su
                             dayPercentChange={dayPercentChange}/> 
                     )
                 :
-                wallets_Display.map( ({id, address}) =>
-                <WatchListCoin key={id}
-                            name ={address}/>
+                wallets_Display.map( ({id, name, address, image, totalValue, dayPercentChange }) =>
+                <PortfolioWallet key={id}
+                            name={name}
+                            address={address}
+                            image={image}
+                            totalValue={totalValue}
+                            dayPercentChange={dayPercentChange}/>
                 )
             }
             
@@ -123,9 +126,7 @@ function mapStateToProps(state) {
       suggestions: state.watchListReducer.suggestions,
       selectedCoin: state.watchListReducer.selectedCoin,
       viewPortfolio: state.portfolioReducer.viewPortfolio,
-
       wallets_Display: state.portfolioReducer.wallets_Display,
-
     };
   }
   
