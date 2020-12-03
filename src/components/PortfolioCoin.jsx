@@ -46,7 +46,7 @@ const SubText = styled.h5`
     color: #8993A8;
 `;
 
-const PortfolioCoin = withRouter(({ history, coinID, name, symbol, image, price, dayPercentChange }) => {
+const PortfolioCoin = withRouter(({ history, coinID, name, symbol, image, value, amount }) => {
 
     async function handleClick() {
         history.push("/watch-list/" + coinID);
@@ -62,8 +62,8 @@ const PortfolioCoin = withRouter(({ history, coinID, name, symbol, image, price,
             </Coin>
             <Balance>
                 <div>
-                    <h3>${price}</h3>
-                    <SubText>{dayPercentChange}%</SubText>
+                    <h3>${value}</h3>
+                    <SubText>{amount}</SubText>
                 </div>
             </Balance> 
         </Div>

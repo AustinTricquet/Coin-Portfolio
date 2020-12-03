@@ -1,5 +1,6 @@
 import {
     CHANGE_PORTFOLIO_VIEW,
+    UPDATE_PORTFOLIO
   } from "../actions/actionTypes";
   
   const INITIAL_STATE = {
@@ -27,7 +28,13 @@ import {
     selectedWallet: [{address: null}],
     portfolioCoins: [{}],
     selectedWalletCoin: [{symbol: null}],
-    portfolio_Display: [],
+    portfolio_Display: [{
+      name: "USD Coin",
+      symbol: "USDC",
+      amount: "500.00",
+      value: "500.00",
+      image: "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png?1547042389"
+    }],
     historyLength: [],
     watchListMsg: null,
     error: null
@@ -39,6 +46,10 @@ import {
       action.type === CHANGE_PORTFOLIO_VIEW
     ) {
       return { ...state, viewPortfolio: action.payload };
+    } else if (
+      action.type === UPDATE_PORTFOLIO
+    ) {
+      return state
     } else {
       return state;
     }

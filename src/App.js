@@ -15,9 +15,10 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { Switch, Route } from 'react-router-dom';
 import { fetchCoinData, updateWatchList, selectCoin } from "./store/actions/watchListActions";
+import { fetchWalletData } from "./store/actions/portfolioActions";
 import { getCoinGeckoKeys } from "./store/actions/onSigninActions";
 
-function App({ auth, updateWatchList, getCoinGeckoKeys, fetchCoinData, selectCoin }) {
+function App({ auth, updateWatchList, getCoinGeckoKeys, selectCoin, fetchWalletData }) {
   const Content = styled.div`
     padding-bottom: 4em;
   `;
@@ -52,6 +53,23 @@ function App({ auth, updateWatchList, getCoinGeckoKeys, fetchCoinData, selectCoi
     loadWatchListData()
     return(<WatchListPage/>)
 
+  }
+
+  const renderPortfolio = (routerProps) => {
+    console.log("routerProps: ", routerProps)
+    let coinID = routerProps.location.pathname.slice(12)
+    console.log("coinID - renderPortfolio: ", renderPortfolio);
+    if (coinID === "") {
+      coinID = 'bitcoin'
+    }
+
+    async function loadWalletData() {
+      await fetchWalletData();
+      //await selectCoin(coinID, 1);
+    }
+
+    loadWalletData()
+    return(<PortfolioPage/>)
   }
   
   const Site = () => {
@@ -127,7 +145,7 @@ function App({ auth, updateWatchList, getCoinGeckoKeys, fetchCoinData, selectCoi
             <Route path = "/watch-list/:id" render = { routerProps => renderCoin(routerProps)} />
             <Route exact path="/trades" component={TradesPage} />
             <Route exact path="/taxes" component={TaxesPage} />
-            <Route path="/" component={PortfolioPage} />
+            <Route path="/" render = { routerProps => renderPortfolio(routerProps)} />
           </Switch>
         <Footer></Footer>
       </PageContainer>
@@ -153,7 +171,8 @@ function mapDispatchToProps(dispatch) {
     updateWatchList: () => dispatch(updateWatchList()),
     getCoinGeckoKeys: () => dispatch(getCoinGeckoKeys()),
     fetchCoinData: (list) => dispatch(fetchCoinData(list)),
-    selectCoin: (coinID, days) => dispatch(selectCoin(coinID, days))
+    selectCoin: (coinID, days) => dispatch(selectCoin(coinID, days)),
+    fetchWalletData: () => dispatch(fetchWalletData())
   };
 }
 

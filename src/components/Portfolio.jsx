@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { handleInputChange } from '../store/actions/watchListActions';
-import { changePortfolioView } from '../store/actions/portfolioActions';
+import { changePortfolioView, fetchWalletData } from '../store/actions/portfolioActions';
 import { withRouter } from 'react-router-dom';
 
 const Div = styled.div`
@@ -38,7 +38,7 @@ const InputGroup = styled.form`
       border: 1px solid red; }
 `;
 
-const Portfolio = withRouter(({history, watchList_Display, handleInputChange, suggestions, selectedCoin, viewPortfolio, changePortfolioView, wallets_Display}) => {
+const Portfolio = withRouter(({history, portfolio_Display, handleInputChange, suggestions, selectedCoin, viewPortfolio, changePortfolioView, wallets_Display}) => {
 
     function handleChange(e) {
         e.preventDefault();
@@ -96,14 +96,14 @@ const Portfolio = withRouter(({history, watchList_Display, handleInputChange, su
                 ): null
             }
             { viewPortfolio === true ? 
-                watchList_Display.map( ({id, name, symbol, image, price, dayPercentChange}) => 
-                    <PortfolioCoin key={id}
-                            coinID={id}
+                portfolio_Display.map( ({coinID, name, symbol, image, value, amount}) => 
+                    <PortfolioCoin key={coinID}
+                            coinID={coinID}
                             name={name} 
                             symbol={symbol} 
-                            price={price}
+                            value={value}
                             image={image}
-                            dayPercentChange={dayPercentChange}/> 
+                            amount={amount}/> 
                     )
                 :
                 wallets_Display.map( ({id, name, address, image, totalValue, dayPercentChange }) =>
@@ -127,13 +127,15 @@ function mapStateToProps(state) {
       selectedCoin: state.watchListReducer.selectedCoin,
       viewPortfolio: state.portfolioReducer.viewPortfolio,
       wallets_Display: state.portfolioReducer.wallets_Display,
+      portfolio_Display: state.portfolioReducer.portfolio_Display
     };
   }
   
 function mapDispatchToProps(dispatch) {
   return {
     handleInputChange: (query) => dispatch(handleInputChange(query)),
-    changePortfolioView: () => dispatch(changePortfolioView())
+    changePortfolioView: () => dispatch(changePortfolioView()),
+    
   };
 }
 

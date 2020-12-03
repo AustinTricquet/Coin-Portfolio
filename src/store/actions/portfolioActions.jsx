@@ -1,5 +1,6 @@
 import {
-    CHANGE_PORTFOLIO_VIEW
+    CHANGE_PORTFOLIO_VIEW,
+    UPDATE_PORTFOLIO
   } from "./actionTypes";
 import {store} from '../../index';
   
@@ -21,4 +22,11 @@ import {store} from '../../index';
         payload: viewPortfolio
       });
   };
+
+  export const fetchWalletData = () => async dispatch => {
+      dispatch({
+          type: UPDATE_PORTFOLIO,
+          payload: ""
+      })
+  }
   
