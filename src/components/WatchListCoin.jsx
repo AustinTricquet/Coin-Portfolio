@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { selectCoin } from '../store/actions/watchListActions';
+//import { selectCoin } from '../store/actions/watchListActions';
 import { withRouter } from 'react-router-dom';
 
 const Div = styled.div`
@@ -15,6 +15,22 @@ const Div = styled.div`
     :hover {
         background-color: #c9bcbe;
     }
+
+    &.selected {
+        background-color: white;
+        :hover {
+            background-color: #c9bcbe;
+        }
+
+        div {
+            color: #28394F;
+        }
+        
+    }
+
+    
+
+    
 `;
 
 const Coin = styled.div`
@@ -46,13 +62,13 @@ const SubText = styled.h5`
     color: #8993A8;
 `;
 
-const WatchListCoin = withRouter(({ history, coinID, name, symbol, image, price, dayPercentChange }) => {
+const WatchListCoin = withRouter(({ history, coinID, name, symbol, image, price, dayPercentChange, selected }) => {
 
     async function handleClick() {
         history.push("/watch-list/" + coinID);
     }
     return (
-        <Div onClick={handleClick}>
+        <Div onClick={handleClick} className={selected}>
             <Coin>
                 <Img src={image} alt="React logo" className="App-logo" />
                 <div>
@@ -72,13 +88,13 @@ const WatchListCoin = withRouter(({ history, coinID, name, symbol, image, price,
 
 function mapStateToProps(state) {
     return {
-        watchList_Display: state.watchListReducer.watchList_Display
+        //watchList_Display: state.watchListReducer.watchList_Display
     };
   }
   
 function mapDispatchToProps(dispatch) {
     return {
-        selectCoin: (coinID) => dispatch(selectCoin(coinID))
+        //selectCoin: (coinID) => dispatch(selectCoin(coinID))
     };
 }
 

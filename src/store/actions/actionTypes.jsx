@@ -71,5 +71,15 @@ export const UPDATE_ERC20_BALANCES = "UPDATE_ERC20_BALANCES";
 
 export const GET_ERC20_TXS = "GET_ERC20_TXS";
 
+<<<<<<< HEAD
 export const ADD_ETH_WALLET = "ADD_ETH_WALLET";
 export const REMOVE_ETH_WALLET = "REMOVE_ETH_WALLET"
+=======
+export const ADD_CHART_DATA = "ADD_CHART_DATA";
+
+export const UPDATE_MARKET_DATA_SUCCESS = "UPDATE_MARKET_DATA_SUCCESS";
+
+export const UPDATE_SELECTED_COIN_SUCCESS = "UPDATE_SELECTED_COIN_SUCCESS";
+
+export const UPDATE_CHART_DATA = "UPDATE_CHART_DATA";
+>>>>>>> a2a93a5... Refactoring redux state and reducers to have better handling of data for watchList feature. This aims to streamline the updating process for the watchList and selected coins when searched for and removing redundant code for sevearal components as well as redundancy in state for storing the info for watchList. This pattern will pave the way forward for the portfolio feature.

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Chart from 'chart.js';
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { selectCoin } from '../store/actions/watchListActions';
+import { updateMarketData } from '../store/actions/watchListActions';
 
 const Div = styled.div`
     color: #28394F;
@@ -78,18 +78,19 @@ const Canvas = styled.canvas`
     padding: 1em 1em 1em 1em;
 `;
 
-const CoinChart = ({selectedCoin, selectCoin}) => {
+const CoinChart = ({selectedCoin, updateMarketData}) => {
 
     useEffect(() => {
         try {
             const ctx = document.getElementById('coinChart').getContext('2d');
-            const chartPrices = selectedCoin[0].chartPrices;
-            const chartDates = selectedCoin[0].chartDates;
+            const chartPrices = selectedCoin.coinChart.prices;
+            const chartDates = selectedCoin.coinChart.dates;
+            console.log("chart prices and dates:", chartPrices, chartDates)
             const priceMin = (Math.min.apply(null, chartPrices))
             const priceMax = Math.max.apply(null, chartPrices)
             const priceDelta = priceMax - priceMin;
             let timeUnit = '';
-            const coinTime = parseInt(selectedCoin[0].chartTimeFrame)
+            const coinTime = parseInt(selectedCoin.coinChart.days)
             console.log("coinTime: ", coinTime)
             if (coinTime === 1) {
                 timeUnit = 'hour';
@@ -171,7 +172,7 @@ const CoinChart = ({selectedCoin, selectCoin}) => {
                 data: {
                 labels: chartDates,
                 datasets: [{
-                    label: selectedCoin[0].name,
+                    label: selectedCoin.marketData.name,
                     data: chartPrices,
 
                     backgroundColor: [
@@ -261,31 +262,52 @@ const CoinChart = ({selectedCoin, selectCoin}) => {
     
     })
 
+    //Need to add or remove class depending on what button has been clicked or not to dynamically display which button is selected.
+    // need to clean up code:
+    // - remove excess reducers and comments and console logs
+    // - remove excess actionTypes
+    // - remove extra files
+    // - ensure the search feature works properly
+
 
     function handleClick(e) {
      
-        console.log("CLICK: ", selectedCoin[0].id, e.target.value);
-        selectCoin(selectedCoin[0].id, e.target.value);
+        console.log("CLICK: ", selectedCoin.marketData.id, e.target.value);
+        updateMarketData([], selectedCoin.marketData.id, e.target.value);
+
     }
     
-    return (
-        <Div>
-            <Header>
-                <h3>USD/{selectedCoin[0].symbol}</h3>
-                <ChartButtonGroup>
-                    <button type="radio" active onClick={handleClick} value='1'>24h</button>
-                    <button type="radio" onClick={handleClick} value='7'>7d</button>
-                    <button type="radio" onClick={handleClick} value='14'>14d</button>
-                    <button type="radio" onClick={handleClick} value='30'>30d</button>
-                    <button type="radio" onClick={handleClick} value='365'>1y</button>
-                    <button type="radio" onClick={handleClick} value='max'>Max</button>
-                </ChartButtonGroup>
-            </Header>
-            <CanvasContainer>
-                <Canvas id="coinChart"></Canvas>
-            </CanvasContainer>
-        </Div>
-    )
+    try {
+        return (
+            <Div>
+                <Header>
+                    <h3>USD/{selectedCoin.marketData.symbol}</h3>
+                    <ChartButtonGroup>
+                        <button type="radio" onClick={handleClick}  value='1'>24h</button>
+                        <button type="radio" onClick={handleClick} value='7'>7d</button>
+                        <button type="radio" onClick={handleClick} value='14'>14d</button>
+                        <button type="radio" onClick={handleClick} value='30'>30d</button>
+                        <button type="radio" onClick={handleClick} value='365'>1y</button>
+                        <button type="radio" onClick={handleClick} value='max'>Max</button>
+                    </ChartButtonGroup>
+                </Header>
+                <CanvasContainer>
+                    <Canvas id="coinChart"></Canvas>
+                </CanvasContainer>
+            </Div>
+        )
+    } catch {
+        return(
+            <Div>
+                <Header>
+                    <h3>Loading Chart</h3>
+                </Header>
+                <CanvasContainer>
+                    <Canvas id="coinChart"></Canvas>
+                </CanvasContainer>
+            </Div>
+        )
+    }
 }
 
 
@@ -297,7 +319,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-      selectCoin: (coinID, days) => dispatch(selectCoin(coinID, days)),
+    updateMarketData: (coinIDs, selectedCoinID, days) => dispatch(updateMarketData(coinIDs, selectedCoinID, days)),
   };
 }
 

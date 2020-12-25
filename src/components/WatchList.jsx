@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect} from 'react';
 import WatchListCoin from './WatchListCoin';
-import WatchListSelectedCoin from './WatchListSelectedCoin';
+//import WatchListSelectedCoin from './WatchListSelectedCoin';
 import SearchSuggestedCoin from './SearchSuggestedCoin';
 import styled from 'styled-components';
 import { compose } from "redux";
@@ -37,7 +37,8 @@ const InputGroup = styled.form`
       border: 1px solid red; }
 `;
 
-const WatchList = withRouter(({history, watchList_Display, handleInputChange, suggestions, selectedCoin}) => {
+const WatchList = withRouter(({history, handleInputChange, suggestions, watchList, selectedCoin }) => {
+
     function handleChange(e) {
         e.preventDefault();
         handleInputChange(e.target.value);
@@ -59,7 +60,8 @@ const WatchList = withRouter(({history, watchList_Display, handleInputChange, su
       
     }
 
-    return (
+    try {
+      return (
         <Div>
             <InputGroup onSubmit={handleSubmit} id="watchListSearch">
                 <input type="text"
@@ -78,37 +80,43 @@ const WatchList = withRouter(({history, watchList_Display, handleInputChange, su
                           dayPercentChange={dayPercentChange}/> 
                     )
             }
+            <WatchListCoin key={selectedCoin.id}
+                            coinID={selectedCoin.id}
+                            name={selectedCoin.marketData.name} 
+                            symbol={selectedCoin.marketData.symbol} 
+                            price={selectedCoin.marketData.price}
+                            image={selectedCoin.marketData.image}
+                            dayPercentChange={selectedCoin.marketData.dayPercentChange}
+                            selected="selected"/> 
+                    
             {
-                selectedCoin.map( ({id, name, symbol, image, price, dayPercentChange}) =>
-                    <WatchListSelectedCoin key={id}
-                                coinID={id}
-                                name={name} 
-                                symbol={symbol} 
-                                price={price}
-                                image={image}
-                                dayPercentChange={dayPercentChange}/> 
-                    )
-            }
-            {
-                watchList_Display.map( ({id, name, symbol, image, price, dayPercentChange}) => 
+                Object.values(watchList).filter((coin) => (coin.id !== selectedCoin.id)).sort((a,b) => (b.marketData.marketCap - a.marketData.marketCap)).map( ({id, marketData}) => 
                     <WatchListCoin key={id}
                             coinID={id}
-                            name={name} 
-                            symbol={symbol} 
-                            price={price}
-                            image={image}
-                            dayPercentChange={dayPercentChange}/> 
+                            name={marketData.name} 
+                            symbol={marketData.symbol} 
+                            price={marketData.price}
+                            image={marketData.image}
+                            dayPercentChange={marketData.dayPercentChange}
+                            selected={null}/> 
                     ) 
             }
         </Div>
-    )
+      )
+
+    } catch {
+      return ( <h1>test</h1>)
+    }
+    
 })
+    
 
 function mapStateToProps(state) {
     return {
-      watchList_Display: state.watchListReducer.watchList_Display,
+      watchList: state.watchListReducer.watchList,
       suggestions: state.watchListReducer.suggestions,
       selectedCoin: state.watchListReducer.selectedCoin
+      //selectedCoin: state.watchListReducer.selectedCoin
     };
   }
   

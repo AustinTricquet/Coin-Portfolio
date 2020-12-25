@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { selectCoin, add, remove } from '../store/actions/watchListActions';
+import { add, remove } from '../store/actions/watchListActions';
 import { withRouter } from 'react-router-dom';
 import plus from '../images/plus.png';
 import minus from '../images/minus.png';
@@ -16,8 +16,6 @@ const Div = styled.div`
     min-width: 27em;
     vertical-align: top;
     font-size: 0.9em;
-    
-   
 `;
 
 const Header = styled.div`
@@ -126,80 +124,149 @@ const Table = styled.table`
 `;
 
 const CoinBasicInfo = withRouter(({history, selectedCoin, add, remove}) => {
+    //console.log("watchlist: ", watchList)
+    //let watchListKeys = Object.values(watchList)
+    //console.log("watchList KEYS: ", watchListKeys)
+    
+    //let selectedCoin = watchListKeys.find((coin) => ( coin.selected = "selected"));
+    //console.log("selectedCoin: ", selectedCoin);
+    //let marketData = selectedCoin.marketData
+    //console.log("market data: ", marketData)
+    
+    //console.log("selected coin: ", selectedCoin)
     function addCoin() {
         add(selectedCoin)
-        history.push("/watch-list/"+selectedCoin[0].id);
+        history.push("/watch-list/"+selectedCoin.id);
     }
 
     function removeCoin() {
         remove(selectedCoin)
-        history.push("/watch-list/"+selectedCoin[0].id);
+        history.push("/watch-list/"+selectedCoin.id);
     }
 
-    return (
-        <>
-            {
-                selectedCoin.map( ({id, name, symbol, image, price, dayPercentChange, dayVolume, marketCap, rank, ATH, ATHDate, ATL, ATLDate, website, onWatchList}) => 
-                    <Div key={id}>
-                        <Header>
-                            <Coin>
-                                <Img src={image} alt="Coin logo" className="App-logo" />
-                                <div>
-                                    <h1>{name}</h1>
-                                    <HeadSubText>{symbol}</HeadSubText>
-                                </div>
-                            </Coin>      
-                            <Price>
-                                <div>
-                                    <h1>${price}</h1>
-                                    <HeadSubText>{dayPercentChange}%</HeadSubText>
-                                </div>
-                                { onWatchList === false ? <Button onClick={addCoin}><ButtonImg src={plus} alt="Add"></ButtonImg></Button> : <Button onClick={removeCoin}><ButtonImg src={minus} alt="minus"></ButtonImg></Button>}
-                            </Price>  
-                        </Header>
-                        <ContentBlock>
-                            <Table>
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            <h3>Market Data:</h3>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <p><strong>24h Trading Volume:</strong></p>
-                                            <strong>${dayVolume}</strong>
-                                        </td>
-                                        <td>
-                                            <p><strong>Market Cap:</strong></p>
-                                            <strong>${marketCap}</strong>
-                                            <SubText><strong>Market Cap Rank: {rank}</strong></SubText>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <p><strong>All-Time High:</strong></p>
-                                            <strong>${ATH}</strong>
-                                            <SubText><strong>{ATHDate}</strong></SubText>
-                                        </td>
-                                        <td>
-                                            <p><strong>All-Time Low:</strong></p>
-                                            <strong>${ATL}</strong>
-                                            <SubText><strong>{ATLDate}</strong></SubText>
-                                        </td> 
-                                    </tr>
-                                </tbody>
-                            </Table>
-                            <h3>More Info</h3>
-                            <p>Website: <a href={website}>{website}</a></p>
-                        </ContentBlock>
-                    </Div>
-                )
-            }
-        </>
-    )
+    try {
+        return (
+            <>
+                <Div key={selectedCoin.marketData.id}>
+                    <Header>
+                        <Coin>
+                            <Img src={selectedCoin.marketData.image} alt="Coin logo" className="App-logo" />
+                            <div>
+                                <h1>{selectedCoin.marketData.name}</h1>
+                                <HeadSubText>{selectedCoin.marketData.symbol}</HeadSubText>
+                            </div>
+                        </Coin>      
+                        <Price>
+                            <div>
+                                <h1>${selectedCoin.marketData.price}</h1>
+                                <HeadSubText>{selectedCoin.marketData.dayPercentChange}%</HeadSubText>
+                            </div>
+                            { true === false ? <Button onClick={addCoin}><ButtonImg src={plus} alt="Add"></ButtonImg></Button> : <Button onClick={removeCoin}><ButtonImg src={minus} alt="minus"></ButtonImg></Button>}
+                        </Price>  
+                    </Header>
+                    <ContentBlock>
+                        <Table>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <h3>Market Data:</h3>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p><strong>24h Trading Volume:</strong></p>
+                                        <strong>${selectedCoin.marketData.dayVolume}</strong>
+                                    </td>
+                                    <td>
+                                        <p><strong>Market Cap:</strong></p>
+                                        <strong>${selectedCoin.marketData.marketCap}</strong>
+                                        <SubText><strong>Market Cap Rank: {selectedCoin.marketData.rank}</strong></SubText>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p><strong>All-Time High:</strong></p>
+                                        <strong>${selectedCoin.marketData.ATH}</strong>
+                                        <SubText><strong>{selectedCoin.marketData.ATHDate}</strong></SubText>
+                                    </td>
+                                    <td>
+                                        <p><strong>All-Time Low:</strong></p>
+                                        <strong>${selectedCoin.marketData.ATL}</strong>
+                                        <SubText><strong>{selectedCoin.marketData.ATLDate}</strong></SubText>
+                                    </td> 
+                                </tr>
+                            </tbody>
+                        </Table>
+                        <h3>More Info</h3>
+                        <p>Website: <a href={selectedCoin.marketData.website}>{selectedCoin.marketData.website}</a></p>
+                    </ContentBlock>
+                </Div>
+            </>
+        )
+    } catch {
+        return (
+            <>
+                <Div>
+                    <Header>
+                        <Coin>
+                            <div>
+                                <h1> - </h1>
+                                <HeadSubText>...</HeadSubText>
+                            </div>
+                        </Coin>      
+                        <Price>
+                            <div>
+                                <h1>$ -</h1>
+                                <HeadSubText> - %</HeadSubText>
+                            </div>
+                            { false ? <Button onClick={addCoin}><ButtonImg src={plus} alt="Add"></ButtonImg></Button> : <Button onClick={removeCoin}><ButtonImg src={minus} alt="minus"></ButtonImg></Button>}
+                        </Price>  
+                    </Header>
+                    <ContentBlock>
+                        <Table>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <h3>Market Data:</h3>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p><strong>24h Trading Volume:</strong></p>
+                                        <strong>$ - </strong>
+                                    </td>
+                                    <td>
+                                        <p><strong>Market Cap:</strong></p>
+                                        <strong>$ - </strong>
+                                        <SubText><strong>Market Cap Rank:  - </strong></SubText>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p><strong>All-Time High:</strong></p>
+                                        <strong>$ - </strong>
+                                        <SubText><strong> - </strong></SubText>
+                                    </td>
+                                    <td>
+                                        <p><strong>All-Time Low:</strong></p>
+                                        <strong>$ - </strong>
+                                        <SubText><strong> - </strong></SubText>
+                                    </td> 
+                                </tr>
+                            </tbody>
+                        </Table>
+                        <h3>More Info</h3>
+                        <p>Website: <a> - </a></p>
+                    </ContentBlock>
+                </Div>
+            </>
+        )
+    }
+    
 })
 
 function mapStateToProps(state) {
@@ -210,7 +277,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-      selectCoin: (coinID) => dispatch(selectCoin(coinID)),
+      //selectCoin: (coinID) => dispatch(selectCoin(coinID)),
       add: (selectedCoin) => dispatch(add(selectedCoin)),
       remove: (selectedCoin) => dispatch(remove(selectedCoin))
   };

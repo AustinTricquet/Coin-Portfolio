@@ -1,37 +1,28 @@
 import {
     FETCH_COIN_DATA_SUCCESS,
     FETCH_COIN_DATA_ERROR,
-    UPDATE_WATCH_LIST_SUCCESS,
+    UPDATE_SELECTED_COIN_SUCCESS,
     UPDATE_WATCH_LIST_ERROR,
-    SELECTED_WATCH_LIST_COIN_SUCCESS,
-    SELECTED_WATCH_LIST_COIN_ERROR,
-    DISPLAY_WATCH_LIST_SUCCESS,
-    DISPLAY_WATCH_LIST_ERROR,
     UPDATE_SEARCH_SUGGESTIONS_SUCCESS,
     UPDATE_SEARCH_SUGGESTIONS_ERROR,
     ADD_COIN_SUCCESS,
-    REMOVE_COIN_SUCCESS
+    REMOVE_COIN_SUCCESS,
+    UPDATE_MARKET_DATA_SUCCESS,
+    UPDATE_CHART_DATA
   } from "./actionTypes";
   import { beginApiCall, apiCallError } from "./apiStatusActions";
   import axios from 'axios';
   import {store} from '../../index';
   
   // Fetch Coin Data for watch list
-  export const fetchCoinData = (coinList) => async dispatch => {
-    const state = store.getState();
-    const watchList = state.watchListReducer.watchList;
+  export const updateMarketData = (coinIDs = [], selectedCoinID, days = 1) => async dispatch => {
+    console.log("COIN ID INPUT in FETCH COIN DATA: ", coinIDs)
     try {
-        dispatch(beginApiCall());
-        const coinDataPromises = coinList.map(coin => axios.get('https://api.coingecko.com/api/v3/coins/' + coin.id));
-        const coinDataResponses = await Promise.all(coinDataPromises);
-        const coinData = coinDataResponses.map(function(response) {
+        // UPDATE SELECTED COIN FIRST
+        const coinChart = await dispatch(fetchCoinChart(selectedCoinID, days));
+        console.log("coinChart: ", coinChart)
+        axios.get('https://api.coingecko.com/api/v3/coins/' + selectedCoinID).then((response) => {
           const data = response.data;
-          let onWatchList = watchList.find((coin) => (coin.id === data.id));
-          if ( onWatchList === undefined) {
-            onWatchList = false;
-          } else {
-            onWatchList = true;
-          }
           let price = data.market_data.current_price.usd
           if (price > 999.99) {
             price = price.toFixed(0);
@@ -40,34 +31,102 @@ import {
           } else {
             price = price.toFixed(2);
           }
-          console.log("img: ", data.image.large)
-          return {
-            key: data.id,
-            id: data.id,
-            name: data.name,
-            symbol: data.symbol.toUpperCase(),
-            image: data.image.large,
-            price: price,
-            website: data.links.homepage[0],
-            description: data.description.en,
-            marketCap: data.market_data.market_cap.usd,
-            dayVolume: data.market_data.total_volume.usd,
-            rank: data.market_cap_rank,
-            ATH: data.market_data.ath.usd,
-            ATHDate: data.market_data.ath_date.usd.slice(0,10),
-            ATL: data.market_data.atl.usd,
-            ATLDate: data.market_data.atl_date.usd.slice(0,10),
-            dayPercentChange: data.market_data.price_change_percentage_24h_in_currency.usd.toFixed(2),
-            onWatchList: onWatchList
+
+          let payload = { 
+            id: selectedCoinID,
+            marketData: {
+              key: data.id,
+              id: data.id,
+              name: data.name,
+              symbol: data.symbol.toUpperCase(),
+              image: data.image.large,
+              price: price,
+              website: data.links.homepage[0],
+              description: data.description.en,
+              marketCap: data.market_data.market_cap.usd,
+              dayVolume: data.market_data.total_volume.usd,
+              rank: data.market_cap_rank,
+              ATH: data.market_data.ath.usd,
+              ATHDate: data.market_data.ath_date.usd.slice(0,10),
+              ATL: data.market_data.atl.usd,
+              ATLDate: data.market_data.atl_date.usd.slice(0,10),
+              dayPercentChange: data.market_data.price_change_percentage_24h_in_currency.usd.toFixed(2)
+            },
+            coinChart: {
+              dates: coinChart.dates,
+              prices: coinChart.prices,
+              days: days
+            }
           }
-        })
-        console.log('FETCH COIN DATA OUTPUT: ',coinData)
+          dispatch({
+            type: UPDATE_SELECTED_COIN_SUCCESS,
+            payload: payload,
+            id: selectedCoinID
+          })
+          
+
+          // need to add price data to chart ( could use separate chart data structure or embed inside selectedCoin)
+          // if chosen path is to add chart data to selectedCoin, then reducer will need to accomidate to only affect updating market data and not erasing any chart data.
+
+        });
+
+        async function updateRemainingWatchList(filteredCoinIDs) {
+          dispatch(beginApiCall());
+          const coinDataPromises = filteredCoinIDs.map(coin => axios.get('https://api.coingecko.com/api/v3/coins/' + coin));
+          const coinDataResponses = await Promise.all(coinDataPromises);
+          coinDataResponses.map(function(response) {
+            const data = response.data;
+            let price = data.market_data.current_price.usd
+            if (price > 999.99) {
+              price = price.toFixed(0);
+            } else if ( price < 1.99) {
+              price = price.toFixed(4);
+            } else {
+              price = price.toFixed(2);
+            }
+
+            dispatch({
+              type: UPDATE_MARKET_DATA_SUCCESS,
+              payload: {
+                key: data.id,
+                id: data.id,
+                name: data.name,
+                symbol: data.symbol.toUpperCase(),
+                image: data.image.large,
+                price: price,
+                website: data.links.homepage[0],
+                description: data.description.en,
+                marketCap: data.market_data.market_cap.usd,
+                dayVolume: data.market_data.total_volume.usd,
+                rank: data.market_cap_rank,
+                ATH: data.market_data.ath.usd,
+                ATHDate: data.market_data.ath_date.usd.slice(0,10),
+                ATL: data.market_data.atl.usd,
+                ATLDate: data.market_data.atl_date.usd.slice(0,10),
+                dayPercentChange: data.market_data.price_change_percentage_24h_in_currency.usd.toFixed(2)
+              }
+            })
+          });
+        }
+
+        if (coinIDs !== []) {
+          const selectedInWatchList = coinIDs.find((coin) => (coin === selectedCoinID)) !== undefined ? true : false;
+          console.log("selectedInWatchList: ", selectedInWatchList);
+
+          if (selectedInWatchList) {
+            // filter out the coin already updated and selected then update watchList
+            const filteredCoinIDs = coinIDs.filter((coin) => (coin.id !== selectedCoinID));
+            updateRemainingWatchList(filteredCoinIDs);
+          } else {
+            // Since the selected coin is not in the watchList - update the watchList as normal
+            updateRemainingWatchList(coinIDs);
+          };
+        };
         
         dispatch({
           type: FETCH_COIN_DATA_SUCCESS,
           payload: "Fetch Coin Data from 'Coin Gecko API' Success!"
         })
-        return(coinData)
        
     } catch (err) {
       dispatch(apiCallError());
@@ -102,17 +161,14 @@ import {
     })
   }
 
-  export const updateWatchList = () => async dispatch => {
+  export const selectCoin = (selectedCoinID) => async dispatch => {
     try {
-      const state = store.getState();
-      const watchList = state.watchListReducer.watchList;
-      console.log("CALLING 'FETCH COIN DATA' FROM 'UPDATE WATCH LIST'")
-      const coinData = await dispatch(fetchCoinData(watchList))
-      console.log("UPDATE WATCH LIST OUTPUT: ", coinData)
+     
       dispatch({
-          type: UPDATE_WATCH_LIST_SUCCESS,
-          payload: coinData
+        type: UPDATE_SELECTED_COIN_SUCCESS,
+        payload: selectedCoinID
       });
+        
     } catch {
       dispatch({
         type: UPDATE_WATCH_LIST_ERROR,
@@ -121,59 +177,7 @@ import {
     }
   }
 
-  export const refreshDisplayList = () => async dispatch => {
-    try {
-      const state = store.getState();
-      const watchList = state.watchListReducer.watchList;
-      const selectedCoin = state.watchListReducer.selectedCoin;
-      let watchList_Display = [];
-      if (selectedCoin.length === 1) {
-        watchList_Display = watchList.filter(coin => coin.id !== selectedCoin[0].id).sort((a,b) => (b.marketCap - a.marketCap));
-      } else {
-        watchList_Display = watchList.sort((a,b) => (b.marketCap - a.marketCap));
-      }
-      console.log("REFRESH DISPLAY LIST OUTPUT: ", watchList_Display);
-      dispatch({
-        type: DISPLAY_WATCH_LIST_SUCCESS,
-        payload: watchList_Display
-      })
-    } catch {
-      dispatch({
-        type: DISPLAY_WATCH_LIST_ERROR,
-        payload: "Something went wrong displaying the rest of the coins in watch list."
-      })
-    }
-  }
-
-  export const selectCoin = (coinID, days) => async dispatch => {
-    try {
-      let selectedCoin = [];
-      console.log("CALLING 'FETCH COIN DATA' from 'SELECT COIN'");
-      const coinData = await dispatch(fetchCoinData([{id: coinID}]));
-
-      const chartData = await dispatch(fetchCoinChart(coinID, days));
-      coinData[0].chartPrices = chartData.prices;
-      coinData[0].chartDates = chartData.dates;
-      coinData[0].chartTimeFrame = days
-      selectedCoin.push(coinData);
-      console.log("SELECT COIN OUTPUT: ", coinData);
-      await dispatch({
-        type: SELECTED_WATCH_LIST_COIN_SUCCESS,
-        payload: coinData
-      })
-      console.log("CALLING 'REFRESH DISPLAY' LIST FROM 'SELECT COIN'");
-      await dispatch(refreshDisplayList());
-
-
-
-    } catch {
-      dispatch({
-        type: SELECTED_WATCH_LIST_COIN_ERROR,
-        payload: "Something went wrong selecting a coin."
-      })
-    }
-  };
-
+  // Everything to do with searching for new coins to add
   export const handleInputChange = (inputValue) => async dispatch => {
     try {
       if (inputValue !== "") {
@@ -228,7 +232,7 @@ import {
 
         //console.log("SUGGESTED COINS KEYS: ", suggestedCoins_CoinKeys)
         console.log("CALLING 'FETCH COIN DATA' FROM 'HANDLE INPUT CHANGE'");
-        let suggestedCoins = await dispatch(fetchCoinData(suggestedCoins_CoinKeys))
+        let suggestedCoins = await dispatch(updateMarketData(suggestedCoins_CoinKeys))
         //console.log("SUGGESTED COINS AFTER DISPATCH: ", suggestedCoins);
         
         // filter out any duplicate results (can happen during forks of various coins)
@@ -261,6 +265,10 @@ import {
 
   export const fetchCoinChart = (coinID, days) => async dispatch => {
     try {
+
+        //const state = store.getState();
+        //const watchList = state.watchListReducer.watchList;
+
         dispatch(beginApiCall());
         //console.log('BEGIN CHART FETCH')
         const coinChartDataResponse = await axios.get('https://api.coingecko.com/api/v3/coins/' + coinID + '/market_chart?vs_currency=usd&days=' + days);
@@ -270,7 +278,7 @@ import {
         const priceData = coinChartDataResponse.data.prices;
 
         priceData.forEach((arr) => {
-          console.log(arr[0])
+          //console.log(arr[0])
           const date = arr[0];
           let price = arr[1];
           if (arr[1] > 999.99) {
@@ -284,6 +292,10 @@ import {
           dates.push(date);
           prices.push(price);
         })
+
+        //let result = watchList.find(coin => { return coin.id === coinID})
+
+        //console.log("RESULT OF FIND: ", result)
 
         return {dates, prices};
         
