@@ -39,6 +39,7 @@ const InputGroup = styled.form`
 
 const WatchList = withRouter(({history, handleInputChange, suggestions, watchList, selectedCoin }) => {
 
+    console.log("suggestions: ", suggestions)
     function handleChange(e) {
         e.preventDefault();
         handleInputChange(e.target.value);
@@ -70,15 +71,16 @@ const WatchList = withRouter(({history, handleInputChange, suggestions, watchLis
                 />
             </InputGroup>
             {
-                suggestions.map( ({id, name, symbol, image, price, dayPercentChange}) => 
-                    <SearchSuggestedCoin key={id}
-                          coinID={id}
-                          name={name} 
-                          symbol={symbol} 
-                          price={price}
-                          image={image}
-                          dayPercentChange={dayPercentChange}/> 
-                    )
+              suggestions.map( ({id, name, symbol, price, image, dayPercentChange}) => 
+                <WatchListCoin key={id}
+                        coinID={id}
+                        name={name} 
+                        symbol={symbol} 
+                        price={price}
+                        image={image}
+                        dayPercentChange={dayPercentChange}
+                        selected={null}/> 
+                ) 
             }
             <WatchListCoin key={selectedCoin.id}
                             coinID={selectedCoin.id}

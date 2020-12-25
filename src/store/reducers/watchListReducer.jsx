@@ -95,7 +95,7 @@ export default function watchListReducer(state = INITIAL_STATE, action) {
   } else if (
     action.type === UPDATE_SEARCH_SUGGESTIONS_SUCCESS
   ) {
-    return { ...state, suggestions: action.payload };
+    return update(state, {suggestions: {$set: action.payload}});
   } else if (
     action.type === UPDATE_HISTORY_LENGTH
   ) {

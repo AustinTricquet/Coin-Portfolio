@@ -15,66 +15,15 @@ import {
   import {store} from '../../index';
   
   // Fetch Coin Data for watch list
-  export const updateMarketData = (coinIDs = [], selectedCoinID, days = 1) => async dispatch => {
+  export const updateMarketData = (coinIDs = [], selectedCoinID = "", days = 1, suggestions=false) => async dispatch => {
     console.log("COIN ID INPUT in FETCH COIN DATA: ", coinIDs)
     try {
         // UPDATE SELECTED COIN FIRST
-        const coinChart = await dispatch(fetchCoinChart(selectedCoinID, days));
-        console.log("coinChart: ", coinChart)
-        axios.get('https://api.coingecko.com/api/v3/coins/' + selectedCoinID).then((response) => {
-          const data = response.data;
-          let price = data.market_data.current_price.usd
-          if (price > 999.99) {
-            price = price.toFixed(0);
-          } else if ( price < 1.99) {
-            price = price.toFixed(4);
-          } else {
-            price = price.toFixed(2);
-          }
 
-          let payload = { 
-            id: selectedCoinID,
-            marketData: {
-              key: data.id,
-              id: data.id,
-              name: data.name,
-              symbol: data.symbol.toUpperCase(),
-              image: data.image.large,
-              price: price,
-              website: data.links.homepage[0],
-              description: data.description.en,
-              marketCap: data.market_data.market_cap.usd,
-              dayVolume: data.market_data.total_volume.usd,
-              rank: data.market_cap_rank,
-              ATH: data.market_data.ath.usd,
-              ATHDate: data.market_data.ath_date.usd.slice(0,10),
-              ATL: data.market_data.atl.usd,
-              ATLDate: data.market_data.atl_date.usd.slice(0,10),
-              dayPercentChange: data.market_data.price_change_percentage_24h_in_currency.usd.toFixed(2)
-            },
-            coinChart: {
-              dates: coinChart.dates,
-              prices: coinChart.prices,
-              days: days
-            }
-          }
-          dispatch({
-            type: UPDATE_SELECTED_COIN_SUCCESS,
-            payload: payload,
-            id: selectedCoinID
-          })
-          
-
-          // need to add price data to chart ( could use separate chart data structure or embed inside selectedCoin)
-          // if chosen path is to add chart data to selectedCoin, then reducer will need to accomidate to only affect updating market data and not erasing any chart data.
-
-        });
-
-        async function updateRemainingWatchList(filteredCoinIDs) {
-          dispatch(beginApiCall());
-          const coinDataPromises = filteredCoinIDs.map(coin => axios.get('https://api.coingecko.com/api/v3/coins/' + coin));
-          const coinDataResponses = await Promise.all(coinDataPromises);
-          coinDataResponses.map(function(response) {
+        if (selectedCoinID !== "") {
+          const coinChart = await dispatch(fetchCoinChart(selectedCoinID, days));
+          console.log("coinChart: ", coinChart)
+          axios.get('https://api.coingecko.com/api/v3/coins/' + selectedCoinID).then((response) => {
             const data = response.data;
             let price = data.market_data.current_price.usd
             if (price > 999.99) {
@@ -85,9 +34,9 @@ import {
               price = price.toFixed(2);
             }
 
-            dispatch({
-              type: UPDATE_MARKET_DATA_SUCCESS,
-              payload: {
+            let payload = { 
+              id: selectedCoinID,
+              marketData: {
                 key: data.id,
                 id: data.id,
                 name: data.name,
@@ -104,23 +53,104 @@ import {
                 ATL: data.market_data.atl.usd,
                 ATLDate: data.market_data.atl_date.usd.slice(0,10),
                 dayPercentChange: data.market_data.price_change_percentage_24h_in_currency.usd.toFixed(2)
+              },
+              coinChart: {
+                dates: coinChart.dates,
+                prices: coinChart.prices,
+                days: days
               }
+            }
+            dispatch({
+              type: UPDATE_SELECTED_COIN_SUCCESS,
+              payload: payload,
+              id: selectedCoinID
             })
+            // need to add price data to chart ( could use separate chart data structure or embed inside selectedCoin)
+            // if chosen path is to add chart data to selectedCoin, then reducer will need to accomidate to only affect updating market data and not erasing any chart data.
           });
-        }
+        };
+
+        async function updateRemainingWatchList(filteredCoinIDs) {
+          dispatch(beginApiCall());
+          const coinDataPromises = filteredCoinIDs.map(coin => axios.get('https://api.coingecko.com/api/v3/coins/' + coin));
+          const coinDataResponses = await Promise.all(coinDataPromises);
+          const marketData = coinDataResponses.map(function(response) {
+            const data = response.data;
+            let price = data.market_data.current_price.usd
+            if (price > 999.99) {
+              price = price.toFixed(0);
+            } else if ( price < 1.99) {
+              price = price.toFixed(4);
+            } else {
+              price = price.toFixed(2);
+            }
+
+            let payload = {
+              key: data.id,
+              id: data.id,
+              name: data.name,
+              symbol: data.symbol.toUpperCase(),
+              image: data.image.large,
+              price: price,
+              website: data.links.homepage[0],
+              description: data.description.en,
+              marketCap: data.market_data.market_cap.usd,
+              dayVolume: data.market_data.total_volume.usd,
+              rank: data.market_cap_rank,
+              ATH: data.market_data.ath.usd,
+              ATHDate: data.market_data.ath_date.usd.slice(0,10),
+              ATL: data.market_data.atl.usd,
+              ATLDate: data.market_data.atl_date.usd.slice(0,10),
+              dayPercentChange: data.market_data.price_change_percentage_24h_in_currency.usd.toFixed(2)
+            }
+
+            if (!suggestions) {
+              dispatch({
+                type: UPDATE_MARKET_DATA_SUCCESS,
+                payload: payload
+              })
+            } 
+            
+            return payload
+            
+            //else {
+              //let suggestion = {
+                //id: payload.id,
+                //marketData: payload
+              //}
+              //console.log("id: passed -", payload.id)
+              //dispatch({
+                //type: UPDATE_SEARCH_SUGGESTIONS_SUCCESS,
+                //payload: suggestion,
+                //id: payload.id
+              //})
+            //}
+          });
+          console.log("marketData: ", marketData)
+          if (suggestions) {
+            dispatch({
+              type: UPDATE_SEARCH_SUGGESTIONS_SUCCESS,
+              payload: marketData,
+            })
+          }
+        };
 
         if (coinIDs !== []) {
-          const selectedInWatchList = coinIDs.find((coin) => (coin === selectedCoinID)) !== undefined ? true : false;
-          console.log("selectedInWatchList: ", selectedInWatchList);
+          if (selectedCoinID !== "") {
+            const selectedInWatchList = coinIDs.find((coin) => (coin === selectedCoinID)) !== undefined ? true : false;
+            console.log("selectedInWatchList: ", selectedInWatchList);
 
-          if (selectedInWatchList) {
-            // filter out the coin already updated and selected then update watchList
-            const filteredCoinIDs = coinIDs.filter((coin) => (coin.id !== selectedCoinID));
-            updateRemainingWatchList(filteredCoinIDs);
+            if (selectedInWatchList) {
+              // filter out the coin already updated and selected then update watchList
+              const filteredCoinIDs = coinIDs.filter((coin) => (coin.id !== selectedCoinID));
+              updateRemainingWatchList(filteredCoinIDs);
+            } else {
+              // Since the selected coin is not in the watchList - update the watchList as normal
+              updateRemainingWatchList(coinIDs);
+            };
           } else {
-            // Since the selected coin is not in the watchList - update the watchList as normal
             updateRemainingWatchList(coinIDs);
-          };
+          }
         };
         
         dispatch({
@@ -197,8 +227,6 @@ import {
         const suggestedCoinsResponse = await axios.get(`https://api.coinpaprika.com/v1/search/?q=${inputValue}&c=currencies&limit=3`)
         let suggestedCoins_CoinKeys = suggestedCoinsResponse.data.currencies.map(function(response) { 
           //console.log("SUGGESTED COINS RESPONSE: ", response);
-      
-
           // Various searching methods to find coins in coinGecko API Database from search suggestions
           let geckoData = coinKeys.data.find((element) => (element.name === response.name));
           if (geckoData === undefined) {
@@ -217,10 +245,9 @@ import {
             }
           }
         
-          response.id = geckoData.id
-          return {
-            id: response.id,
-          }});
+          response.id = geckoData.id;
+          return response.id
+        });
   
         // filter out any coins that don't exist in coinGecko API database (returned empty)
         suggestedCoins_CoinKeys = suggestedCoins_CoinKeys.filter((coin) => (coin.id !== ""));
@@ -228,11 +255,11 @@ import {
         if (suggestedCoins_CoinKeys.length < 3) {
           //console.log('LAST ditch effort to find the element using what info was passed to search bar to find directly in coingecko database keys')
           const coinKey = coinKeys.data.filter((element) => (element.name.toLowerCase().includes(inputValue.toLowerCase()))).slice(0, (5 - suggestedCoins_CoinKeys.length));
-          coinKey.map(coin => suggestedCoins_CoinKeys.push({ id: coin.id}))}
+          coinKey.map(coin => suggestedCoins_CoinKeys.push(coin.id))}
 
         //console.log("SUGGESTED COINS KEYS: ", suggestedCoins_CoinKeys)
-        console.log("CALLING 'FETCH COIN DATA' FROM 'HANDLE INPUT CHANGE'");
-        let suggestedCoins = await dispatch(updateMarketData(suggestedCoins_CoinKeys))
+        console.log("CALLING 'FETCH COIN DATA' FROM 'HANDLE INPUT CHANGE'", suggestedCoins_CoinKeys);
+        let suggestedCoins = await dispatch(updateMarketData(suggestedCoins_CoinKeys, "", 1, true))
         //console.log("SUGGESTED COINS AFTER DISPATCH: ", suggestedCoins);
         
         // filter out any duplicate results (can happen during forks of various coins)
