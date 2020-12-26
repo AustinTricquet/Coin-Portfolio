@@ -37,5 +37,4 @@ const WatchListCoinDetail = () => {
     )
 }
 
-
 export default requireAuth(WatchListCoinDetail);

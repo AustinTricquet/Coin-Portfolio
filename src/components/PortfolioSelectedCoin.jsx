@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { selectCoin } from '../store/actions/watchListActions';
 import { withRouter } from 'react-router-dom';
 
 const Div = styled.div`
@@ -79,7 +78,7 @@ function mapStateToProps(state) {
   
 function mapDispatchToProps(dispatch) {
     return {
-        selectCoin: (coinID) => dispatch(selectCoin(coinID))
+        //
     };
 }
 

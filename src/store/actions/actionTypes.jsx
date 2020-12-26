@@ -73,7 +73,9 @@ export const GET_ERC20_TXS = "GET_ERC20_TXS";
 
 export const ADD_CHART_DATA = "ADD_CHART_DATA";
 
+// used in main updating watchList and selected coin and fetching chart data.
 export const UPDATE_MARKET_DATA_SUCCESS = "UPDATE_MARKET_DATA_SUCCESS";
+export const UPDATE_MARKET_DATA_ERROR = "UPDATE_MARKET_DATA_ERROR";
 
 export const UPDATE_SELECTED_COIN_SUCCESS = "UPDATE_SELECTED_COIN_SUCCESS";
 

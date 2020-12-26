@@ -1,6 +1,5 @@
-import React, { useEffect} from 'react';
+import React from 'react';
 import WatchListCoin from './WatchListCoin';
-//import WatchListSelectedCoin from './WatchListSelectedCoin';
 import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
@@ -56,7 +55,6 @@ const WatchList = withRouter(({history, handleInputChange, suggestions, watchLis
         // essentially it needs to act similar to handleinputchange function where it looks up suggestions based on text input and returns the first suggestion for submission.
         console.log("BUILD FUNCTION TO HANDLE PRESUBMITTED SUGGESTIONS") 
       }
-      
     }
 
     try {

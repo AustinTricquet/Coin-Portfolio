@@ -260,11 +260,10 @@ const CoinChart = ({selectedCoin, updateMarketData}) => {
     
     })
 
-    //Need to add or remove class depending on what button has been clicked or not to dynamically display which button is selected.
+    // - Need to add or remove class depending on what button has been clicked or not to dynamically display which button is selected.
     // need to clean up code:
     // - remove excess reducers and comments and console logs
     // - remove excess actionTypes
-    // - remove extra files
     // - ensure the search feature works properly
 
 
