@@ -1,7 +1,6 @@
 import React, { useEffect} from 'react';
 import WatchListCoin from './WatchListCoin';
 //import WatchListSelectedCoin from './WatchListSelectedCoin';
-import SearchSuggestedCoin from './SearchSuggestedCoin';
 import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
@@ -39,7 +38,6 @@ const InputGroup = styled.form`
 
 const WatchList = withRouter(({history, handleInputChange, suggestions, watchList, selectedCoin }) => {
 
-    console.log("suggestions: ", suggestions)
     function handleChange(e) {
         e.preventDefault();
         handleInputChange(e.target.value);

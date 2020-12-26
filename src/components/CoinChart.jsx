@@ -85,13 +85,11 @@ const CoinChart = ({selectedCoin, updateMarketData}) => {
             const ctx = document.getElementById('coinChart').getContext('2d');
             const chartPrices = selectedCoin.coinChart.prices;
             const chartDates = selectedCoin.coinChart.dates;
-            console.log("chart prices and dates:", chartPrices, chartDates)
             const priceMin = (Math.min.apply(null, chartPrices))
             const priceMax = Math.max.apply(null, chartPrices)
             const priceDelta = priceMax - priceMin;
             let timeUnit = '';
             const coinTime = parseInt(selectedCoin.coinChart.days)
-            console.log("coinTime: ", coinTime)
             if (coinTime === 1) {
                 timeUnit = 'hour';
             } else if (coinTime === 7 || coinTime === 14) {
@@ -121,22 +119,22 @@ const CoinChart = ({selectedCoin, updateMarketData}) => {
             // First - checks for what the first digit is to determine the base multiplier
             // Second - calculates magnitude based on the size of the chart priceDelta - small chart delta = small magnitude - large chart delta = large magnitude
             if (firstDigit === 1 ) {
-                console.log("1 has fired");
+                //console.log("1 has fired");
                 let base = 0.025
                 let magnitude = 10 ** deltaLen;
                 chartStep = base * magnitude;
             } else if (firstDigit === 2 || firstDigit === 3) {
-                console.log("2 or 3 has fired");
+                //console.log("2 or 3 has fired");
                 let base = 0.05
                 let magnitude = 10 ** deltaLen;
                 chartStep = base * magnitude;
             } else if (firstDigit === 4 || firstDigit === 5 || firstDigit === 6 || firstDigit === 7 ) {
-                console.log("4,5,6 or 7 has fired");
+                //console.log("4,5,6 or 7 has fired");
                 let base = 0.1
                 let magnitude = 10 ** deltaLen;
                 chartStep = base * magnitude;
             } else if (firstDigit === 8 || firstDigit === 9) {
-                console.log("8 or greater has fired");
+                //console.log("8 or greater has fired");
                 let base = 0.2
                 let magnitude = 10 ** deltaLen;
                 chartStep = base * magnitude;  
