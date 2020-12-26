@@ -1,43 +1,72 @@
 import {
     CHANGE_PORTFOLIO_VIEW,
-    UPDATE_PORTFOLIO
+    UPDATE_ERC20_BALANCES,
+    UPDATE_PORTFOLIO,
+    GET_ERC20_TXS,
+    ADD_ETH_WALLET,
+    REMOVE_ETH_WALLET
   } from "../actions/actionTypes";
   
   const INITIAL_STATE = {
-    authMsg: "",
     viewPortfolio: true,
-    wallets: [{
-      name: "coinbase",
-      address: "asfe8302029e3ur0w82ede0",
-      blockchain: "Ethereum",
-      totalValue: "103.45",
-      dayPercentChange: "7"
-    },
-    {
-      address: "2384h23ofn2938fh230",
-      blockchain: "Bitcoin"
-    }],
     wallets_Display: [{
-      image: "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880",
+      image: "",
       name: "Coinbase",
-      address: "asfe8302029e3ur0w82ede0",
+      address: "address123123123",
       blockchain: "Ethereum",
       totalValue: "103.45",
       dayPercentChange: "7"
     }],
-    selectedWallet: [{address: null}],
-    portfolioCoins: [{}],
+    selectedWallet: [
+      {
+        image: "",
+        name: "Coinbase",
+        address: "address123123123",
+        blockchain: "Ethereum",
+        totalValue: "103.45",
+        dayPercentChange: "7"
+      }
+    ],
     selectedWalletCoin: [{symbol: null}],
     portfolio_Display: [{
       name: "USD Coin",
       symbol: "USDC",
       amount: "500.00",
       value: "500.00",
-      image: "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png?1547042389"
+      image: ""
     }],
     historyLength: [],
     watchListMsg: null,
-    error: null
+    error: null,
+    portfolio: [
+      {
+        walletName: "nickname",
+        walletAddress: "0x0123456",
+        image: "",
+        walletPL: 34.7,
+        walletValue_USD: 548.43,
+        walletTokens: [
+          {
+            tokenName: "ChainLink",
+            tokenAddress: "chainlink_address",
+            tokenBalance: 5.4,
+            tokensValue_USD: 140.37,
+            TXs_Block_last_updated: 120312314,
+            tokenTXs: [
+              {
+                TX_hash: "TX_hash",
+                blockNumber: 12312412,
+                timestamp: 1234456,
+                TX_action: "Received or Sent",
+                TX_to: "to_address",
+                TX_from: "from_address",
+                TX_amount: 4
+              }
+            ]
+          }
+        ]
+      },
+    ],
 
   };
   
@@ -47,9 +76,9 @@ import {
     ) {
       return { ...state, viewPortfolio: action.payload };
     } else if (
-      action.type === UPDATE_PORTFOLIO
+      action.type === ADD_ETH_WALLET
     ) {
-      return state
+      return { ...state, portfolio: action.payload };
     } else {
       return state;
     }

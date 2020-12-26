@@ -1,12 +1,13 @@
 import React from 'react';
 import PortfolioCoin from './PortfolioCoin';
 import PortfolioWallet from './PortfolioWallet';
-import WatchListSelectedCoin from './WatchListSelectedCoin';
+import PortfolioSelectedCoin from './PortfolioSelectedCoin';
+import PortfolioSelectedWallet from './PortfolioSelectedWallet';
 import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { handleInputChange } from '../store/actions/watchListActions';
-import { changePortfolioView, fetchWalletData } from '../store/actions/portfolioActions';
+import { changePortfolioView, fetchWalletData, Add_ETH_Wallet } from '../store/actions/portfolioActions';
 import { withRouter } from 'react-router-dom';
 
 const Div = styled.div`
@@ -23,6 +24,7 @@ const InputGroup = styled.form`
   justify-content: space-between;
   padding: 1.5rem 1.5rem;
   background-color: #28394F;
+  display: block;
 
   input {
       -webkit-flex: 1;
@@ -38,32 +40,23 @@ const InputGroup = styled.form`
       border: 1px solid red; }
 `;
 
-const Portfolio = withRouter(({history, portfolio_Display, handleInputChange, suggestions, selectedCoin, viewPortfolio, changePortfolioView, wallets_Display}) => {
-
-    function handleChange(e) {
-        e.preventDefault();
-        handleInputChange(e.target.value);
-    }
+const Portfolio = withRouter(({history, portfolio_Display, suggestions, selectedCoin, selectedWallet, viewPortfolio, changePortfolioView, wallets_Display, Add_ETH_Wallet, portfolio}) => {
 
     function changeView(e) {
         e.preventDefault();
         changePortfolioView();
     }
 
-    async function handleSubmit(e) {
+    function handleAddEthWallet(e) {
       e.preventDefault();
-      document.getElementById("watchListSearch").reset();
-      handleInputChange("");
-      // if statement helps prevent error when submitting form before suggestions are pulled.
-      if (suggestions.length > 0) {
-        let targetSuggestion = suggestions[0].id;
-        let route = "/watch-list/" + targetSuggestion;
-        history.push(route);
-      } else {
-        // essentially it needs to act similar to handleinputchange function where it looks up suggestions based on text input and returns the first suggestion for submission.
-        console.log("BUILD FUNCTION TO HANDLE PRESUBMITTED SUGGESTIONS") 
+      //console.log(e.target.walletName.value)
+      if (e.target.walletName.value !== "" && e.target.walletAddress.value !== ""){
+        // This check assumes the eth address is in question and is correct.
+        console.log(e.target.walletName.value, e.target.walletAddress.value)
+        Add_ETH_Wallet(e.target.walletAddress.value, e.target.walletName.value)
       }
     }
+
 
     // show and hide using function to set value to reveal or not and then use if statement to display or not.
 
@@ -75,10 +68,14 @@ const Portfolio = withRouter(({history, portfolio_Display, handleInputChange, su
             </InputGroup>
             { viewPortfolio === true ? null :
                 <div>
-                    <InputGroup onSubmit={handleSubmit} id="watchListSearch">
+                    <InputGroup onSubmit={handleAddEthWallet} id="watchListSearch">
+                        <input type="text"
+                            placeholder="Wallet Nickname"
+                            name="walletName"
+                        />
                         <input type="text"
                             placeholder="Wallet Address"
-                            onChange={handleChange}
+                            name="walletAddress"
                         />
                         <button>Add Wallet</button>
                     </InputGroup>
@@ -86,14 +83,24 @@ const Portfolio = withRouter(({history, portfolio_Display, handleInputChange, su
             }
             { viewPortfolio === true ? 
                 selectedCoin.map( ({id, name, symbol, image, price, dayPercentChange}) =>
-                <WatchListSelectedCoin key={id}
-                            coinID={id}
-                            name={name} 
-                            symbol={symbol} 
-                            price={price}
+                    <PortfolioSelectedCoin key={id}
+                                coinID={id}
+                                name={name} 
+                                symbol={symbol} 
+                                price={price}
+                                image={image}
+                                dayPercentChange={dayPercentChange}/> 
+                    )
+                :
+                selectedWallet.map( ({id, name, address, image, totalValue, dayPercentChange }) =>
+                <PortfolioSelectedWallet key={id}
+                            name={name}
+                            address={address}
                             image={image}
-                            dayPercentChange={dayPercentChange}/> 
-                ): null
+                            totalValue={totalValue}
+                            dayPercentChange={dayPercentChange}/>
+                )
+
             }
             { viewPortfolio === true ? 
                 portfolio_Display.map( ({coinID, name, symbol, image, value, amount}) => 
@@ -106,13 +113,13 @@ const Portfolio = withRouter(({history, portfolio_Display, handleInputChange, su
                             amount={amount}/> 
                     )
                 :
-                wallets_Display.map( ({id, name, address, image, totalValue, dayPercentChange }) =>
-                <PortfolioWallet key={id}
-                            name={name}
-                            address={address}
+                portfolio.map( ({walletName, walletAddress, image, walletValue_USD, walletPL }) =>
+                <PortfolioWallet key={walletAddress}
+                            name={walletName}
+                            address={walletAddress}
                             image={image}
-                            totalValue={totalValue}
-                            dayPercentChange={dayPercentChange}/>
+                            totalValue={walletValue_USD}
+                            dayPercentChange={walletPL}/>
                 )
             }
             
@@ -127,7 +134,9 @@ function mapStateToProps(state) {
       selectedCoin: state.watchListReducer.selectedCoin,
       viewPortfolio: state.portfolioReducer.viewPortfolio,
       wallets_Display: state.portfolioReducer.wallets_Display,
-      portfolio_Display: state.portfolioReducer.portfolio_Display
+      portfolio_Display: state.portfolioReducer.portfolio_Display,
+      selectedWallet: state.portfolioReducer.selectedWallet,
+      portfolio: state.portfolioReducer.portfolio
     };
   }
   
@@ -135,6 +144,7 @@ function mapDispatchToProps(dispatch) {
   return {
     handleInputChange: (query) => dispatch(handleInputChange(query)),
     changePortfolioView: () => dispatch(changePortfolioView()),
+    Add_ETH_Wallet: (walletAddress, walletName) => dispatch(Add_ETH_Wallet(walletAddress, walletName))
     
   };
 }
