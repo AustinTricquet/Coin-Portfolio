@@ -1,11 +1,6 @@
 import {
-    FETCH_COIN_DATA_SUCCESS,
-    FETCH_COIN_DATA_ERROR,
-
     UPDATE_SELECTED_COIN_SUCCESS,
     UPDATE_WATCH_LIST_ERROR,
-
-
 
     UPDATE_SEARCH_SUGGESTIONS_SUCCESS,
     UPDATE_SEARCH_SUGGESTIONS_ERROR,
@@ -17,8 +12,11 @@ import {
     REMOVE_COIN_ERROR,
 
     UPDATE_MARKET_DATA_SUCCESS,
-    UPDATE_MARKET_DATA_ERROR
-    //UPDATE_CHART_DATA
+    UPDATE_MARKET_DATA_ERROR,
+
+    //SEARCH_START,
+    //SEARCH_FAIL,
+    //SEARCH_SUCCESS
   } from "./actionTypes";
 import { beginApiCall, apiCallError } from "./apiStatusActions";
 import axios from 'axios';
@@ -50,6 +48,68 @@ const fetchCoinChart = async (coinID, days) => {
   }
 }  
 
+export const searchStart = () => dispatch => {
+  dispatch({
+    //type: SEARCH_START,
+  });
+};
+
+export const searchFail = () => dispatch => {
+  dispatch({
+    //type: SEARCH_FAIL,
+  });
+};
+
+export const searchSuccess = (data) => dispatch => {
+  dispatch({
+    //type: SEARCH_SUCCESS,
+    payload: data
+  });
+};
+
+
+const resources = {};
+const makeRequestCreator = () => {
+  let cancel;
+  console.log("make request started")
+  return async query => {
+    console.log('async return query is triggered')
+    if (cancel) {
+      // Cancel the previous request before making a new request
+      console.log("canceled request!!!!!!!!!!!!!!!!!!!")
+      cancel.cancel();
+    }
+    // Create a new CancelToken
+    cancel = axios.CancelToken.source();
+    console.log("cancel token reassigned")
+    try {
+      if (resources[query]) {
+        // Return result if it exists
+        console.log("querying prior results")
+        return resources[query];
+      }
+      console.log("about to use axios call")
+      const res = await axios(query, { cancelToken: cancel.token });
+      const result = res;
+      // Store response
+      console.log("storing response: ", result)
+      resources[query] = result;
+
+      return result;
+    } catch (error) {
+      if (axios.isCancel(error)) {
+        // Handle if request was cancelled
+        console.log("Request canceled", error.message);
+      } else {
+        // Handle usual errors
+        console.log("Something went wrong: ", error.message);
+      }
+    }
+  };
+};
+export const search = makeRequestCreator();
+
+
 // Fetch Coin Data for watch list
 export const updateMarketData = (coinIDs = [], selectedCoinID = "", days = 1, suggestions=false) => async dispatch => {
   console.log("COIN ID INPUT in FETCH COIN DATA: ", coinIDs)
@@ -60,17 +120,26 @@ export const updateMarketData = (coinIDs = [], selectedCoinID = "", days = 1, su
         // Get coin chart data.
         const coinChart = await fetchCoinChart(selectedCoinID, days);
         if (coinChart === "Error") {
+          console.log("ERROR GETTING CHART DATA")
           dispatch({
             type: UPDATE_MARKET_DATA_ERROR,
             payload: "Error - Not able to fetch coin chart."
           })
         }
+        console.log("CHART DATA: ", coinChart)
 
         // Get coin market data.
         // create public function to handle basic market data calls?
         // handle error here?
         axios.get('https://api.coingecko.com/api/v3/coins/' + selectedCoinID).then((response) => {
           const data = response.data;
+          if (
+            data.market_data.price_change_percentage_24h_in_currency.usd === undefined
+          ) {
+            console.log("token data partial")
+            data.market_data.price_change_percentage_24h_in_currency.usd = 0
+          }
+
           let price = data.market_data.current_price.usd
           if (price > 999.99) {
             price = price.toFixed(0);
@@ -120,6 +189,16 @@ export const updateMarketData = (coinIDs = [], selectedCoinID = "", days = 1, su
         const coinDataResponses = await Promise.all(coinDataPromises);
         const marketData = coinDataResponses.map(function(response) {
           const data = response.data;
+
+          // check if data is missing info... 
+          if (
+            data.market_data.price_change_percentage_24h_in_currency.usd === undefined
+          ) {
+            console.log("token data partial")
+            data.market_data.price_change_percentage_24h_in_currency.usd = 0
+          }
+
+
           let price = data.market_data.current_price.usd
           if (price > 999.99) {
             price = price.toFixed(0);
@@ -128,6 +207,11 @@ export const updateMarketData = (coinIDs = [], selectedCoinID = "", days = 1, su
           } else {
             price = price.toFixed(2);
           }
+
+          console.log("COIN: ", data.id, " DATA: ", data
+          )
+
+
 
           let payload = {
             key: data.id,
@@ -146,8 +230,9 @@ export const updateMarketData = (coinIDs = [], selectedCoinID = "", days = 1, su
             ATL: data.market_data.atl.usd,
             ATLDate: data.market_data.atl_date.usd.slice(0,10),
             dayPercentChange: data.market_data.price_change_percentage_24h_in_currency.usd.toFixed(2)
-          }
+          };
 
+          console.log("Suggestions: ", suggestions)
           if (!suggestions) {
             dispatch({
               type: UPDATE_MARKET_DATA_SUCCESS,
@@ -170,8 +255,17 @@ export const updateMarketData = (coinIDs = [], selectedCoinID = "", days = 1, su
             //})
           //}
         });
-        console.log("marketData: ", marketData)
+
         if (suggestions) {
+          // check and remove any duplicate data from suggestions
+          let dupCheck = [];
+          marketData.forEach((coin) => {
+            if(dupCheck.includes(coin.id)) {
+              marketData.splice(dupCheck.length, 1);
+            } else {
+              dupCheck.push(coin.id);
+            }
+          })
           dispatch({
             type: UPDATE_SEARCH_SUGGESTIONS_SUCCESS,
             payload: marketData,
@@ -197,17 +291,12 @@ export const updateMarketData = (coinIDs = [], selectedCoinID = "", days = 1, su
         }
       };
       
-      dispatch({
-        type: FETCH_COIN_DATA_SUCCESS,
-        payload: "Fetch Coin Data from 'Coin Gecko API' Success!"
-      })
-      
   } catch (err) {
     dispatch(apiCallError());
     dispatch({
-      type: FETCH_COIN_DATA_ERROR,
+      type: UPDATE_MARKET_DATA_ERROR,
       payload:
-        "Something went wrong using the 'Coin Gecko API'"
+        "Something went wrong updating the watchList."
     });
   }
 };
@@ -254,7 +343,13 @@ export const handleInputChange = (inputValue) => async dispatch => {
       })*/
 
       // Get search suggestions from coin paprikia API
-      const suggestedCoinsResponse = await axios.get(`https://api.coinpaprika.com/v1/search/?q=${inputValue}&c=currencies&limit=3`)
+      //const suggestedCoinsResponse = await axios.get(`https://api.coinpaprika.com/v1/search/?q=${inputValue}&c=currencies&limit=3`)
+
+      const suggestedCoinsResponse = await search(`https://api.coinpaprika.com/v1/search/?q=${inputValue}&c=currencies&limit=3`);
+      console.log("suggestions: ", suggestedCoinsResponse);
+
+
+
       let suggestedCoins_CoinKeys = suggestedCoinsResponse.data.currencies.map(function(response) { 
         //console.log("SUGGESTED COINS RESPONSE: ", response);
         // Various searching methods to find coins in coinGecko API Database from search suggestions
@@ -284,7 +379,7 @@ export const handleInputChange = (inputValue) => async dispatch => {
 
       if (suggestedCoins_CoinKeys.length < 3) {
         //console.log('LAST ditch effort to find the element using what info was passed to search bar to find directly in coingecko database keys')
-        const coinKey = coinKeys.data.filter((element) => (element.name.toLowerCase().includes(inputValue.toLowerCase()))).slice(0, (5 - suggestedCoins_CoinKeys.length));
+        const coinKey = coinKeys.data.filter((element) => (element.name.toLowerCase().includes(inputValue.toLowerCase()))).slice(0, (3 - suggestedCoins_CoinKeys.length));
         coinKey.map(coin => suggestedCoins_CoinKeys.push(coin.id))}
 
       //console.log("SUGGESTED COINS KEYS: ", suggestedCoins_CoinKeys)
