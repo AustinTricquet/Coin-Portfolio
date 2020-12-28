@@ -73,11 +73,17 @@ export default function watchListReducer(state = INITIAL_STATE, action) {
   ) {
     return { ...state, watchListMsg: "" };
   } else if (
-    // used for adding or removing coins
-    action.type === ADD_COIN_SUCCESS || 
+    // used for adding coins to watchList
+    action.type === ADD_COIN_SUCCESS
+  ) {
+    state.watchList[action.payload.id] = action.payload
+    return {...state}
+  } else if (
+    // used for removing coins from watchList
     action.type === REMOVE_COIN_SUCCESS
   ) {
-    return { ...state, watchList: action.payload}
+    delete state.watchList[action.payload.id]
+    return {...state}
   } else if (
     // used for selecting coin and showing coin details
     action.type === UPDATE_SELECTED_COIN_SUCCESS

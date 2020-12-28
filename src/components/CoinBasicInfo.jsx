@@ -123,8 +123,8 @@ const Table = styled.table`
     }
 `;
 
-const CoinBasicInfo = withRouter(({history, selectedCoin, add, remove}) => {
-    //console.log("watchlist: ", watchList)
+const CoinBasicInfo = withRouter(({history, selectedCoin, add, remove, watchList}) => {
+    console.log("selectedCoin: ", watchList)
     //let watchListKeys = Object.values(watchList)
     //console.log("watchList KEYS: ", watchListKeys)
     
@@ -161,7 +161,7 @@ const CoinBasicInfo = withRouter(({history, selectedCoin, add, remove}) => {
                                 <h1>${selectedCoin.marketData.price}</h1>
                                 <HeadSubText>{selectedCoin.marketData.dayPercentChange}%</HeadSubText>
                             </div>
-                            { true === false ? <Button onClick={addCoin}><ButtonImg src={plus} alt="Add"></ButtonImg></Button> : <Button onClick={removeCoin}><ButtonImg src={minus} alt="minus"></ButtonImg></Button>}
+                            { selectedCoin.marketData.onWatchList === false ? <Button onClick={addCoin}><ButtonImg src={plus} alt="Add"></ButtonImg></Button> : <Button onClick={removeCoin}><ButtonImg src={minus} alt="minus"></ButtonImg></Button>}
                         </Price>  
                     </Header>
                     <ContentBlock>
@@ -272,6 +272,7 @@ const CoinBasicInfo = withRouter(({history, selectedCoin, add, remove}) => {
 function mapStateToProps(state) {
     return {
         selectedCoin: state.watchListReducer.selectedCoin,
+        watchList: state.watchListReducer.watchList
     };
 }
 

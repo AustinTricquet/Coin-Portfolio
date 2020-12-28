@@ -76,7 +76,7 @@ const makeRequestCreator = () => {
     console.log('async return query is triggered')
     if (cancel) {
       // Cancel the previous request before making a new request
-      console.log("canceled request!!!!!!!!!!!!!!!!!!!")
+      console.log("canceled request!")
       cancel.cancel();
     }
     // Create a new CancelToken
@@ -111,7 +111,7 @@ export const search = makeRequestCreator();
 
 
 // Fetch Coin Data for watch list
-export const updateMarketData = (coinIDs = [], selectedCoinID = "", days = 1, suggestions=false) => async dispatch => {
+export const updateMarketData = (coinIDs = [], selectedCoinID = "", days = 1, suggestions=false, onWatchList = true) => async dispatch => {
   console.log("COIN ID INPUT in FETCH COIN DATA: ", coinIDs)
   try {
       // UPDATE SELECTED COIN FIRST
@@ -166,7 +166,8 @@ export const updateMarketData = (coinIDs = [], selectedCoinID = "", days = 1, su
               ATHDate: data.market_data.ath_date.usd.slice(0,10),
               ATL: data.market_data.atl.usd,
               ATLDate: data.market_data.atl_date.usd.slice(0,10),
-              dayPercentChange: data.market_data.price_change_percentage_24h_in_currency.usd.toFixed(2)
+              dayPercentChange: data.market_data.price_change_percentage_24h_in_currency.usd.toFixed(2),
+              onWatchList: false
             },
             coinChart: {
               dates: coinChart.dates,
@@ -174,6 +175,10 @@ export const updateMarketData = (coinIDs = [], selectedCoinID = "", days = 1, su
               days: days
             }
           }
+          if (onWatchList) {
+            payload.marketData.onWatchList = true
+          }
+
           dispatch({
             type: UPDATE_SELECTED_COIN_SUCCESS,
             payload: payload,
@@ -198,7 +203,6 @@ export const updateMarketData = (coinIDs = [], selectedCoinID = "", days = 1, su
             data.market_data.price_change_percentage_24h_in_currency.usd = 0
           }
 
-
           let price = data.market_data.current_price.usd
           if (price > 999.99) {
             price = price.toFixed(0);
@@ -210,8 +214,6 @@ export const updateMarketData = (coinIDs = [], selectedCoinID = "", days = 1, su
 
           console.log("COIN: ", data.id, " DATA: ", data
           )
-
-
 
           let payload = {
             key: data.id,
@@ -234,6 +236,7 @@ export const updateMarketData = (coinIDs = [], selectedCoinID = "", days = 1, su
 
           console.log("Suggestions: ", suggestions)
           if (!suggestions) {
+            payload.onWatchList = true
             dispatch({
               type: UPDATE_MARKET_DATA_SUCCESS,
               payload: payload
@@ -260,6 +263,7 @@ export const updateMarketData = (coinIDs = [], selectedCoinID = "", days = 1, su
           // check and remove any duplicate data from suggestions
           let dupCheck = [];
           marketData.forEach((coin) => {
+            console.log("makretData: ", marketData)
             if(dupCheck.includes(coin.id)) {
               marketData.splice(dupCheck.length, 1);
             } else {
@@ -303,26 +307,17 @@ export const updateMarketData = (coinIDs = [], selectedCoinID = "", days = 1, su
 
 // Add coin to watchList
 export const add = (selectedCoin) => async dispatch => {
-  const state = store.getState();
-  const watchList = state.watchListReducer.watchList;
-  const newWatchList = watchList;
-  newWatchList.push(selectedCoin[0]);
-  console.log("NEW WATCH LIST: ", newWatchList)
   dispatch({
     type: ADD_COIN_SUCCESS,
-    payload: newWatchList
+    payload: selectedCoin
   })
 }
 
 // Remove coin from watchList
 export const remove = (selectedCoin) => async dispatch => {
-  const state = store.getState();
-  const watchList = state.watchListReducer.watchList;
-  const newWatchList = watchList.filter((coin) => (coin.id !== selectedCoin[0].id));
-  console.log('newWatchList: ', newWatchList)
   dispatch({
     type: REMOVE_COIN_SUCCESS,
-    payload: newWatchList
+    payload: selectedCoin
   })
 }
 

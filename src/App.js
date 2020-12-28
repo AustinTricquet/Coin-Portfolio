@@ -54,9 +54,11 @@ function App({ auth, updateMarketData, getCoinGeckoKeys, getERC20_Balences, getE
     const state = store.getState();
     const watchList = state.watchListReducer.watchList;
     const coinIDs = Object.keys(watchList);
+    const onWatchList = coinIDs.indexOf(coinID) >= 0 ? true : false;
+    console.log("ON WATCHLIST ?: ", onWatchList)
 
-    console.log("coinID to select, ", coinID)
-    updateMarketData(coinIDs, coinID);
+    console.log("coinID to select, ", coinID, coinIDs)
+    updateMarketData(coinIDs, coinID, 1, false, onWatchList);
 
     console.log("STATE BEFORE PAGE RENDER: ", state)
 
@@ -203,7 +205,7 @@ function mapDispatchToProps(dispatch) {
   return {
     //updateWatchList: (coinIDs, selectedCoinID, days) => dispatch(updateWatchList(coinIDs, selectedCoinID, days)),
     getCoinGeckoKeys: () => dispatch(getCoinGeckoKeys()),
-    updateMarketData: (coinIDs, coinID) => dispatch(updateMarketData(coinIDs, coinID)),
+    updateMarketData: (coinIDs, coinID, days, suggestions, onWatchList) => dispatch(updateMarketData(coinIDs, coinID, days, suggestions, onWatchList)),
     getERC20_Balences: (web3, address, tokens, options) => dispatch(getERC20_Balences(web3, address, tokens, options)),
     getERC20_Transactions: (web3, walletAddress, contractAddress, fromBlock, toBlock)=> dispatch(getERC20_Transactions(web3, walletAddress, contractAddress, fromBlock, toBlock)),
     //Add_ETH_Wallet: (walletAddress, walletName) => dispatch(Add_ETH_Wallet(walletAddress, walletName))
