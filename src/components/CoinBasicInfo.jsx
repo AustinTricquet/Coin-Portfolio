@@ -124,16 +124,7 @@ const Table = styled.table`
 `;
 
 const CoinBasicInfo = withRouter(({history, selectedCoin, add, remove, watchList}) => {
-    console.log("selectedCoin: ", watchList)
-    //let watchListKeys = Object.values(watchList)
-    //console.log("watchList KEYS: ", watchListKeys)
-    
-    //let selectedCoin = watchListKeys.find((coin) => ( coin.selected = "selected"));
-    //console.log("selectedCoin: ", selectedCoin);
-    //let marketData = selectedCoin.marketData
-    //console.log("market data: ", marketData)
-    
-    //console.log("selected coin: ", selectedCoin)
+   
     function addCoin() {
         add(selectedCoin)
         history.push("/watch-list/"+selectedCoin.id);

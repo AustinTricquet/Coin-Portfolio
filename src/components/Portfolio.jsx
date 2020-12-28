@@ -129,13 +129,8 @@ const Portfolio = withRouter(({history, portfolio_Display, suggestions, selected
 
 function mapStateToProps(state) {
     return {
-      watchList_Display: state.watchListReducer.watchList_Display,
-      suggestions: state.watchListReducer.suggestions,
-      selectedCoin: state.watchListReducer.selectedCoin,
-      viewPortfolio: state.portfolioReducer.viewPortfolio,
-      wallets_Display: state.portfolioReducer.wallets_Display,
-      portfolio_Display: state.portfolioReducer.portfolio_Display,
-      selectedWallet: state.portfolioReducer.selectedWallet,
+      selectedPortfolioCoin: state.portfolioReducer.selectedPortfolioCoin,
+      selectedPortfolioWallet: state.portfolioReducer.selectedPortfolioWallet,
       portfolio: state.portfolioReducer.portfolio
     };
   }

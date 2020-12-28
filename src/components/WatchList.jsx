@@ -36,7 +36,8 @@ const InputGroup = styled.form`
 `;
 
 const WatchList = withRouter(({history, handleInputChange, suggestions, watchList, selectedCoin }) => {
-
+  //let filtered = watchList.filter((coin) => ((coin.id) !== selectedCoin.id)).sort((a,b) => (b.marketData - a.marketData))
+  console.log("suggestionsSSS loaded: ", suggestions)
     function handleChange(e) {
         e.preventDefault();
         handleInputChange(e.target.value);
@@ -88,9 +89,10 @@ const WatchList = withRouter(({history, handleInputChange, suggestions, watchLis
                             selected="selected"/> 
                     
             {
-                Object.values(watchList).filter((coin) => (coin.id !== selectedCoin.id)).sort((a,b) => (b.marketData.marketCap - a.marketData.marketCap)).map( ({id, marketData}) => 
+                watchList.filter((coin) => (coin.id !== selectedCoin.id)).sort((a,b) => (b.marketData.marketCap - a.marketData.marketCap)).map( ({id, marketData}) => 
                     <WatchListCoin key={id}
                             coinID={id}
+                            data={marketData}
                             name={marketData.name} 
                             symbol={marketData.symbol} 
                             price={marketData.price}

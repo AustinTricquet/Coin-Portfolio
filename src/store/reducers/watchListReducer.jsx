@@ -19,47 +19,46 @@ import {
 import update from 'immutability-helper';
 
 const INITIAL_STATE = {
-  watchList: {
-    "bitcoin":{
+  watchList: [
+    {
       id:"bitcoin",
       marketData: {}
     },
-    "ethereum":{
+    {
       id:"ethereum",
       marketData: {}
     },
-    "polkadot":{
+    {
       id:"polkadot",
       marketData: {}
     },
-    "tron":{
+    {
       id:"tron",
       marketData: {}
     },
-    "uniswap":{
+    {
       id:"uniswap",
       marketData: {}
     },
-    "cardano":{
+    {
       id:"cardano",
       marketData: {}
     },
-    "usd-coin":{
+    {
       id:"usd-coin",
       marketData: {}
     },
-    "dai":{
+    {
       id:"dai",
       marketData: {}
     }
-  },
+  ],
   selectedCoin: {
-    "bitcoin":{
       id: "bitcoin",
       marketData: {},
       chartData: {}
-    }
-  },
+    },
+  
   suggestions: [],
   searchCoinData: {},
   historyLength: [],
@@ -76,14 +75,13 @@ export default function watchListReducer(state = INITIAL_STATE, action) {
     // used for adding coins to watchList
     action.type === ADD_COIN_SUCCESS
   ) {
-    state.watchList[action.payload.id] = action.payload
-    return {...state}
+    return update(state, {watchList: {$push: [action.payload]}})
   } else if (
     // used for removing coins from watchList
     action.type === REMOVE_COIN_SUCCESS
   ) {
-    delete state.watchList[action.payload.id]
-    return {...state}
+    let index = state.watchList.map(coin => coin.id).indexOf(action.payload.id)
+    return update(state, {watchList: {$splice: [[index, 1]]}})
   } else if (
     // used for selecting coin and showing coin details
     action.type === UPDATE_SELECTED_COIN_SUCCESS
@@ -93,7 +91,7 @@ export default function watchListReducer(state = INITIAL_STATE, action) {
     // used for updating and adding market info to each coin
     action.type === UPDATE_MARKET_DATA_SUCCESS
   ) {    
-    return update(state, {watchList: {[action.payload.id]: {marketData: {$set: action.payload}}}})
+    return update(state, {watchList: {[state.watchList.map(coin => coin.id).indexOf(action.payload.id)]: {marketData: {$set: action.payload}}}})
   } else if (
     // used for adding and updating chart info on selected coin
     action.type === UPDATE_CHART_DATA

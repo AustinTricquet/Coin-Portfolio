@@ -53,11 +53,18 @@ function App({ auth, updateMarketData, getCoinGeckoKeys, getERC20_Balences, getE
     // get current watchList IDs
     const state = store.getState();
     const watchList = state.watchListReducer.watchList;
-    const coinIDs = Object.keys(watchList);
-    const onWatchList = coinIDs.indexOf(coinID) >= 0 ? true : false;
-    console.log("ON WATCHLIST ?: ", onWatchList)
 
-    console.log("coinID to select, ", coinID, coinIDs)
+
+    //const coinIDs = Object.keys(watchList);
+    let coinIDs = [];
+    watchList.forEach(coin => {
+      coinIDs.push(coin.id)
+    });
+
+    const onWatchList = coinIDs.indexOf(coinID) >= 0 ? true : false;
+    //console.log("ON WATCHLIST ?: ", onWatchList)
+
+    //console.log("coinID to select, ", coinID, coinIDs)
     updateMarketData(coinIDs, coinID, 1, false, onWatchList);
 
     console.log("STATE BEFORE PAGE RENDER: ", state)

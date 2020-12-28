@@ -8,36 +8,6 @@ import {
   } from "../actions/actionTypes";
   
   const INITIAL_STATE = {
-    viewPortfolio: true,
-    wallets_Display: [{
-      image: "",
-      name: "Coinbase",
-      address: "address123123123",
-      blockchain: "Ethereum",
-      totalValue: "103.45",
-      dayPercentChange: "7"
-    }],
-    selectedWallet: [
-      {
-        image: "",
-        name: "Coinbase",
-        address: "address123123123",
-        blockchain: "Ethereum",
-        totalValue: "103.45",
-        dayPercentChange: "7"
-      }
-    ],
-    selectedWalletCoin: [{symbol: null}],
-    portfolio_Display: [{
-      name: "USD Coin",
-      symbol: "USDC",
-      amount: "500.00",
-      value: "500.00",
-      image: ""
-    }],
-    historyLength: [],
-    watchListMsg: null,
-    error: null,
     portfolio: [
       {
         walletName: "nickname",
@@ -67,6 +37,14 @@ import {
         ]
       },
     ],
+    
+    selectedPortfolioWallet: {},
+    selectedPortfolioCoin: {},
+    selectedWalletCoin: {},
+    viewPortfolio: true,
+    historyLength: [],
+    error: null,
+    
 
   };
   
