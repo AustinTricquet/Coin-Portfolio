@@ -46,7 +46,7 @@ const SubText = styled.h5`
     color: #8993A8;
 `;
 
-const PortfolioWallet = withRouter(({ history, walletID, name, address, image, totalValue, dayPercentChange }) => {
+const PortfolioWallet = withRouter(({ history, walletID, name, address, image, totalValue, walletPL }) => {
 
     async function handleClick() {
         history.push("/" + walletID);
@@ -57,13 +57,13 @@ const PortfolioWallet = withRouter(({ history, walletID, name, address, image, t
                 <Img src={image} alt="React logo" className="App-logo" />
                 <div>
                     <h3>{name}</h3>
-    <SubText>{address.slice(0,5)}...{address.slice(-5)}</SubText>
+                    <SubText>{address.slice(0,5)}...{address.slice(-5)}</SubText>
                 </div>
             </Coin>
             <Balance>
                 <div>
                     <h3>${totalValue}</h3>
-                    <SubText>{dayPercentChange}%</SubText>
+                    <SubText>{walletPL}%</SubText>
                 </div>
             </Balance> 
         </Div>

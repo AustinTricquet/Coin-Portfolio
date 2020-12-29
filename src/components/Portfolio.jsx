@@ -40,7 +40,22 @@ const InputGroup = styled.form`
       border: 1px solid red; }
 `;
 
-const Portfolio = withRouter(({history, portfolio_Display, suggestions, selectedCoin, selectedWallet, viewPortfolio, changePortfolioView, wallets_Display, Add_ETH_Wallet, portfolio}) => {
+const Portfolio = withRouter(({history, selectedPortfolioCoin, selectedPortfolioWallet, viewPortfolio, changePortfolioView, Add_ETH_Wallet, portfolio}) => {
+
+    let summedTokens = [];
+    portfolio.forEach((wallet) => {
+      wallet.walletTokens.forEach((token) => {
+        let index = summedTokens.map(e => e.tokenName).indexOf(token.tokenName)
+        if( index >= 0 ) {
+          summedTokens[index].tokenBalance += token.tokenBalance;
+          summedTokens[index].tokenTXs += token.tokenTXs;
+        } else {
+          summedTokens.push(token)
+        }
+      })
+    })
+
+    console.log("SUMMED TOKENS: ", summedTokens)
 
     function changeView(e) {
         e.preventDefault();
@@ -59,6 +74,8 @@ const Portfolio = withRouter(({history, portfolio_Display, suggestions, selected
 
 
     // show and hide using function to set value to reveal or not and then use if statement to display or not.
+    // Need to find a way to display all coins
+
 
     return (
         <Div>
@@ -82,45 +99,40 @@ const Portfolio = withRouter(({history, portfolio_Display, suggestions, selected
                 </div>
             }
             { viewPortfolio === true ? 
-                selectedCoin.map( ({id, name, symbol, image, price, dayPercentChange}) =>
-                    <PortfolioSelectedCoin key={id}
-                                coinID={id}
-                                name={name} 
-                                symbol={symbol} 
-                                price={price}
-                                image={image}
-                                dayPercentChange={dayPercentChange}/> 
-                    )
+                <PortfolioCoin key={selectedPortfolioCoin.id}
+                            coinID={selectedPortfolioCoin.id}
+                            name={selectedPortfolioCoin.name} 
+                            symbol={selectedPortfolioCoin.symbol} 
+                            price={selectedPortfolioCoin.price}
+                            image={selectedPortfolioCoin.image}
+                            dayPercentChange={selectedPortfolioCoin.dayPercentChange}/> 
                 :
-                selectedWallet.map( ({id, name, address, image, totalValue, dayPercentChange }) =>
-                <PortfolioSelectedWallet key={id}
-                            name={name}
-                            address={address}
-                            image={image}
-                            totalValue={totalValue}
-                            dayPercentChange={dayPercentChange}/>
-                )
-
+                <PortfolioWallet key={selectedPortfolioWallet.id}
+                            name={selectedPortfolioWallet.walletName}
+                            address={selectedPortfolioWallet.walletAddress}
+                            image={selectedPortfolioWallet.image}
+                            totalValue={selectedPortfolioWallet.walletValue_USD}
+                            walletPL={selectedPortfolioWallet.walletPL}/>
             }
             { viewPortfolio === true ? 
-                portfolio_Display.map( ({coinID, name, symbol, image, value, amount}) => 
-                    <PortfolioCoin key={coinID}
-                            coinID={coinID}
-                            name={name} 
-                            symbol={symbol} 
-                            value={value}
-                            image={image}
-                            amount={amount}/> 
+                summedTokens.map( ({id, marketData, tokenBalance}) => 
+                    <PortfolioCoin key={id}
+                            coinID={id}
+                            name={marketData.name} 
+                            symbol={marketData.symbol} 
+                            value={marketData.price * tokenBalance}
+                            image={marketData.image}
+                            amount={tokenBalance}/> 
                     )
                 :
-                portfolio.map( ({walletName, walletAddress, image, walletValue_USD, walletPL }) =>
-                <PortfolioWallet key={walletAddress}
-                            name={walletName}
-                            address={walletAddress}
-                            image={image}
-                            totalValue={walletValue_USD}
-                            dayPercentChange={walletPL}/>
-                )
+                portfolio.filter((wallet) => (wallet.id !== selectedPortfolioWallet.id)).sort((a,b) => (b.walletValue_USD - a.marketData.walletValue_USD)).map( ({walletName, walletAddress, image, walletValue_USD, walletPL }) =>
+                    <PortfolioWallet key={walletAddress}
+                                name={walletName}
+                                address={walletAddress}
+                                image={image}
+                                totalValue={walletValue_USD}
+                                dayPercentChange={walletPL}/>
+                    )
             }
             
         </Div>
@@ -131,7 +143,8 @@ function mapStateToProps(state) {
     return {
       selectedPortfolioCoin: state.portfolioReducer.selectedPortfolioCoin,
       selectedPortfolioWallet: state.portfolioReducer.selectedPortfolioWallet,
-      portfolio: state.portfolioReducer.portfolio
+      portfolio: state.portfolioReducer.portfolio,
+      viewPortfolio: state.portfolioReducer.viewPortfolio
     };
   }
   
