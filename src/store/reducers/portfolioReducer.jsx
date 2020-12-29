@@ -89,6 +89,7 @@ import {
     selectedPortfolioCoin: {},
     selectedWalletCoin: {},
     viewPortfolio: true,
+    edit: false,
     historyLength: [],
     error: null,
     
