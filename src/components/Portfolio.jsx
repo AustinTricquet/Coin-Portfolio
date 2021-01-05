@@ -7,37 +7,16 @@ import styled from 'styled-components';
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { handleInputChange } from '../store/actions/watchListActions';
-import { changePortfolioView, fetchWalletData, Add_ETH_Wallet } from '../store/actions/portfolioActions';
+import { portfolioToggle, fetchWalletData, Add_ETH_Wallet } from '../store/actions/portfolioActions';
 import { withRouter } from 'react-router-dom';
+import plus from '../images/plus.png';
+import minus from '../images/minus.png';
 
 const Div = styled.div`
   height: 87vh;
   min-width: 30vh;
   width: 25%;
   overflow: auto;
-`;
-
-const InputGroup = styled.form`
-  border-bottom: 1px solid #3A4A5E;
-  border-top: 1px solid #3A4A5E;
-  display: flex;
-  justify-content: space-between;
-  padding: 1.5rem 1.5rem;
-  background-color: #28394F;
-  display: block;
-
-  input {
-      -webkit-flex: 1;
-    
-      outline: none;
-      border: 1px solid #dfe2e6;
-      color: #6b6c6f;
-      border-radius: 20px;
-      padding: 0.5rem 0.5rem; 
-      
-      }
-      input.input-error {
-      border: 1px solid red; }
 `;
 
 const PortfolioHead = styled.div`
@@ -92,8 +71,112 @@ const PortfolioButtonGroup = styled.div`
     }
 `;
 
-const Portfolio = withRouter(({history, selectedPortfolioCoin, selectedPortfolioWallet, viewPortfolio, changePortfolioView, Add_ETH_Wallet, portfolio, edit}) => {
+const AddWalletButton = styled.div`
+  border-bottom: 1px solid #3A4A5E;
+  justify-content: center;
+  display: flex;
+  padding: .5rem 0rem;
+  background-color: #28394F;
+  :hover {
+      background-color: #c9bcbe;
+  }
 
+  &.selected {
+      background-color: white;
+      :hover {
+          background-color: #c9bcbe;
+      }
+      div {
+          color: #28394F;
+      }
+  }
+  
+  align-items: center;
+  color: #F0F1F3;
+  img {
+    height: 1.5rem;
+    width: 1.5rem;
+    pointer-events: none;
+    background-color: white;
+    border-radius: 100%;
+    margin: 0rem 1rem 0rem 0rem;
+    left;
+  }
+`;
+
+const AddWalletWidget = styled.form`
+  border-bottom: 1px solid #3A4A5E;
+  border-top: 1px solid #3A4A5E;
+  display: flex;
+  padding: 1.5rem 1.5rem;
+  background-color: #8993A8;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  div {
+    justify-content: center;
+    display: flex;
+    padding: 0rem 0rem;
+    align-items: center;
+    color: white;
+    
+
+    img {
+      margin: 0rem 0rem 1rem 5rem;
+    }
+  }
+  
+  input {
+    -webkit-flex: 1;
+    outline: none;
+    border: 1px solid #dfe2e6;
+    color: #6b6c6f;
+    border-radius: 20px;
+    padding: 0.5rem 0.5rem; 
+    margin: 0.5rem 0rem;
+    width: 100%;
+  }
+  input.input-error {
+    border: 1px solid red; 
+  }
+
+  
+
+  button {
+    justify-content: center;
+    display: flex;
+    padding: .5rem 0rem;
+    background-color: white;
+    align-items: center;
+    color: black;
+
+    -webkit-flex: 1;
+    outline: none;
+    border: 1px solid #dfe2e6;
+    color: #6b6c6f;
+    border-radius: 20px;
+    padding: 0.3rem 0rem; 
+    margin: 0.5rem 0rem;
+    width: 60%;
+
+    :hover {
+      background-color: #c9bcbe;
+    }
+
+    img {
+      height: 1.5rem;
+      width: 1.5rem;
+      pointer-events: none;
+      background-color: white;
+      border-radius: 100%;
+      margin: 0rem 1rem 0rem 0rem;
+    }
+  }
+`;
+
+const Portfolio = withRouter(({history, selectedPortfolioCoin, selectedPortfolioWallet, viewCoins, portfolioToggle, Add_ETH_Wallet, portfolio, viewAddWallet}) => {
+
+  console.log("STATE - VIEW PORTFOLIO: ", viewCoins)
   let summedTokens = [];
   portfolio.forEach((wallet) => {
     wallet.walletTokens.forEach((token) => {
@@ -115,14 +198,27 @@ const Portfolio = withRouter(({history, selectedPortfolioCoin, selectedPortfolio
   console.log("Portfolio Value: ", portfolioValue)
   console.log("SUMMED TOKENS: ", summedTokens)
 
-  function changeView(e) {
+  function toggle(e) {
     e.preventDefault();
-    changePortfolioView();
+    console.log("TOGGLE EVENT: ", e.currentTarget.id);
+    portfolioToggle(e.target.id);
+  }
+
+  function toggleAddWallet(e) {
+    e.preventDefault();
+    portfolioToggle("addWalletToggle")
+  }
+
+  function cancelAddWallet(e) {
+    
+    e.preventDefault();
+    console.log("CANCEL")
+    portfolioToggle("cancelAddWallet")
   }
 
   function handleAddEthWallet(e) {
-    e.preventDefault();
-    //console.log(e.target.walletName.value)
+    //e.preventDefault();
+    console.log(e.target.walletName.value)
     if (e.target.walletName.value !== "" && e.target.walletAddress.value !== ""){
       // This check assumes the eth address is in question and is correct.
       console.log(e.target.walletName.value, e.target.walletAddress.value)
@@ -130,10 +226,8 @@ const Portfolio = withRouter(({history, selectedPortfolioCoin, selectedPortfolio
     }
   }
 
-
   // show and hide using function to set value to reveal or not and then use if statement to display or not.
   // Need to find a way to display all coins
-
 
   return (
     <Div>
@@ -144,12 +238,21 @@ const Portfolio = withRouter(({history, selectedPortfolioCoin, selectedPortfolio
         </div>
       </PortfolioHead>
       <PortfolioButtonGroup>
-        <button type="radio" onClick={changeView} disabled={viewPortfolio}>Coins</button>
-        <button type="radio" onClick={changeView} disabled={!viewPortfolio}>Wallets</button>
+        <button id="coinToggle" type="radio" onClick={toggle} disabled={viewCoins}>Coins</button>
+        <button id="walletToggle" type="radio" onClick={toggle} disabled={!viewCoins}>Wallets</button>
       </PortfolioButtonGroup>
-      { edit === true ?
+      { viewCoins === false && viewAddWallet === true ?
         <>
-          <InputGroup onSubmit={handleAddEthWallet} id="watchListSearch">
+          <AddWalletWidget onSubmit={handleAddEthWallet} id="watchListSearch">
+            <div>
+              <h2>Add Wallet</h2>
+              <button onClick={cancelAddWallet} >
+                <img src={minus} alt="React logo" className="App-logo"/>
+              </button>
+              
+           
+            </div>
+            
               <input type="text"
                   placeholder="Wallet Nickname"
                   name="walletName"
@@ -158,12 +261,16 @@ const Portfolio = withRouter(({history, selectedPortfolioCoin, selectedPortfolio
                   placeholder="Wallet Address"
                   name="walletAddress"
               />
-              <button>Add Wallet</button>
-          </InputGroup>
+              <button>
+                <img src={plus} alt="React logo" className="App-logo"/>
+                <h3>Add Wallet</h3>
+              </button>
+              
+          </AddWalletWidget>
         </>
         : null
       }
-      { viewPortfolio === true ?
+      { viewCoins === true ?
           <>
           <PortfolioCoin key={selectedPortfolioCoin.id}
                       coinID={selectedPortfolioCoin.id}
@@ -183,7 +290,7 @@ const Portfolio = withRouter(({history, selectedPortfolioCoin, selectedPortfolio
                       walletPL={selectedPortfolioWallet.walletPL}/>
           </>
       }
-      { viewPortfolio === true ? 
+      { viewCoins === true ? 
           summedTokens.map( ({id, marketData, tokenBalance}) => 
               <PortfolioCoin key={id}
                       coinID={id}
@@ -203,12 +310,14 @@ const Portfolio = withRouter(({history, selectedPortfolioCoin, selectedPortfolio
                           dayPercentChange={walletPL}/>
               )
       }    
-      { viewPortfolio === true ?
-        null
-        :
-        <>
-          <button>Add Wallet</button>
+      { viewCoins === false && viewAddWallet === false?
+        <>     
+          <AddWalletButton id="addWalletToggle" onClick={toggleAddWallet}>
+            <img src={plus} alt="React logo" className="App-logo"/>
+            <h3>Add Wallet</h3>
+          </AddWalletButton>
         </>
+        : null
       }
     </Div>
   )
@@ -219,15 +328,15 @@ function mapStateToProps(state) {
       selectedPortfolioCoin: state.portfolioReducer.selectedPortfolioCoin,
       selectedPortfolioWallet: state.portfolioReducer.selectedPortfolioWallet,
       portfolio: state.portfolioReducer.portfolio,
-      viewPortfolio: state.portfolioReducer.viewPortfolio,
-      edit: state.portfolioReducer.edit
+      viewCoins: state.portfolioReducer.viewCoins,
+      viewAddWallet: state.portfolioReducer.viewAddWallet
     };
   }
   
 function mapDispatchToProps(dispatch) {
   return {
     handleInputChange: (query) => dispatch(handleInputChange(query)),
-    changePortfolioView: () => dispatch(changePortfolioView()),
+    portfolioToggle: (view) => dispatch(portfolioToggle(view)),
     Add_ETH_Wallet: (walletAddress, walletName) => dispatch(Add_ETH_Wallet(walletAddress, walletName))
     
   };

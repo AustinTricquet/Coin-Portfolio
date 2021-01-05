@@ -4,8 +4,11 @@ import {
     UPDATE_PORTFOLIO,
     GET_ERC20_TXS,
     ADD_ETH_WALLET,
-    REMOVE_ETH_WALLET
+    REMOVE_ETH_WALLET,
+    TOGGLE_COIN_WALLET_VIEW,
+    TOGGLE_ADD_WALLET_VIEW
   } from "../actions/actionTypes";
+  import update from 'immutability-helper';
   
   const INITIAL_STATE = {
     portfolio: [
@@ -88,8 +91,8 @@ import {
     },
     selectedPortfolioCoin: {},
     selectedWalletCoin: {},
-    viewPortfolio: true,
-    edit: false,
+    viewCoins: true,
+    viewAddWallet: false,
     historyLength: [],
     error: null,
     
@@ -98,9 +101,13 @@ import {
   
   export default function authReducer(state = INITIAL_STATE, action) {
     if (
-      action.type === CHANGE_PORTFOLIO_VIEW
+      action.type === TOGGLE_COIN_WALLET_VIEW
     ) {
-      return { ...state, viewPortfolio: action.payload };
+      return update(state, {viewCoins: {$set: action.payload}});
+    } else if (
+      action.type === TOGGLE_ADD_WALLET_VIEW
+    ){
+      return update(state, {viewAddWallet: {$set: action.payload}});
     } else if (
       action.type === ADD_ETH_WALLET
     ) {

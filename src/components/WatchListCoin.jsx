@@ -64,6 +64,7 @@ const WatchListCoin = withRouter(({ history, coinID, name, symbol, image, price,
         document.getElementById("watchListSearch").reset();
         handleInputChange("");
         history.push("/watch-list/" + coinID);
+
     }
 
     return (
