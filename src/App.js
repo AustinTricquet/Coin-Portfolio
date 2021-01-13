@@ -15,13 +15,13 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { Switch, Route } from 'react-router-dom';
 
-import { getERC20_Balences, getERC20_Transactions, Add_ETH_Wallet } from "./store/actions/portfolioActions";
+//import { getERC20_Transactions } from "./store/actions/portfolioActions";
 import { updateMarketData } from "./store/actions/watchListActions";
 
 import { getCoinGeckoKeys } from "./store/actions/onSigninActions";
 import {store} from './index';
 
-function App({ auth, updateMarketData, getCoinGeckoKeys, getERC20_Balences, getERC20_Transactions, Add_ETH_Wallet }) {
+function App({ auth, updateMarketData, getCoinGeckoKeys  }) {
   const Content = styled.div`
     padding-bottom: 4em;
   `;
@@ -213,8 +213,8 @@ function mapDispatchToProps(dispatch) {
     //updateWatchList: (coinIDs, selectedCoinID, days) => dispatch(updateWatchList(coinIDs, selectedCoinID, days)),
     getCoinGeckoKeys: () => dispatch(getCoinGeckoKeys()),
     updateMarketData: (coinIDs, coinID, days, suggestions, onWatchList) => dispatch(updateMarketData(coinIDs, coinID, days, suggestions, onWatchList)),
-    getERC20_Balences: (web3, address, tokens, options) => dispatch(getERC20_Balences(web3, address, tokens, options)),
-    getERC20_Transactions: (web3, walletAddress, contractAddress, fromBlock, toBlock)=> dispatch(getERC20_Transactions(web3, walletAddress, contractAddress, fromBlock, toBlock)),
+    //getERC20_Balences: (web3, address, tokens, options) => dispatch(getERC20_Balences(web3, address, tokens, options)),
+    //getERC20_Transactions: (web3, walletAddress, contractAddress, fromBlock, toBlock)=> dispatch(getERC20_Transactions(web3, walletAddress, contractAddress, fromBlock, toBlock)),
     //Add_ETH_Wallet: (walletAddress, walletName) => dispatch(Add_ETH_Wallet(walletAddress, walletName))
   };
 }
